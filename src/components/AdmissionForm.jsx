@@ -173,12 +173,12 @@ export default function AdmissionForm() {
 
 
     const FILE_LIMITS = {
-        photo: { maxKB: 5120, label: 'Passport Photo' },
-        signature: { maxKB: 5120, label: 'Signature' },
-        aadharDocument: { maxKB: 5120, label: 'Aadhar Card' },
-        samagraDocument: { maxKB: 5120, label: 'Samagra ID' },
-        tenthDocument: { maxKB: 5120, label: '10th Marksheet' },
-        twelfthDocument: { maxKB: 5120, label: '12th Marksheet' },
+        photo: { maxKB: 500, label: 'Passport Photo' },
+        signature: { maxKB: 200, label: 'Signature' },
+        aadharDocument: { maxKB: 1536, label: 'Aadhar Card' },
+        samagraDocument: { maxKB: 1536, label: 'Samagra ID' },
+        tenthDocument: { maxKB: 1536, label: '10th Marksheet' },
+        twelfthDocument: { maxKB: 1536, label: '12th Marksheet' },
     };
 
     const handleFileChange = (e, fieldName, setFieldValue) => {
