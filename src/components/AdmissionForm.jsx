@@ -486,7 +486,7 @@ export default function AdmissionForm() {
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; }
             .print-wrapper > *:not(.print-area):not(.no-print) { display: none !important; }
-            .container { padding: 0 !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; }
+            .container, .container-fluid { padding: 0 !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; }
             .custom-card { box-shadow: none !important; border: 2px solid #1e3a5f !important; border-radius: 8px !important; }
             .card-body { padding: 15px !important; }
             .row { display: flex !important; flex-wrap: wrap !important; margin-left: -5px !important; margin-right: -5px !important; }
@@ -720,7 +720,7 @@ export default function AdmissionForm() {
                 </div>
             )}
 
-            <div className="print-area container py-4" style={{ backgroundColor: '#f8f9fa' }}>
+            <div className="print-area container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
                 {isSubmitted && submittedData ? (
                     <div className="card custom-card">
                         <div className="card-header text-center bg-theme p-5 no-print" style={{ borderBottom: '3px solid #ffc107' }}>
