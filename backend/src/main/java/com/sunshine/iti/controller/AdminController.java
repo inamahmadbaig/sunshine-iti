@@ -105,16 +105,15 @@ public class AdminController {
         String username = user.getUsername();
 
         // Send Email
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("sunshineiti8@gmail.com");
-        message.setTo(email);
-        message.setSubject("Sunshine ITI Portal - Admin Username Recovery");
-        message.setText("Dear Admin,\n\nYou requested username recovery for the Sunshine ITI Administration Portal.\n\nYour registered username is: " + username + "\n\nRegards,\nSunshine ITI College");
+        String htmlContent = "<p>Dear Admin,</p>" +
+                "<p>You requested username recovery for the Sunshine ITI Administration Portal.</p>" +
+                "<p>Your registered username is: <strong>" + username + "</strong></p>" +
+                "<br><p>Regards,<br>Sunshine ITI College</p>";
 
         try {
-            mailSender.send(message);
+            emailHelper.sendBrevoEmail(email, "Admin User", "Sunshine ITI Portal - Admin Username Recovery", htmlContent, null, null);
         } catch (Exception e) {
-            System.err.println("SMTP Mail sending failed: " + e.getMessage());
+            System.err.println("Mail sending failed: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to send email. Please check server logs."));
         }
 
@@ -257,27 +256,21 @@ public class AdminController {
                 return ResponseEntity.badRequest().body(Map.of("error", "No valid student emails found to broadcast to."));
             }
 
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            
-            helper.setFrom("sunshineiti8@gmail.com");
-            helper.setTo("sunshineiti8@gmail.com"); // TO self
-            helper.setBcc(bccEmails.toArray(new String[0])); // BCC everyone else
-            helper.setSubject(subject);
-            
+            String attName = null;
+            byte[] attBytes = null;
+            if (file != null && !file.isEmpty()) {
+                attName = file.getOriginalFilename();
+                attBytes = file.getBytes();
+            }
+
             String htmlContent = "<html><body>" +
                     "<p>Dear Student,</p>" +
                     "<p>" + message.replace("\n", "<br>") + "</p>" +
                     "<br><p>Best Regards,</p>" +
                     "<p><strong>Sunshine Pvt. ITI</strong><br>Contact: +91-7415491034</p>" +
                     "</body></html>";
-            helper.setText(htmlContent, true);
 
-            if (file != null && !file.isEmpty()) {
-                helper.addAttachment(file.getOriginalFilename(), file);
-            }
-
-            mailSender.send(mimeMessage);
+            emailHelper.sendBrevoBroadcast(bccEmails, subject, htmlContent, attName, attBytes);
 
             return ResponseEntity.ok(Map.of("message", "Notification with attachment successfully broadcasted to " + bccEmails.size() + " students!"));
 

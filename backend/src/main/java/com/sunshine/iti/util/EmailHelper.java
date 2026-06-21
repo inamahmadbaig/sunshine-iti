@@ -38,7 +38,7 @@ public class EmailHelper {
         this.mailSender = mailSender;
     }
 
-    private void sendBrevoEmail(String recipientEmail, String recipientName, String subject, String htmlContent, String attachmentName, byte[] attachmentBytes) throws Exception {
+    public void sendBrevoEmail(String recipientEmail, String recipientName, String subject, String htmlContent, String attachmentName, byte[] attachmentBytes) throws Exception {
         java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
         
         java.util.Map<String, Object> payload = new java.util.HashMap<>();
@@ -268,6 +268,63 @@ public class EmailHelper {
         return baos.toByteArray();
     }
     
+    public void sendBrevoBroadcast(java.util.List<String> bccEmails, String subject, String htmlContent, String attachmentName, byte[] attachmentBytes) throws Exception {
+        java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+        
+        java.util.Map<String, Object> payload = new java.util.HashMap<>();
+        payload.put("subject", subject);
+        payload.put("htmlContent", htmlContent);
+        
+        java.util.Map<String, String> sender = new java.util.HashMap<>();
+        sender.put("name", "Sunshine ITI");
+        sender.put("email", "sunshineiti8@gmail.com");
+        payload.put("sender", sender);
+        
+        java.util.List<java.util.Map<String, String>> toList = new java.util.ArrayList<>();
+        java.util.Map<String, String> toUser = new java.util.HashMap<>();
+        toUser.put("email", "sunshineiti8@gmail.com");
+        toUser.put("name", "Sunshine ITI");
+        toList.add(toUser);
+        payload.put("to", toList);
+        
+        java.util.List<java.util.Map<String, String>> bccList = new java.util.ArrayList<>();
+        for (String bccEmail : bccEmails) {
+            java.util.Map<String, String> bccUser = new java.util.HashMap<>();
+            bccUser.put("email", bccEmail);
+            bccList.add(bccUser);
+        }
+        payload.put("bcc", bccList);
+        
+        if (attachmentBytes != null && attachmentName != null) {
+            java.util.List<java.util.Map<String, String>> attachments = new java.util.ArrayList<>();
+            java.util.Map<String, String> att = new java.util.HashMap<>();
+            att.put("name", attachmentName);
+            att.put("content", java.util.Base64.getEncoder().encodeToString(attachmentBytes));
+            attachments.add(att);
+            payload.put("attachment", attachments);
+        }
+        
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        String jsonBody = mapper.writeValueAsString(payload);
+        
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                .uri(java.net.URI.create("https://api.brevo.com/v3/smtp/email"))
+                .header("api-key", getResolvedApiKey())
+                .header("content-type", "application/json")
+                .header("accept", "application/json")
+                .POST(java.net.http.HttpRequest.BodyPublishers.ofString(jsonBody, java.nio.charset.StandardCharsets.UTF_8))
+                .build();
+                
+        java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+        
+        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+            System.out.println("Broadcast sent successfully via Brevo: " + response.body());
+        } else {
+            System.err.println("Failed to send broadcast via Brevo. Status: " + response.statusCode() + ", Response: " + response.body());
+            throw new RuntimeException("Brevo API error: " + response.body());
+        }
+    }
+
     private void addTableCell(PdfPTable table, String text, Font font) {
         PdfPCell cell = new PdfPCell(new Paragraph(text, font));
         cell.setPadding(8);
