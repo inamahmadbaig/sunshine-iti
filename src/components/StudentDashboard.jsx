@@ -26,15 +26,15 @@ const StudentDashboard = ({ darkMode }) => {
     const parsed = JSON.parse(authData);
     setStudent(parsed);
 
-    axios.get(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}`}`/api/notices?target=ALL`)
+    axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/notices?target=ALL`)
       .then(res => setNotices(res.data))
       .catch(err => console.error(err));
 
-    axios.get(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}`}`/api/fees/student/${parsed.id}`)
+    axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/fees/student/${parsed.id}`)
       .then(res => setFees(res.data))
       .catch(err => console.error(err));
 
-    axios.get(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}`}`/api/results/student/${parsed.id}`)
+    axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/results/student/${parsed.id}`)
       .then(res => setResults(res.data))
       .catch(err => console.error(err));
   };
@@ -129,7 +129,7 @@ const StudentDashboard = ({ darkMode }) => {
           <div style={{ textAlign: 'center', paddingBottom: '1.5rem', borderBottom: `1px solid ${darkMode ? '#334155' : '#e2e8f0'}`, marginBottom: '1rem' }}>
             <div style={{ width: '80px', height: '80px', backgroundColor: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', overflow: 'hidden' }}>
               <img 
-                src={`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}`}`/api/admissions/${student.id}/files/photo`} 
+                src={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${student.id}/files/photo`} 
                 alt="Student Profile" 
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'; }} 
@@ -348,7 +348,7 @@ const StudentDashboard = ({ darkMode }) => {
                 <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}><Award /> Exam Results & Marksheets</h2>
                 {results.length > 0 && (
                   <button 
-                    onClick={() => window.open(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}`}`/api/results/student/${student.id}/marksheet`, '_blank')}
+                    onClick={() => window.open(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/results/student/${student.id}/marksheet`, '_blank')}
                     className="btn btn-primary" 
                     style={{ backgroundColor: '#10b981', border: 'none', padding: '0.6rem 1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}
                   >
