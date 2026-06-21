@@ -165,6 +165,19 @@ export default function App() {
     loadNotices();
   }, []);
 
+  // Disable scroll wheel modifications on number inputs globally
+  useEffect(() => {
+    const handleWheel = (e) => {
+      if (document.activeElement && document.activeElement.type === 'number') {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      document.removeEventListener('wheel', handleWheel);
+    };
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
