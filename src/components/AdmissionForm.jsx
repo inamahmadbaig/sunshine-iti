@@ -412,6 +412,74 @@ export default function AdmissionForm() {
           .custom-card { border-radius: 12px; overflow: hidden; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
           .modal-header.bg-theme .btn-close { filter: brightness(0) invert(1); }
           .table-bordered th { background-color: #f1f5f9 !important; }
+
+          .floating-print-btn {
+            position: fixed !important;
+            bottom: 30px !important;
+            right: 30px !important;
+            border-radius: 50px !important;
+            padding: 12px 24px !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            z-index: 1000 !important;
+            background-color: #1e3a5f !important;
+            color: #fff !important;
+            border: none !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 10px 25px rgba(30, 58, 95, 0.3) !important;
+            transition: transform 0.2s !important;
+          }
+          .floating-print-btn:hover {
+            transform: scale(1.05) !important;
+            background-color: #162b48 !important;
+            color: #fff !important;
+          }
+
+          @media screen and (max-width: 767px) {
+            .floating-print-btn {
+              bottom: 20px !important;
+              right: 20px !important;
+              width: 54px !important;
+              height: 54px !important;
+              border-radius: 50% !important;
+              padding: 0 !important;
+            }
+            /* Make key-value tables stack vertically on mobile */
+            .print-area .table-bordered:not(.text-center) tbody,
+            .print-area .table-bordered:not(.text-center) tr,
+            .print-area .table-bordered:not(.text-center) th,
+            .print-area .table-bordered:not(.text-center) td {
+              display: block !important;
+              width: 100% !important;
+            }
+            .print-area .table-bordered:not(.text-center) tr {
+              margin-bottom: 15px !important;
+              border: 1px solid #dee2e6 !important;
+              border-radius: 8px !important;
+              overflow: hidden !important;
+              background-color: #fff !important;
+            }
+            .print-area .table-bordered:not(.text-center) th {
+              background-color: #f8fafc !important;
+              color: #1e3a5f !important;
+              border: none !important;
+              border-bottom: 1px solid #e2e8f0 !important;
+              padding: 8px 12px !important;
+              font-size: 13px !important;
+            }
+            .print-area .table-bordered:not(.text-center) td {
+              border: none !important;
+              border-bottom: 1px solid #e2e8f0 !important;
+              padding: 8px 12px 12px 12px !important;
+              font-size: 14px !important;
+            }
+            .print-area .table-bordered:not(.text-center) td:last-child {
+              border-bottom: none !important;
+            }
+          }
+
           @media print {
             @page { size: A4; margin: 10mm; }
             body { background-color: #fff !important; margin: 0; padding: 0; font-size: 11px !important; color: #000 !important; }
@@ -458,13 +526,11 @@ export default function AdmissionForm() {
             </div>
 
             <button
-                className="btn no-print shadow-lg"
+                className="btn no-print shadow-lg floating-print-btn"
                 onClick={() => window.print()}
-                style={{ position: 'fixed', bottom: '30px', right: '30px', borderRadius: '50px', padding: '15px 30px', fontSize: '16px', fontWeight: 'bold', zIndex: 1000, transition: 'transform 0.2s', backgroundColor: '#1e3a5f', color: '#fff', border: 'none' }}
-                onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
-                onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
             >
-                {t.printForm}
+                <Printer size={20} className="me-0 me-md-2" />
+                <span className="d-none d-md-inline">{t.printForm}</span>
             </button>
 
             {showPreview && previewData && (
@@ -724,46 +790,52 @@ export default function AdmissionForm() {
                                 <div className="col-md-3 col-6 mb-2 text-md-end">{t.date}: <span className="text-danger">{today}</span></div>
                             </div>
                             <div className="section-title mt-0">{t.personalDetails}</div>
-                            <table className="table table-bordered mb-4">
-                                <tbody>
-                                    <tr><th width="25%" className="bg-light text-muted">Candidate's Name</th><td width="25%" className="fw-bold">{submittedData.fullName}</td><th width="25%" className="bg-light text-muted">Date of Birth</th><td width="25%" className="fw-bold">{submittedData.dob}</td></tr>
-                                    <tr><th className="bg-light text-muted">Father's Name</th><td>{submittedData.fatherName}</td><th className="bg-light text-muted">Mother's Name</th><td>{submittedData.motherName}</td></tr>
-                                    <tr><th className="bg-light text-muted">Aadhar Number</th><td>{submittedData.aadharNo}</td><th className="bg-light text-muted">Samagra ID</th><td>{submittedData.samagraId}</td></tr>
-                                    <tr><th className="bg-light text-muted">Category / Gender</th><td>{submittedData.category} / {submittedData.gender}</td><th className="bg-light text-muted">Religion</th><td>{submittedData.religion}</td></tr>
-                                    <tr><th className="bg-light text-muted">Mobile Number</th><td>{submittedData.mobile}</td><th className="bg-light text-muted">Email Address</th><td>{submittedData.email}</td></tr>
-                                    <tr><th className="bg-light text-muted">Permanent Address</th><td colSpan="3">{submittedData.address}, {submittedData.distt}, {submittedData.state} - {submittedData.pin}</td></tr>
-                                </tbody>
-                            </table>
+                            <div className="table-responsive">
+                                <table className="table table-bordered mb-4">
+                                    <tbody>
+                                        <tr><th width="25%" className="bg-light text-muted">Candidate's Name</th><td width="25%" className="fw-bold">{submittedData.fullName}</td><th width="25%" className="bg-light text-muted">Date of Birth</th><td width="25%" className="fw-bold">{submittedData.dob}</td></tr>
+                                        <tr><th className="bg-light text-muted">Father's Name</th><td>{submittedData.fatherName}</td><th className="bg-light text-muted">Mother's Name</th><td>{submittedData.motherName}</td></tr>
+                                        <tr><th className="bg-light text-muted">Aadhar Number</th><td>{submittedData.aadharNo}</td><th className="bg-light text-muted">Samagra ID</th><td>{submittedData.samagraId}</td></tr>
+                                        <tr><th className="bg-light text-muted">Category / Gender</th><td>{submittedData.category} / {submittedData.gender}</td><th className="bg-light text-muted">Religion</th><td>{submittedData.religion}</td></tr>
+                                        <tr><th className="bg-light text-muted">Mobile Number</th><td>{submittedData.mobile}</td><th className="bg-light text-muted">Email Address</th><td>{submittedData.email}</td></tr>
+                                        <tr><th className="bg-light text-muted">Permanent Address</th><td colSpan="3">{submittedData.address}, {submittedData.distt}, {submittedData.state} - {submittedData.pin}</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div className="section-title">{t.academicDetails}</div>
-                            <table className="table table-bordered text-center mb-4">
-                                <thead className="bg-light text-muted">
-                                    <tr><th>Level</th><th>Board</th><th>School / College</th><th>Year</th><th>Roll No.</th><th>Marks</th></tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td className="fw-bold">10th</td><td>{submittedData.tenthBoard}</td><td>{submittedData.tenthSchool}</td><td>{submittedData.tenthYear}</td><td>{submittedData.tenthRollNo}</td><td>{submittedData.tenthMarksObt} / {submittedData.tenthTotalMarks}</td></tr>
-                                    {submittedData.twelfthBoard && (
-                                        <tr><td className="fw-bold">12th</td><td>{submittedData.twelfthBoard}</td><td>{submittedData.twelfthSchool}</td><td>{submittedData.twelfthYear}</td><td>{submittedData.twelfthRollNo}</td><td>{submittedData.twelfthMarksObt} / {submittedData.twelfthTotalMarks}</td></tr>
-                                    )}
-                                </tbody>
-                            </table>
+                            <div className="table-responsive">
+                                <table className="table table-bordered text-center mb-4">
+                                    <thead className="bg-light text-muted">
+                                        <tr><th>Level</th><th>Board</th><th>School / College</th><th>Year</th><th>Roll No.</th><th>Marks</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td className="fw-bold">10th</td><td>{submittedData.tenthBoard}</td><td>{submittedData.tenthSchool}</td><td>{submittedData.tenthYear}</td><td>{submittedData.tenthRollNo}</td><td>{submittedData.tenthMarksObt} / {submittedData.tenthTotalMarks}</td></tr>
+                                        {submittedData.twelfthBoard && (
+                                            <tr><td className="fw-bold">12th</td><td>{submittedData.twelfthBoard}</td><td>{submittedData.twelfthSchool}</td><td>{submittedData.twelfthYear}</td><td>{submittedData.twelfthRollNo}</td><td>{submittedData.twelfthMarksObt} / {submittedData.twelfthTotalMarks}</td></tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
 
                             <div className="section-title">Payment Information</div>
-                            <table className="table table-bordered mb-4">
-                                <tbody>
-                                    <tr>
-                                        <th width="25%" className="bg-light text-muted">Payment Method</th>
-                                        <td width="25%">{submittedData.paymentMethod}</td>
-                                        <th width="25%" className="bg-light text-muted">Transaction ID / UTR</th>
-                                        <td width="25%" className="fw-bold">{submittedData.transactionId}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="bg-light text-muted">Amount Paid</th>
-                                        <td className="fw-bold text-success">₹ {Number(submittedData.amountPaid).toLocaleString('en-IN')}</td>
-                                        <th className="bg-light text-muted">{t.remainingPay}</th>
-                                        <td className="fw-bold text-danger">₹ {Number(submittedData.outstandingBalance).toLocaleString('en-IN')}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div className="table-responsive">
+                                <table className="table table-bordered mb-4">
+                                    <tbody>
+                                        <tr>
+                                            <th width="25%" className="bg-light text-muted">Payment Method</th>
+                                            <td width="25%">{submittedData.paymentMethod}</td>
+                                            <th width="25%" className="bg-light text-muted">Transaction ID / UTR</th>
+                                            <td width="25%" className="fw-bold">{submittedData.transactionId}</td>
+                                        </tr>
+                                        <tr>
+                                            <th className="bg-light text-muted">Amount Paid</th>
+                                            <td className="fw-bold text-success">₹ {Number(submittedData.amountPaid).toLocaleString('en-IN')}</td>
+                                            <th className="bg-light text-muted">{t.remainingPay}</th>
+                                            <td className="fw-bold text-danger">₹ {Number(submittedData.outstandingBalance).toLocaleString('en-IN')}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
                             <div className="mt-4 p-3 rounded" style={{ backgroundColor: '#f8fafc', borderLeft: '4px solid #f97316', borderTop: '1px solid #e2e8f0', borderRight: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
                                 <p className="mb-0 small text-justify text-muted">
