@@ -5,7 +5,7 @@ import { Search, IndianRupee, UploadCloud, CheckCircle, FileText, ChevronRight, 
 import { useLanguage } from '../context/LanguageContext';
 import '../index.css';
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api`;
 
 const PayFee = () => {
   const { t } = useLanguage();

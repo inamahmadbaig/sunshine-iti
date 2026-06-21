@@ -11,7 +11,7 @@ import NavigationBar from './NavigationBar';
 import TickerTape from './TickerTape';
 import Footer from './Footer';
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api`;
 
 const translateTrade = (trade, isHindi) => {
   if (!isHindi) return trade;

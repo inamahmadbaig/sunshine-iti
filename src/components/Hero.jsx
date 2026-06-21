@@ -11,7 +11,7 @@ export default function Hero({ t, setShowApplyModal }) {
             {t.applyOnline}
           </button>
           <a 
-            href="http://localhost:8081/api/public/prospectus" 
+            href=`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/public/prospectus` 
             download="Sunshine_ITI_Prospectus_2025-26.pdf"
             className="btn btn-secondary"
           >

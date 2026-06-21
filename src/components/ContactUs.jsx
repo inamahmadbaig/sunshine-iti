@@ -35,7 +35,7 @@ export default function ContactUs({ t, lang }) {
     setSending(true);
     
     try {
-      await axios.post('http://localhost:8081/api/inquiries', formData);
+      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/inquiries`, formData);
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
       setTimeout(() => setSubmitted(false), 5000);

@@ -22,7 +22,7 @@ export default function ForgotPassword() {
     setError('');
     setSuccess('');
 
-    axios.post("http://localhost:8081/api/admin/forgot-password", { email })
+    axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admin/forgot-password`, { email })
       .then(res => {
         setSuccess("OTP sent successfully. Please check your inbox!");
         setStep(2);
@@ -46,7 +46,7 @@ export default function ForgotPassword() {
     setError('');
     setSuccess('');
 
-    axios.post("http://localhost:8081/api/admin/reset-password", {
+    axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admin/reset-password`, {
       email,
       otp,
       newPassword

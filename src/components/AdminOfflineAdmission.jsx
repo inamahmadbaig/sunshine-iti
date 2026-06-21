@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Shield, UploadCloud } from 'lucide-react';
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api`;
 
 export default function AdminOfflineAdmission({ onSuccess }) {
   const [formData, setFormData] = useState({

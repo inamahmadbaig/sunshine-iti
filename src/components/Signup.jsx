@@ -22,7 +22,7 @@ export default function Signup() {
     setError('');
     setSuccess('');
 
-    axios.post("http://localhost:8081/api/admin/signup", formData)
+    axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admin/signup`, formData)
       .then(res => {
         setSuccess("Account created successfully! Redirecting to login...");
         setTimeout(() => {

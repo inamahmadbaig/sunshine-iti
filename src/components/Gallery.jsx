@@ -8,7 +8,7 @@ const Gallery = ({ darkMode }) => {
   const [filter, setFilter] = useState('All');
 
   useEffect(() => {
-    axios.get('http://localhost:8081/api/gallery')
+    axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/gallery`)
       .then(res => {
         setImages(res.data);
         setLoading(false);

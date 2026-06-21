@@ -282,7 +282,7 @@ export default function AdmissionForm() {
             fd.append("paymentDate", paymentDate);
             fd.append("paymentReceipt", paymentReceipt);
 
-            const res = await axios.post("http://localhost:8081/api/admissions", fd, {
+            const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions`, fd, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setSubmittedData({

@@ -40,7 +40,7 @@ export default function ResetPassword() {
     setError('');
     setSuccess('');
 
-    axios.post("http://localhost:8081/api/admin/reset-password", {
+    axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admin/reset-password`, {
       email,
       otp,
       newPassword

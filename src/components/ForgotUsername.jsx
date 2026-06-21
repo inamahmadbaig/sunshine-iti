@@ -18,7 +18,7 @@ export default function ForgotUsername() {
     setError('');
     setSuccess('');
 
-    axios.post("http://localhost:8081/api/admin/forgot-username", { email })
+    axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admin/forgot-username`, { email })
       .then(res => {
         setSuccess(res.data?.message || "Username sent successfully. Please check your inbox!");
         setTimeout(() => {

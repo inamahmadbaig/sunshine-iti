@@ -35,7 +35,7 @@ import Gallery from './components/Gallery';
 import StudentLogin from './components/StudentLogin';
 import StudentDashboard from './components/StudentDashboard';
 
-const API_BASE = "http://localhost:8081/api";
+const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api`;
 
 const fallbackNotices = [
   { id: 1, title: "NCVT Main Examination Schedule August 2026 Released", date: "2026-06-14", isNew: true, link: "#" },
