@@ -398,12 +398,12 @@ export default function AdmissionForm() {
 
             {showPreview && previewData && (
                 <div className="position-fixed top-0 start-0 w-100 h-100 bg-light no-print" style={{ zIndex: 1050, overflowY: 'auto' }}>
-                    <div className="container py-5">
+                    <div className="container-fluid px-2 px-md-4 py-3 py-md-5" style={{ maxWidth: '1200px' }}>
                         <div className="card shadow-lg border-0" style={{ borderRadius: '12px' }}>
                             <div className="card-header bg-theme text-white p-4">
                                 <h3 className="fw-bold mb-0">{t.verifyTitle} - Full Application Review</h3>
                             </div>
-                            <div className="card-body p-5">
+                            <div className="card-body p-3 p-md-5">
                                 <div className="alert alert-warning mb-4 fw-semibold border-warning">
                                     {t.verifyNotice}
                                 </div>
@@ -461,19 +461,19 @@ export default function AdmissionForm() {
 
             {showPayment && previewData && (
                 <div className="position-fixed top-0 start-0 w-100 h-100 bg-light no-print" style={{ zIndex: 1050, overflowY: 'auto' }}>
-                    <div className="container py-5">
+                    <div className="container-fluid px-2 px-md-4 py-3 py-md-5" style={{ maxWidth: '1200px' }}>
                         <div className="card shadow-lg border-0" style={{ borderRadius: '12px' }}>
                             <div className="card-header bg-theme text-white p-4">
                                 <h3 className="fw-bold mb-0">Admission Registration Fee Payment</h3>
                             </div>
-                            <div className="card-body p-5">
+                            <div className="card-body p-3 p-md-5">
                                 <div className="alert alert-info py-3 mb-4 shadow-sm" style={{ fontSize: '1.1rem' }}>
                                     Please make a payment of <strong>₹ {(getTradeFee(previewData.trade) || 0).toLocaleString('en-IN')}</strong> using the options below and enter the payment details.
                                 </div>
-                                <div className="row g-5">
+                                <div className="row g-3 g-md-5">
                                     <div className="col-md-6">
                                         <div className="card border-0 shadow-sm h-100" style={{ backgroundColor: '#f8fafc', borderRadius: '16px' }}>
-                                            <div className="card-body p-4 text-center">
+                                            <div className="card-body p-3 p-md-4 text-center">
                                                 <h4 className="fw-bold mb-4" style={{ color: '#5f259f' }}>Pay via PhonePe / UPI</h4>
                                                 <div className="bg-white p-3 d-inline-block rounded-3 shadow-sm mb-4">
                                                     <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=sarfaraj.baig2@axl%26pn=SARFARAJ%20AHMED%20BAIG%26mc=0000%26tr=SUNSHINE`} alt="UPI QR Code" style={{ width: '200px', height: '200px' }} />
@@ -490,7 +490,7 @@ export default function AdmissionForm() {
                                     </div>
                                     <div className="col-md-6">
                                         <div className="card border-0 shadow-sm mb-4" style={{ backgroundColor: '#f8fafc', borderRadius: '16px' }}>
-                                            <div className="card-body p-4">
+                                            <div className="card-body p-3 p-md-4">
                                                 <h5 className="fw-bold mb-3 text-theme">Bank Transfer Details</h5>
                                                 <table className="table table-borderless mb-0">
                                                     <tbody>
@@ -504,7 +504,7 @@ export default function AdmissionForm() {
                                         </div>
                                         
                                         <div className="card border-0 shadow-sm" style={{ backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0 !important' }}>
-                                            <div className="card-body p-4">
+                                            <div className="card-body p-3 p-md-4">
                                                 <h5 className="fw-bold mb-4 text-theme">Enter Transaction Details</h5>
                                                 <div className="mb-3">
                                                     <label className="form-label fw-semibold">Payment Method *</label>
