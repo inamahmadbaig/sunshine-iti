@@ -775,7 +775,16 @@ export default function AdmissionForm() {
                             <div className="text-center mb-4 pb-3" style={{ borderBottom: '2px dashed #003366' }}>
                                 <h1 className="fw-bold mb-1 text-theme">SUNSHINE PVT. ITI</h1>
                                 <h5 className="fw-semibold mb-2 text-danger">SEONI (M.P.)</h5>
-                                <p className="mb-0 small fw-bold text-muted">AFFILIATION -DGT-12/1/18-TC | MIS CODE - PU23001071</p>
+                                <p className="mb-1 small fw-bold text-muted">
+                                    <span className="d-block d-md-inline-block">AFFILIATION -DGT-12/1/18-TC</span>
+                                    <span className="d-none d-md-inline-block">&nbsp;|&nbsp;</span>
+                                    <span className="d-block d-md-inline-block">MIS CODE - PU23001071</span>
+                                </p>
+                                <p className="mb-0 small fw-bold text-muted">
+                                    <span className="d-block d-md-inline-block">Email: sunshineiti8@gmail.com</span>
+                                    <span className="d-none d-md-inline-block">&nbsp;|&nbsp;</span>
+                                    <span className="d-block d-md-inline-block">Mo. 7415491034</span>
+                                </p>
                                 <h4 className="mt-3 fw-bold text-uppercase text-theme">Admission Application Form</h4>
                             </div>
                             <div className="alert alert-info border-info text-center fw-bold mb-4">
@@ -853,8 +862,16 @@ export default function AdmissionForm() {
                         <div className="card-header text-center bg-theme p-4 p-md-5">
                             <h1 className="fw-bold mb-1" style={{ color: '#ffc107', letterSpacing: '2px', fontSize: '42px' }}>SUNSHINE PVT. ITI</h1>
                             <h3 className="fw-bold mb-3" style={{ color: '#fff', fontSize: '26px' }}>SEONI (M.P.)</h3>
-                            <p className="mb-1" style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>AFFILIATION -DGT-12/1/18-TC &nbsp;|&nbsp; MIS CODE - PU23001071</p>
-                            <p className="mb-0" style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>Email: sunshineiti8@gmail.com &nbsp;|&nbsp; Mo. 7415491034</p>
+                            <p className="mb-1" style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>
+                                <span className="d-block d-md-inline-block">AFFILIATION -DGT-12/1/18-TC</span>
+                                <span className="d-none d-md-inline-block">&nbsp;|&nbsp;</span>
+                                <span className="d-block d-md-inline-block">MIS CODE - PU23001071</span>
+                            </p>
+                            <p className="mb-0" style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>
+                                <span className="d-block d-md-inline-block">Email: sunshineiti8@gmail.com</span>
+                                <span className="d-none d-md-inline-block">&nbsp;|&nbsp;</span>
+                                <span className="d-block d-md-inline-block">Mo. 7415491034</span>
+                            </p>
                             <div className="mt-4">
                                 <span className="shadow" style={{
                                     display: 'inline-block',
