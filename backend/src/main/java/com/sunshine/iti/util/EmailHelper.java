@@ -119,17 +119,6 @@ public class EmailHelper {
         }
     }
 
-    public void sendTestEmailDirect(String to) throws Exception {
-        sendBrevoEmail(
-            to,
-            "Sunshine ITI Test User",
-            "Sunshine ITI - Test Email Connection",
-            "<p>This is a direct HTTP API connection test from the deployed Sunshine ITI server using Brevo.</p>",
-            null,
-            null
-        );
-    }
-
     public void sendOtpEmail(String toEmail, String otp) {
         try {
             String htmlContent = "<p>Dear Admin,</p>" +
