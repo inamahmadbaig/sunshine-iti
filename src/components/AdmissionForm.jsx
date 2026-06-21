@@ -122,6 +122,65 @@ function SchoolAutoSuggest({ board, value, onChange, name, placeholder, error })
     );
 }
 
+const compressImage = (file, maxWidth = 1200, maxHeight = 1200, quality = 0.7) => {
+    return new Promise((resolve) => {
+        if (file.type === 'application/pdf') {
+            resolve(file);
+            return;
+        }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width = Math.round((width * maxHeight) / height);
+                        height = maxHeight;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob(
+                    (blob) => {
+                        if (!blob) {
+                            resolve(file);
+                            return;
+                        }
+                        const compressedFile = new File([blob], file.name, {
+                            type: file.type,
+                            lastModified: Date.now(),
+                        });
+                        resolve(compressedFile);
+                    },
+                    file.type,
+                    quality
+                );
+            };
+            img.onerror = () => {
+                resolve(file);
+            };
+        };
+        reader.onerror = () => {
+            resolve(file);
+        };
+    });
+};
+
 export default function AdmissionForm() {
     const { t } = useLanguage();
 
@@ -179,19 +238,31 @@ export default function AdmissionForm() {
         samagraDocument: { maxKB: 2048, label: 'Samagra ID' },
         tenthDocument: { maxKB: 2048, label: '10th Marksheet' },
         twelfthDocument: { maxKB: 2048, label: '12th Marksheet' },
+        casteDocument: { maxKB: 2048, label: 'Caste Certificate' },
+        incomeDocument: { maxKB: 2048, label: 'Income Certificate' },
+        domicileDocument: { maxKB: 2048, label: 'Domicile Certificate' },
     };
 
-    const handleFileChange = (e, fieldName, setFieldValue) => {
+    const handleFileChange = async (e, fieldName, setFieldValue) => {
         const file = e.currentTarget.files[0];
         if (!file) return;
-        const limit = FILE_LIMITS[fieldName];
-        if (limit && file.size > limit.maxKB * 1024) {
-            setFileSizeErrors(prev => ({ ...prev, [fieldName]: `File size must be under ${limit.maxKB / 1024} MB` }));
-            e.target.value = '';
-            return;
+        setLoading(true);
+        try {
+            const compressedFile = await compressImage(file);
+            const limit = FILE_LIMITS[fieldName];
+            if (limit && compressedFile.size > limit.maxKB * 1024) {
+                setFileSizeErrors(prev => ({ ...prev, [fieldName]: `File size must be under ${limit.maxKB / 1024} MB` }));
+                e.target.value = '';
+                return;
+            }
+            setFileSizeErrors(prev => ({ ...prev, [fieldName]: '' }));
+            setFieldValue(fieldName, compressedFile);
+        } catch (err) {
+            console.error("Compression failed, using original file", err);
+            setFieldValue(fieldName, file);
+        } finally {
+            setLoading(false);
         }
-        setFileSizeErrors(prev => ({ ...prev, [fieldName]: '' }));
-        setFieldValue(fieldName, file);
     };
 
     const validationSchema = Yup.object({
@@ -544,18 +615,26 @@ export default function AdmissionForm() {
                                                 </div>
                                                 <div className="mb-4">
                                                     <label className="form-label fw-semibold">Upload Payment Receipt *</label>
-                                                    <input type="file" accept="image/*, .pdf" className="form-control form-control-lg" onChange={(e) => {
-                                                        const file = e.target.files[0];
-                                                        if (file) {
-                                                            if (file.size > 5 * 1024 * 1024) {
-                                                                setPaymentReceiptError("Receipt file size must be under 5MB");
-                                                                e.target.value = '';
-                                                            } else {
-                                                                setPaymentReceiptError("");
-                                                                setPaymentReceipt(file);
-                                                            }
-                                                        }
-                                                    }} required />
+                                                     <input type="file" accept="image/*, .pdf" className="form-control form-control-lg" onChange={async (e) => {
+                                                         const file = e.target.files[0];
+                                                         if (file) {
+                                                             setLoading(true);
+                                                             try {
+                                                                 const compressedFile = await compressImage(file);
+                                                                 if (compressedFile.size > 2 * 1024 * 1024) {
+                                                                     setPaymentReceiptError("Receipt file size must be under 2MB");
+                                                                     e.target.value = '';
+                                                                 } else {
+                                                                     setPaymentReceiptError("");
+                                                                     setPaymentReceipt(compressedFile);
+                                                                 }
+                                                             } catch (err) {
+                                                                 setPaymentReceipt(file);
+                                                             } finally {
+                                                                 setLoading(false);
+                                                             }
+                                                         }
+                                                     }} required />
                                                     {paymentReceiptError && <div className="text-danger mt-2">{paymentReceiptError}</div>}
                                                 </div>
                                             </div>
