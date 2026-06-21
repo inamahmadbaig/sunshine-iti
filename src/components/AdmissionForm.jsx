@@ -723,7 +723,7 @@ export default function AdmissionForm() {
             <div className="print-area container-fluid py-4" style={{ backgroundColor: '#f8f9fa' }}>
                 {isSubmitted && submittedData ? (
                     <div className="card custom-card">
-                        <div className="card-header text-center bg-theme p-5 no-print" style={{ borderBottom: '3px solid #ffc107' }}>
+                        <div className="card-header text-center bg-theme p-5 no-print" style={{ borderBottom: '3px solid #ffc107', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
                             <div className="d-inline-flex justify-content-center align-items-center rounded-circle bg-success bg-opacity-25 p-3 mb-3" style={{ border: '2px solid #22c55e' }}>
                                 <CheckCircle size={40} className="text-success" />
                             </div>
@@ -859,7 +859,7 @@ export default function AdmissionForm() {
                     </div>
                 ) : (
                     <div className="card custom-card">
-                        <div className="card-header text-center bg-theme p-4 p-md-5">
+                        <div className="card-header text-center bg-theme p-4 p-md-5" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
                             <h1 className="fw-bold mb-1" style={{ color: '#ffc107', letterSpacing: '2px', fontSize: '42px' }}>SUNSHINE PVT. ITI</h1>
                             <h3 className="fw-bold mb-3" style={{ color: '#fff', fontSize: '26px' }}>SEONI (M.P.)</h3>
                             <p className="mb-1" style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>
