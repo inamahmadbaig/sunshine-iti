@@ -781,9 +781,9 @@ export default function AdmissionForm() {
                                     <span className="d-block d-md-inline-block">MIS CODE - PU23001071</span>
                                 </p>
                                 <p className="mb-0 small fw-bold text-muted">
-                                    <span className="d-block d-md-inline-block">Email: sunshineitiseoni@gmail.com</span>
+                                    <span className="d-block d-md-inline-block">Email: sunshineiti8@gmail.com</span>
                                     <span className="d-none d-md-inline-block">&nbsp;|&nbsp;</span>
-                                    <span className="d-block d-md-inline-block">Mo. 7415491034, 7771030773</span>
+                                    <span className="d-block d-md-inline-block">Mo. 7415491034</span>
                                 </p>
                                 <h4 className="mt-3 fw-bold text-uppercase text-theme">Admission Application Form</h4>
                             </div>
@@ -868,9 +868,9 @@ export default function AdmissionForm() {
                                 <span className="d-block d-md-inline-block">MIS CODE - PU23001071</span>
                             </p>
                             <p className="mb-0" style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>
-                                <span className="d-block d-md-inline-block">Email: sunshineitiseoni@gmail.com</span>
+                                <span className="d-block d-md-inline-block">Email: sunshineiti8@gmail.com</span>
                                 <span className="d-none d-md-inline-block">&nbsp;|&nbsp;</span>
-                                <span className="d-block d-md-inline-block">Mo. 7415491034, 7771030773</span>
+                                <span className="d-block d-md-inline-block">Mo. 7415491034</span>
                             </p>
                             <div className="mt-4">
                                 <span className="shadow" style={{
