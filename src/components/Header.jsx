@@ -6,7 +6,7 @@ export default function Header({ t }) {
     <header className="main-header">
       <div className="container header-content">
         <div className="header-left">
-          <div className="logo-circle">SITI</div>
+          <img src="/logo.jpg" alt="Sunshine ITI Logo" className="logo-circle" style={{ objectFit: 'cover' }} />
           <div className="title-section">
             <h1>{t.title}</h1>
             <p>{t.tagline}</p>
