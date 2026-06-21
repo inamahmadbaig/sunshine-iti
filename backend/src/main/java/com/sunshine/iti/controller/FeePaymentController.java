@@ -83,7 +83,7 @@ public class FeePaymentController {
             fee.setAmount(amount);
             fee.setPaymentMethod(paymentMethod);
             fee.setTransactionId(transactionId != null ? transactionId : "");
-            fee.setPaymentDate(LocalDate.parse(paymentDateStr).atStartOfDay());
+            fee.setPaymentDate(parseDate(paymentDateStr).atStartOfDay());
             fee.setStatus("PENDING");
 
             if (receipt != null && !receipt.isEmpty()) {
@@ -122,7 +122,7 @@ public class FeePaymentController {
             fee.setAmount(amount);
             fee.setPaymentMethod(paymentMethod);
             fee.setTransactionId(transactionId != null ? transactionId : "");
-            fee.setPaymentDate(LocalDate.parse(paymentDateStr).atStartOfDay());
+            fee.setPaymentDate(parseDate(paymentDateStr).atStartOfDay());
             fee.setRemarks(remarks);
             fee.setStatus("APPROVED"); // Directly approved
 
@@ -230,5 +230,29 @@ public class FeePaymentController {
         }
         
         return ResponseEntity.ok(feePaymentRepository.save(fee));
+    }
+
+    private LocalDate parseDate(String dateStr) {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(dateStr); // Try yyyy-MM-dd first
+        } catch (Exception e) {
+            try {
+                // Try dd/MM/yyyy or d/M/yyyy
+                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[dd][d]/[MM][M]/yyyy");
+                return LocalDate.parse(dateStr, formatter);
+            } catch (Exception ex) {
+                try {
+                    // Try MM/dd/yyyy
+                    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[MM][M]/[dd][d]/yyyy");
+                    return LocalDate.parse(dateStr, formatter);
+                } catch (Exception ex2) {
+                    System.err.println("Failed to parse date: " + dateStr + ", using current date instead.");
+                    return LocalDate.now();
+                }
+            }
+        }
     }
 }

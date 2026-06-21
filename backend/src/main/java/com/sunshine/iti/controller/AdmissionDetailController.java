@@ -58,7 +58,7 @@ public class AdmissionDetailController {
         
         LocalDate dob;
         try {
-            dob = LocalDate.parse(dobStr);
+            dob = parseDate(dobStr);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", "Invalid date format. Use YYYY-MM-DD"));
         }
@@ -93,7 +93,7 @@ public class AdmissionDetailController {
         detail.setSamagraId(dto.getSamagraId());
         
         if (dto.getDob() != null && !dto.getDob().isEmpty()) {
-            detail.setDob(LocalDate.parse(dto.getDob()));
+            detail.setDob(parseDate(dto.getDob()));
         }
         
         detail.setCategory(dto.getCategory());
@@ -140,7 +140,7 @@ public class AdmissionDetailController {
         }
         detail.setAmountPaid(paidVal);
         if (dto.getPaymentDate() != null && !dto.getPaymentDate().isEmpty()) {
-            detail.setPaymentDate(LocalDate.parse(dto.getPaymentDate()));
+            detail.setPaymentDate(parseDate(dto.getPaymentDate()));
         } else {
             detail.setPaymentDate(LocalDate.now());
         }
@@ -365,7 +365,7 @@ public class AdmissionDetailController {
             if (dto.getMotherName() != null) existing.setMotherName(dto.getMotherName());
             if (dto.getAadharNo() != null) existing.setAadharNo(dto.getAadharNo());
             if (dto.getSamagraId() != null) existing.setSamagraId(dto.getSamagraId());
-            if (dto.getDob() != null && !dto.getDob().isEmpty()) existing.setDob(LocalDate.parse(dto.getDob()));
+            if (dto.getDob() != null && !dto.getDob().isEmpty()) existing.setDob(parseDate(dto.getDob()));
             if (dto.getCategory() != null) existing.setCategory(dto.getCategory());
             if (dto.getGender() != null) existing.setGender(dto.getGender());
             if (dto.getReligion() != null) existing.setReligion(dto.getReligion());
@@ -550,6 +550,30 @@ public class AdmissionDetailController {
             return ResponseEntity.ok(Map.of("message", "Application deleted successfully"));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Application not found"));
+    }
+
+    private LocalDate parseDate(String dateStr) {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(dateStr); // Try yyyy-MM-dd first
+        } catch (Exception e) {
+            try {
+                // Try dd/MM/yyyy or d/M/yyyy
+                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[dd][d]/[MM][M]/yyyy");
+                return LocalDate.parse(dateStr, formatter);
+            } catch (Exception ex) {
+                try {
+                    // Try MM/dd/yyyy
+                    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[MM][M]/[dd][d]/yyyy");
+                    return LocalDate.parse(dateStr, formatter);
+                } catch (Exception ex2) {
+                    System.err.println("Failed to parse date: " + dateStr + ", using current date instead.");
+                    return LocalDate.now();
+                }
+            }
+        }
     }
 }
 
