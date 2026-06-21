@@ -47,7 +47,7 @@ public class EmailHelper {
         
         java.util.Map<String, String> sender = new java.util.HashMap<>();
         sender.put("name", "Sunshine ITI");
-        sender.put("email", "inamahmadbaig@gmail.com");
+        sender.put("email", "sunshineiti8@gmail.com");
         payload.put("sender", sender);
         
         java.util.List<java.util.Map<String, String>> toList = new java.util.ArrayList<>();
@@ -277,12 +277,12 @@ public class EmailHelper {
         
         java.util.Map<String, String> sender = new java.util.HashMap<>();
         sender.put("name", "Sunshine ITI");
-        sender.put("email", "inamahmadbaig@gmail.com");
+        sender.put("email", "sunshineiti8@gmail.com");
         payload.put("sender", sender);
         
         java.util.List<java.util.Map<String, String>> toList = new java.util.ArrayList<>();
         java.util.Map<String, String> toUser = new java.util.HashMap<>();
-        toUser.put("email", "inamahmadbaig@gmail.com");
+        toUser.put("email", "sunshineiti8@gmail.com");
         toUser.put("name", "Sunshine ITI");
         toList.add(toUser);
         payload.put("to", toList);
