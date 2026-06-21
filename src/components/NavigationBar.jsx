@@ -65,9 +65,39 @@ export default function NavigationBar({ t, setShowApplyModal }) {
               </li>
             );
           })}
+          {/* Mobile action buttons inside dropdown */}
+          <li className="nav-action-mobile">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <NavLink
+                to="/pay-fee"
+                className="btn w-100"
+                style={{ backgroundColor: '#10b981', color: 'white', display: 'flex', justifyContent: 'center' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Pay Fee
+              </NavLink>
+              <NavLink
+                to="/student-login"
+                className="btn w-100"
+                style={{ backgroundColor: '#3b82f6', color: 'white', display: 'flex', justifyContent: 'center' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Student Login
+              </NavLink>
+              <NavLink
+                to="/apply"
+                className="btn btn-primary w-100"
+                style={{ display: 'flex', justifyContent: 'center' }}
+                onClick={handleApply}
+              >
+                {t.applyNow}
+              </NavLink>
+            </div>
+          </li>
         </ul>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
+        {/* Desktop action buttons */}
+        <div className="nav-action-desktop">
           <NavLink
             to="/pay-fee"
             className="btn nav-apply-btn"

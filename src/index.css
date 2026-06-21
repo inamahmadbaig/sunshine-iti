@@ -2738,4 +2738,66 @@ input[type="number"] {
   -moz-appearance: textfield !important;
 }
 
+/* Navigation Action Buttons Group Responsive */
+.nav-action-desktop {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-action-mobile {
+  display: none;
+  padding: 1.2rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Student Corner Layout Responsive */
+.student-corner-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Student Material List Row Responsive */
+.student-material-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  transition: box-shadow 0.2s;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .nav-action-desktop {
+    display: none !important;
+  }
+  
+  .nav-action-mobile {
+    display: block;
+  }
+  
+  .student-corner-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .student-material-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+  
+  .student-material-row a {
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
+
+
 

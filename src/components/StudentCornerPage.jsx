@@ -131,7 +131,7 @@ export default function StudentCornerPage({ baseFontSize, setBaseFontSize, notic
         </div>
 
         {/* Sidebar Tabs + Content */}
-        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: '2rem', alignItems: 'start' }}>
+        <div className="student-corner-layout">
 
           {/* Left: Navigation Tabs */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -204,12 +204,7 @@ export default function StudentCornerPage({ baseFontSize, setBaseFontSize, notic
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                         {files.map(m => (
                           <div key={m.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '0.8rem' }}>
-                            <div style={{
-                              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                              padding: '0.9rem 1.2rem', borderRadius: '10px',
-                              border: '1px solid #e2e8f0', backgroundColor: '#f8fafc',
-                              transition: 'box-shadow 0.2s',
-                            }}>
+                            <div className="student-material-row">
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                 <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundColor: section.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                   <FileText size={18} style={{ color: section.color }} />
