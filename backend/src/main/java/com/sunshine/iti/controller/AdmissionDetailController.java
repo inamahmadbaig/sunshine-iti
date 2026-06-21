@@ -543,6 +543,20 @@ public class AdmissionDetailController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Application not found"));
     }
 
+    @GetMapping("/test-email-direct")
+    public ResponseEntity<?> testEmailDirect(@RequestParam String to) {
+        try {
+            emailHelper.sendTestEmailDirect(to);
+            return ResponseEntity.ok(Map.of("message", "Email sent successfully to " + to));
+        } catch (Exception e) {
+            java.io.StringWriter sw = new java.io.StringWriter();
+            java.io.PrintWriter pw = new java.io.PrintWriter(sw);
+            e.printStackTrace(pw);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", e.getMessage(), "stackTrace", sw.toString()));
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdmission(@PathVariable Long id) {
         if (admissionDetailRepository.existsById(id)) {

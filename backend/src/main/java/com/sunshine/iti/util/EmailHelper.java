@@ -63,6 +63,16 @@ public class EmailHelper {
         }
     }
 
+    public void sendTestEmailDirect(String to) throws Exception {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom("sunshineiti8@gmail.com");
+        helper.setTo(to);
+        helper.setSubject("Sunshine ITI - Test Email Connection");
+        helper.setText("This is a direct SMTP connection test from the deployed Sunshine ITI server.", false);
+        mailSender.send(message);
+    }
+ 
     public void sendApprovalEmail(AdmissionDetail student) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
