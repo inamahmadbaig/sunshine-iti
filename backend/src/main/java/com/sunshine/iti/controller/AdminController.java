@@ -40,6 +40,9 @@ public class AdminController {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private com.sunshine.iti.util.EmailHelper emailHelper;
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody AdminUser user) {
         if (adminUserRepository.findFirstByUsername(user.getUsername()).isPresent()) {
@@ -80,16 +83,10 @@ public class AdminController {
         otpVerificationRepository.save(verification);
 
         // Send Email
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("sunshineiti8@gmail.com");
-        message.setTo(email);
-        message.setSubject("Sunshine ITI Portal - Admin Password Reset OTP");
-        message.setText("Dear Admin,\n\nYour OTP for password reset is: " + otp + "\n\nThis OTP is valid for 5 minutes.\n\nRegards,\nSunshine ITI College");
-
         try {
-            mailSender.send(message);
+            emailHelper.sendOtpEmail(email, otp);
         } catch (Exception e) {
-            System.err.println("SMTP Mail sending failed: " + e.getMessage());
+            System.err.println("Mail sending failed: " + e.getMessage());
             System.out.println("DEBUG OTP GENERATION ALERT: OTP is " + otp);
         }
 

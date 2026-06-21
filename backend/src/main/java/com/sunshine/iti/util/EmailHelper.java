@@ -22,19 +22,69 @@ public class EmailHelper {
 
     private final JavaMailSender mailSender;
 
+    @org.springframework.beans.factory.annotation.Value("${brevo.api.key}")
+    private String brevoApiKey;
+
     public EmailHelper(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
+    private void sendBrevoEmail(String recipientEmail, String recipientName, String subject, String htmlContent, String attachmentName, byte[] attachmentBytes) {
+        try {
+            java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+            
+            java.util.Map<String, Object> payload = new java.util.HashMap<>();
+            payload.put("subject", subject);
+            payload.put("htmlContent", htmlContent);
+            
+            java.util.Map<String, String> sender = new java.util.HashMap<>();
+            sender.put("name", "Sunshine ITI");
+            sender.put("email", "sunshineiti8@gmail.com");
+            payload.put("sender", sender);
+            
+            java.util.List<java.util.Map<String, String>> toList = new java.util.ArrayList<>();
+            java.util.Map<String, String> toUser = new java.util.HashMap<>();
+            toUser.put("email", recipientEmail);
+            toUser.put("name", recipientName);
+            toList.add(toUser);
+            payload.put("to", toList);
+            
+            if (attachmentBytes != null && attachmentName != null) {
+                java.util.List<java.util.Map<String, String>> attachments = new java.util.ArrayList<>();
+                java.util.Map<String, String> att = new java.util.HashMap<>();
+                att.put("name", attachmentName);
+                att.put("content", java.util.Base64.getEncoder().encodeToString(attachmentBytes));
+                attachments.add(att);
+                payload.put("attachment", attachments);
+            }
+            
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            String jsonBody = mapper.writeValueAsString(payload);
+            
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                    .uri(java.net.URI.create("https://api.brevo.com/v3/smtp/email"))
+                    .header("api-key", brevoApiKey)
+                    .header("content-type", "application/json")
+                    .header("accept", "application/json")
+                    .POST(java.net.http.HttpRequest.BodyPublishers.ofString(jsonBody, java.nio.charset.StandardCharsets.UTF_8))
+                    .build();
+                    
+            java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+            
+            if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                System.out.println("Email sent successfully via Brevo: " + response.body());
+            } else {
+                System.err.println("Failed to send email via Brevo. Status: " + response.statusCode() + ", Response: " + response.body());
+                throw new RuntimeException("Brevo API error: " + response.body());
+            }
+        } catch (Exception e) {
+            System.err.println("Exception in sendBrevoEmail: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     public void sendPendingEmail(AdmissionDetail student) {
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            
-            helper.setFrom("sunshineiti8@gmail.com");
-            helper.setTo(student.getEmail());
-            helper.setSubject("Admission Application Received - Pending Verification");
-            
             String htmlContent = "<html><body>" +
                     "<h2>Dear " + student.getFullName() + ",</h2>" +
                     "<p>Thank you for submitting your admission form at <strong>Sunshine Pvt. ITI College, Seoni</strong>.</p>" +
@@ -55,33 +105,53 @@ public class EmailHelper {
                     "<br><p>Best Regards,</p>" +
                     "<p><strong>Sunshine Pvt. ITI</strong><br>Seoni, Madhya Pradesh<br>Contact: +91-7415491034</p>" +
                     "</body></html>";
-                    
-            helper.setText(htmlContent, true);
-            mailSender.send(message);
+            
+            sendBrevoEmail(
+                student.getEmail(),
+                student.getFullName(),
+                "Admission Application Received - Pending Verification",
+                htmlContent,
+                null,
+                null
+            );
         } catch (Exception e) {
             System.err.println("Failed to send pending email: " + e.getMessage());
         }
     }
 
     public void sendTestEmailDirect(String to) throws Exception {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setFrom("sunshineiti8@gmail.com");
-        helper.setTo(to);
-        helper.setSubject("Sunshine ITI - Test Email Connection");
-        helper.setText("This is a direct SMTP connection test from the deployed Sunshine ITI server.", false);
-        mailSender.send(message);
+        sendBrevoEmail(
+            to,
+            "Sunshine ITI Test User",
+            "Sunshine ITI - Test Email Connection",
+            "<p>This is a direct HTTP API connection test from the deployed Sunshine ITI server using Brevo.</p>",
+            null,
+            null
+        );
     }
- 
+
+    public void sendOtpEmail(String toEmail, String otp) {
+        try {
+            String htmlContent = "<p>Dear Admin,</p>" +
+                    "<p>Your OTP for password reset is: <strong>" + otp + "</strong></p>" +
+                    "<p>This OTP is valid for 5 minutes.</p>" +
+                    "<br><p>Regards,<br>Sunshine ITI College</p>";
+            
+            sendBrevoEmail(
+                toEmail,
+                "Admin User",
+                "Sunshine ITI Portal - Admin Password Reset OTP",
+                htmlContent,
+                null,
+                null
+            );
+        } catch (Exception e) {
+            System.err.println("Failed to send OTP email: " + e.getMessage());
+        }
+    }
+
     public void sendApprovalEmail(AdmissionDetail student) {
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            
-            helper.setFrom("sunshineiti8@gmail.com");
-            helper.setTo(student.getEmail());
-            helper.setSubject("Sunshine ITI - Admission Confirmed & Fee Receipt");
-            
             String htmlContent = "<html><body>" +
                     "<h2>Dear " + student.getFullName() + ",</h2>" +
                     "<p>Congratulations! Your admission to the <strong>" + student.getTrade() + "</strong> trade at <strong>Sunshine Pvt. ITI College, Seoni</strong> has been verified and <strong>APPROVED</strong>.</p>" +
@@ -107,14 +177,17 @@ public class EmailHelper {
                     "<br><p>Best Regards,</p>" +
                     "<p><strong>Sunshine Pvt. ITI</strong><br>Seoni, Madhya Pradesh<br>Contact: +91-7415491034</p>" +
                     "</body></html>";
-                    
-            helper.setText(htmlContent, true);
             
-            // Generate PDF Receipt
             byte[] pdfBytes = generateReceiptPdf(student);
-            helper.addAttachment("Fee_Receipt_" + student.getId() + ".pdf", new ByteArrayResource(pdfBytes));
             
-            mailSender.send(message);
+            sendBrevoEmail(
+                student.getEmail(),
+                student.getFullName(),
+                "Sunshine ITI - Admission Confirmed & Fee Receipt",
+                htmlContent,
+                "Fee_Receipt_" + student.getId() + ".pdf",
+                pdfBytes
+            );
         } catch (Exception e) {
             System.err.println("Failed to send approval email: " + e.getMessage());
         }
