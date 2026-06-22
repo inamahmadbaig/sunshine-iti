@@ -18,13 +18,13 @@ const policiesData = {
     contentEn: (
       <div>
         <h3>1. Acceptance of Terms</h3>
-        <p>By accessing and using the Sunshine Pvt. ITI portal, you agree to comply with and be bound by these Terms of Use. If you do not agree, please refrain from using the website.</p>
+        <p>By accessing and using the SUNSHINE portal, you agree to comply with and be bound by these Terms of Use. If you do not agree, please refrain from using the website.</p>
         <h3>2. Educational Content</h3>
         <p>All information, syllabus outlines, fee structures, and notifications displayed on this website are for general guidance and informational purposes only. The college management reserves the right to modify admission criteria and course structures without prior notice.</p>
         <h3>3. User Conduct</h3>
         <p>You agree to use this portal only for lawful purposes related to admissions, training inquiries, and academic updates. Any unauthorized modification of database records or network disruption is strictly prohibited.</p>
         <h3>4. Intellectual Property</h3>
-        <p>The logo, design assets, and content of this website are the property of Sunshine Pvt. ITI and may not be reproduced, copied, or modified without prior written consent.</p>
+        <p>The logo, design assets, and content of this website are the property of SUNSHINE and may not be reproduced, copied, or modified without prior written consent.</p>
       </div>
     ),
     contentHn: (
@@ -76,7 +76,7 @@ const policiesData = {
     contentEn: (
       <div>
         <h3>1. Links to External Websites</h3>
-        <p>This portal features quick links to external national and state portals (like NCVT MIS, DGET, MP Skills). These links are provided solely for the convenience of candidates. Sunshine Pvt. ITI is not responsible for the content, availability, or privacy practices of those linked external resources.</p>
+        <p>This portal features quick links to external national and state portals (like NCVT MIS, DGET, MP Skills). These links are provided solely for the convenience of candidates. SUNSHINE is not responsible for the content, availability, or privacy practices of those linked external resources.</p>
         <h3>2. Permission for Hyperlinks</h3>
         <p>Prior permission is not required to link directly to the home page of this portal. However, framing our pages or displaying our content inside external frames is not permitted without explicit written authorization.</p>
       </div>
@@ -122,7 +122,7 @@ const policiesData = {
     contentEn: (
       <div>
         <h3>1. Commitment to Accessibility</h3>
-        <p>Sunshine Pvt. ITI is committed to ensuring that its web portal is accessible to all individuals, including users with visual, hearing, cognitive, or physical disabilities.</p>
+        <p>SUNSHINE is committed to ensuring that its web portal is accessible to all individuals, including users with visual, hearing, cognitive, or physical disabilities.</p>
         <h3>2. Key Features</h3>
         <p>To assist users, we have integrated standard font resizing tools in our Top Bar (+ / - / A) to dynamically modify text sizes for optimal legibility.</p>
         <p>Our website layout is fully responsive, resizing content layouts dynamically to fit mobile devices, tablets, and desktop displays comfortably.</p>
@@ -190,7 +190,7 @@ export default function PolicyPage({
           <p>
             {isHindi 
               ? 'सनशाइन प्राइवेट आईटीआई कॉलेज की आधिकारिक नीति विवरण।' 
-              : 'Official policy statement of Sunshine Pvt. ITI College.'
+              : 'Official policy statement of SUNSHINE.'
             }
           </p>
         </div>

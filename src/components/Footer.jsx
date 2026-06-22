@@ -128,7 +128,7 @@ export default function Footer({ t }) {
             {/* Google Map Embedded */}
             <div className="map-wrapper">
               <iframe
-                title="Sunshine ITI College Location"
+                title="Sunshine Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3728.905!2d79.555284!3d22.096317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a27e9b0ec3f4a67%3A0x5b2a3d4e6f7c8d9e!2sKuldevi%20Marhai%20Mata%20Mandir%2C%20Barapatthar%2C%20Seoni%2C%20Madhya%20Pradesh%20480661!5e0!3m2!1sen!2sin!4v1718462000000!5m2!1sen!2sin"
                 allowFullScreen=""
                 loading="lazy"
@@ -145,7 +145,7 @@ export default function Footer({ t }) {
                   <MapPin size={18} />
                 </div>
                 <div className="contact-card-address">
-                  <h5>Sunshine ITI College</h5>
+                  <h5>Sunshine</h5>
                   <p>Kuldevi Marhai Mata Mandir, Barapatthar,<br />Seoni, Madhya Pradesh - 480661</p>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function Footer({ t }) {
       {/* Bottom Copyright Bar */}
       <div className="bottom-bar">
         <div className="container bottom-bar-content">
-          <div>© 2026 Sunshine ITI College. All Rights Reserved.</div>
+          <div>© 2026 Sunshine. All Rights Reserved.</div>
           <div>
             Designed &amp; Developed by{' '}
             <span style={{ color: '#f97316', fontWeight: 700 }}>Sunshine IT Team &amp; Inam Ahmad Baig</span>

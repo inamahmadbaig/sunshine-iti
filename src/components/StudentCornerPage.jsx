@@ -38,9 +38,9 @@ const translateTitle = (title, isHindi) => {
     "HSI Workshop Calculation Paper 2024": "स्वास्थ्य स्वच्छता निरीक्षक वर्कशॉप कैलकुलेशन पेपर 2024",
     "MP Post Matric Scholarship Form": "मध्य प्रदेश पोस्ट मैट्रिक छात्रवृत्ति फॉर्म",
     "National Scholarship Portal (NSP) Manual": "राष्ट्रीय छात्रवृत्ति पोर्टल (NSP) नियमावली",
-    "Academic Calendar 2026-27 (Sunshine ITI)": "शैक्षणिक कैलेंडर 2026-27 (सनशाइन आईटीआई)",
+    "Academic Calendar 2026-27 (Sunshine)": "शैक्षणिक कैलेंडर 2026-27 (सनशाइन आईटीआई)",
     "Examination & Practical Training Schedule 2026": "परीक्षा और व्यावहारिक प्रशिक्षण समय सारणी 2026",
-    "Sunshine ITI Code of Conduct & Rules": "सनशाइन आईटीआई आचार संहिता और नियम",
+    "Sunshine Code of Conduct & Rules": "सनशाइन आईटीआई आचार संहिता और नियम",
     "Anti-Ragging Affidavits & Guidelines": "एंटी-रैगिंग शपथ पत्र और दिशानिर्देश"
   };
   return translations[title] || title;
@@ -127,7 +127,7 @@ export default function StudentCornerPage({ baseFontSize, setBaseFontSize, notic
             <IconComponent size={28} style={{ color: '#fff' }} />
           </div>
           <h2>{isHindi ? section.titleHn : section.titleEn}</h2>
-          <p>{isHindi ? 'सनशाइन आईटीआई कॉलेज के छात्रों के लिए आवश्यक शैक्षणिक सामग्री।' : 'Important academic resources for Sunshine ITI College students.'}</p>
+          <p>{isHindi ? 'सनशाइन आईटीआई कॉलेज के छात्रों के लिए आवश्यक शैक्षणिक सामग्री।' : 'Important academic resources for Sunshine students.'}</p>
         </div>
 
         {/* Sidebar Tabs + Content */}

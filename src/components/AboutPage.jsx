@@ -56,7 +56,7 @@ export default function AboutPage({
           <p>
             {isHindi 
               ? 'सनशाइन प्राइवेट आईटीआई, सिवनी (म.प्र.) - तकनीकी शिक्षा और कौशल विकास का एक अग्रणी केंद्र।' 
-              : 'Sunshine Pvt. ITI, Seoni (M.P.) - A premier center for technical education and vocational skill development.'
+              : 'SUNSHINE, Seoni (M.P.) - A premier center for technical education and vocational skill development.'
             }
           </p>
         </div>

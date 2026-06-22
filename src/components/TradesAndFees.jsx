@@ -200,8 +200,8 @@ export default function TradesAndFees({ t, lang }) {
           </div>
           <h2>{isHindi ? 'हमारे ट्रेड एवं शुल्क विवरण' : 'Our Trades & Fee Structure'}</h2>
           <p>{isHindi 
-            ? 'Sunshine ITI College में उपलब्ध सभी ट्रेड, उनकी फीस, पात्रता और विस्तृत पाठ्यक्रम की जानकारी नीचे दी गई है।' 
-            : 'Explore all trades offered at Sunshine ITI College with detailed fee structure, eligibility criteria, and comprehensive syllabus.'
+            ? 'Sunshine में उपलब्ध सभी ट्रेड, उनकी फीस, पात्रता और विस्तृत पाठ्यक्रम की जानकारी नीचे दी गई है।' 
+            : 'Explore all trades offered at Sunshine with detailed fee structure, eligibility criteria, and comprehensive syllabus.'
           }</p>
         </div>
 

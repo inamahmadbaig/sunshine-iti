@@ -105,7 +105,7 @@ export default function PlacementsPage({
               <p style={{ lineHeight: '1.7', color: '#4b5563', fontSize: '0.98rem', marginBottom: '1rem' }}>
                 {isHindi
                   ? 'सनशाइन प्राइवेट आईटीआई में एक सक्रिय और समर्पित प्लेसमेंट सेल है जो छात्रों को औद्योगिक आवश्यकताओं के अनुरूप प्रशिक्षित करने और देश की प्रतिष्ठित कंपनियों में नौकरी दिलाने के लिए काम करता है।'
-                  : 'At Sunshine Pvt. ITI, our highly proactive Training and Placement Cell bridges the gap between academics and industry, facilitating lucrative job placements for our trainees.'
+                  : 'At SUNSHINE, our highly proactive Training and Placement Cell bridges the gap between academics and industry, facilitating lucrative job placements for our trainees.'
                 }
               </p>
               <p style={{ lineHeight: '1.7', color: '#4b5563', fontSize: '0.98rem' }}>

@@ -64,7 +64,7 @@ export default function Login() {
           </div>
           <h2>Admin Login</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-            Sunshine ITI College Administration Portal
+            Sunshine Administration Portal
           </p>
         </div>
 

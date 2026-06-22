@@ -488,7 +488,7 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
         <body onload="window.print()">
           <div class="receipt-border">
             <div class="receipt-header text-center">
-              <h2 class="college-title mb-1">SUNSHINE PVT. ITI COLLEGE</h2>
+              <h2 class="college-title mb-1">SUNSHINE</h2>
               <h5 class="text-danger mb-2">SEONI (M.P.)</h5>
               <p class="mb-0 text-muted small">AFFILIATION -DGT-12/1/18-TC | MIS CODE - PU23001071</p>
               <h4 class="receipt-title text-uppercase">Official Fee Receipt</h4>
@@ -698,7 +698,7 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
   };
 
   const handleWhatsApp = (student) => {
-    let message = `Hello ${student.fullName},\nThis is Sunshine ITI College.\nYour application for the ${student.trade} trade is currently ${student.status}.\n`;
+    let message = `Hello ${student.fullName},\nThis is Sunshine.\nYour application for the ${student.trade} trade is currently ${student.status}.\n`;
     if (student.status === 'APPROVED') {
       message += `Your admission is approved! Please login to the Student Portal (Application No: ITI/2026/${student.id}) using your DOB as password.\nOutstanding Balance: ₹${student.outstandingBalance || 0}\nThank you!`;
     }
@@ -2342,7 +2342,7 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
               <Shield size={20} />
             </div>
             <div>
-              <h3>Sunshine ITI</h3>
+              <h3>Sunshine</h3>
               <span>Admin Panel</span>
             </div>
           </div>

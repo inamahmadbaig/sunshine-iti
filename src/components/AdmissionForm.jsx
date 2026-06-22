@@ -773,7 +773,7 @@ export default function AdmissionForm() {
                         </div>
                         <div className="card-body p-4 p-md-5 bg-white">
                             <div className="text-center mb-4 pb-3" style={{ borderBottom: '2px dashed #003366' }}>
-                                <h1 className="fw-bold mb-1 text-theme">SUNSHINE PVT. ITI</h1>
+                                <h1 className="fw-bold mb-1 text-theme">SUNSHINE</h1>
                                 <h5 className="fw-semibold mb-2 text-danger">SEONI (M.P.)</h5>
                                 <p className="mb-1 small fw-bold text-muted">
                                     <span className="d-block d-md-inline-block">AFFILIATION -DGT-12/1/18-TC</span>
@@ -860,7 +860,7 @@ export default function AdmissionForm() {
                 ) : (
                     <div className="card custom-card">
                         <div className="card-header text-center bg-theme p-4 p-md-5" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                            <h1 className="fw-bold mb-1" style={{ color: '#ffc107', letterSpacing: '2px', fontSize: '42px' }}>SUNSHINE PVT. ITI</h1>
+                            <h1 className="fw-bold mb-1" style={{ color: '#ffc107', letterSpacing: '2px', fontSize: '42px' }}>SUNSHINE</h1>
                             <h3 className="fw-bold mb-3" style={{ color: '#fff', fontSize: '26px' }}>SEONI (M.P.)</h3>
                             <p className="mb-1" style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>
                                 <span className="d-block d-md-inline-block">AFFILIATION -DGT-12/1/18-TC</span>
