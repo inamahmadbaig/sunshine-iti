@@ -2747,7 +2747,7 @@ input[type="number"] {
 .nav-action-mobile {
   display: none;
   padding: 1.2rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Student Corner Layout Responsive */
@@ -2796,6 +2796,44 @@ input[type="number"] {
   .student-material-row a {
     text-align: center !important;
     justify-content: center !important;
+  }
+}
+
+/* Mobile Highlight Bar (Always visible buttons on mobile) */
+.mobile-highlight-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-highlight-bar {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-highlight-btn {
+    flex: 1;
+    color: white !important;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 4px;
+    border-radius: 6px;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  
+  .mobile-highlight-btn:active {
+    transform: scale(0.96);
   }
 }
 

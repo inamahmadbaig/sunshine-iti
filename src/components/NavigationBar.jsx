@@ -69,31 +69,6 @@ export default function NavigationBar({ t, setShowApplyModal }) {
           <li className="nav-action-mobile">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <NavLink
-                to="/pay-fee"
-                className="btn w-100"
-                style={{ backgroundColor: '#10b981', color: 'white', display: 'flex', justifyContent: 'center' }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Pay Fee
-              </NavLink>
-              <NavLink
-                to="/student-login"
-                className="btn w-100"
-                style={{ backgroundColor: '#3b82f6', color: 'white', display: 'flex', justifyContent: 'center' }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Student Login
-              </NavLink>
-              <NavLink
-                to="/apply"
-                className="btn btn-primary w-100"
-                style={{ display: 'flex', justifyContent: 'center' }}
-                onClick={handleApply}
-              >
-                {t.applyNow}
-              </NavLink>
-            </div>
-          </li>
         </ul>
 
         {/* Desktop action buttons */}
@@ -122,6 +97,19 @@ export default function NavigationBar({ t, setShowApplyModal }) {
             {t.applyNow}
           </NavLink>
         </div>
+      </div>
+      
+      {/* Highlighted Mobile Action Bar - Visible without clicking 3 dots */}
+      <div className="mobile-highlight-bar">
+        <NavLink to="/pay-fee" className="mobile-highlight-btn" style={{backgroundColor: '#10b981'}}>
+          Pay Fee
+        </NavLink>
+        <NavLink to="/student-login" className="mobile-highlight-btn" style={{backgroundColor: '#3b82f6'}}>
+          Student Login
+        </NavLink>
+        <button onClick={handleApply} className="mobile-highlight-btn" style={{backgroundColor: '#f97316', border: 'none', cursor: 'pointer', fontFamily: 'inherit'}}>
+          {t.applyNow}
+        </button>
       </div>
     </nav>
   );
