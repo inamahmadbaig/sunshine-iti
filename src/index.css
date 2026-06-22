@@ -1756,6 +1756,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
+  .top-bar {
+    display: none;
+  }
+  
   .top-bar-content {
     flex-direction: column;
     gap: 0.5rem;
