@@ -92,6 +92,14 @@ export default function NavigationBar({ t, setShowApplyModal }) {
               >
                 {t.applyNow}
               </NavLink>
+              <NavLink
+                to={localStorage.getItem("adminUser") ? "/admin/dashboard" : "/admin/login"}
+                className="btn w-100"
+                style={{ backgroundColor: '#4f46e5', color: 'white', display: 'flex', justifyContent: 'center' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t.admin}
+              </NavLink>
             </div>
           </li>
         </ul>
@@ -127,14 +135,17 @@ export default function NavigationBar({ t, setShowApplyModal }) {
       {/* Highlighted Mobile Action Bar - Visible without clicking 3 dots */}
       <div className="mobile-highlight-bar">
         <NavLink to="/pay-fee" className="mobile-highlight-btn" style={{backgroundColor: '#10b981'}}>
-          Pay Fee
+          Fee
         </NavLink>
         <NavLink to="/student-login" className="mobile-highlight-btn" style={{backgroundColor: '#3b82f6'}}>
-          Student Login
+          Student
         </NavLink>
         <button onClick={handleApply} className="mobile-highlight-btn" style={{backgroundColor: '#f97316', border: 'none', cursor: 'pointer', fontFamily: 'inherit'}}>
-          {t.applyNow}
+          Apply
         </button>
+        <NavLink to={localStorage.getItem("adminUser") ? "/admin/dashboard" : "/admin/login"} className="mobile-highlight-btn" style={{backgroundColor: '#4f46e5'}}>
+          Admin
+        </NavLink>
       </div>
     </nav>
   );

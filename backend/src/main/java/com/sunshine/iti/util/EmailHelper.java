@@ -88,23 +88,23 @@ public class EmailHelper {
     }
 
     public void sendPendingEmail(AdmissionDetail student) throws Exception {
-        String htmlContent = "<html><body>" +
-                "<h2>Dear " + student.getFullName() + ",</h2>" +
+        String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                "<h2 style='color: #2563eb;'>Dear " + student.getFullName() + ",</h2>" +
                 "<p>Thank you for submitting your admission form at <strong>Sunshine Pvt. ITI College, Seoni</strong>.</p>" +
-                "<p>Your application has been received and is currently <strong>PENDING VERIFICATION</strong> by the college administration.</p>" +
+                "<p>Your application and initial payment details have been received. It is currently <strong style='color: #ca8a04; background-color: #fef08a; padding: 2px 6px; border-radius: 4px;'>UNDER PROCESS</strong> by the college administration.</p>" +
                 "<h3>Application & Payment Summary:</h3>" +
-                "<table border='1' cellpadding='8' style='border-collapse: collapse;'>" +
-                "<tr><td><strong>Application Number (ID):</strong></td><td style='font-size: 16px; color: #2563eb;'><strong>ITI/2026/" + student.getId() + "</strong></td></tr>" +
+                "<table border='1' cellpadding='8' style='border-collapse: collapse; width: 100%; border-color: #e2e8f0;'>" +
+                "<tr style='background-color: #f8fafc;'><td><strong>Application Number (ID):</strong></td><td style='font-size: 16px; color: #2563eb;'><strong>ITI/2026/" + student.getId() + "</strong></td></tr>" +
                 "<tr><td><strong>Trade Applied:</strong></td><td>" + student.getTrade() + "</td></tr>" +
-                "<tr><td><strong>Aadhar Number:</strong></td><td>" + student.getAadharNo() + "</td></tr>" +
+                "<tr style='background-color: #f8fafc;'><td><strong>Aadhar Number:</strong></td><td>" + student.getAadharNo() + "</td></tr>" +
                 "<tr><td><strong>Payment Method:</strong></td><td>" + student.getPaymentMethod() + "</td></tr>" +
-                "<tr><td><strong>Transaction ID / UTR:</strong></td><td>" + student.getTransactionId() + "</td></tr>" +
-                "<tr><td><strong>Amount Paid:</strong></td><td>₹ " + student.getAmountPaid() + "</td></tr>" +
-                "<tr><td><strong>Course Fee:</strong></td><td>₹ " + student.getCourseFee() + "</td></tr>" +
-                "<tr><td><strong>Remaining Pay:</strong></td><td>₹ " + student.getOutstandingBalance() + "</td></tr>" +
-                "<tr><td><strong>Application Status:</strong></td><td>PENDING</td></tr>" +
+                "<tr style='background-color: #f8fafc;'><td><strong>Transaction ID / UTR:</strong></td><td>" + student.getTransactionId() + "</td></tr>" +
+                "<tr><td><strong>Amount Paid:</strong></td><td style='color: #16a34a; font-weight: bold;'>₹ " + student.getAmountPaid() + "</td></tr>" +
+                "<tr style='background-color: #f8fafc;'><td><strong>Total Course Fee:</strong></td><td>₹ " + student.getCourseFee() + "</td></tr>" +
+                "<tr><td><strong>Remaining Pay:</strong></td><td style='color: #dc2626; font-weight: bold;'>₹ " + student.getOutstandingBalance() + "</td></tr>" +
+                "<tr style='background-color: #fef08a;'><td><strong>Application Status:</strong></td><td style='color: #ca8a04; font-weight: bold;'>UNDER PROCESS</td></tr>" +
                 "</table>" +
-                "<p>Once the admin verifies your details, documents, and payment, you will receive a confirmation email along with your fee receipt.</p>" +
+                "<p style='margin-top: 15px;'>Once the admin verifies your details, documents, and payment, you will receive a confirmation email along with your fee receipt.</p>" +
                 "<br><p>Best Regards,</p>" +
                 "<p><strong>Sunshine Pvt. ITI</strong><br>Seoni, Madhya Pradesh<br>Contact: +91-7415491034</p>" +
                 "</body></html>";
@@ -112,7 +112,7 @@ public class EmailHelper {
         sendBrevoEmail(
             student.getEmail(),
             student.getFullName(),
-            "Admission Application Received - Pending Verification",
+            "Admission Application Received - Under Process",
             htmlContent,
             null,
             null
@@ -136,26 +136,26 @@ public class EmailHelper {
     }
 
     public void sendApprovalEmail(AdmissionDetail student) throws Exception {
-        String htmlContent = "<html><body>" +
-                "<h2>Dear " + student.getFullName() + ",</h2>" +
-                "<p>Congratulations! Your admission to the <strong>" + student.getTrade() + "</strong> trade at <strong>Sunshine Pvt. ITI College, Seoni</strong> has been verified and <strong>APPROVED</strong>.</p>" +
+        String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                "<h2 style='color: #16a34a;'>Dear " + student.getFullName() + ",</h2>" +
+                "<p>Congratulations! Your admission to the <strong>" + student.getTrade() + "</strong> trade at <strong>Sunshine Pvt. ITI College, Seoni</strong> has been verified and <strong style='color: #16a34a; background-color: #dcfce7; padding: 2px 6px; border-radius: 4px;'>APPROVED</strong>.</p>" +
                 "<p>We have received your payment, and your admission is now finalized. Please find your official Fee Receipt attached as a PDF to this email.</p>" +
                 "<h3>Admission & Receipt Details:</h3>" +
-                "<table border='1' cellpadding='8' style='border-collapse: collapse;'>" +
-                "<tr><td><strong>Application Number (ID):</strong></td><td style='font-size: 16px; color: #2563eb;'><strong>ITI/2026/" + student.getId() + "</strong></td></tr>" +
+                "<table border='1' cellpadding='8' style='border-collapse: collapse; width: 100%; border-color: #e2e8f0;'>" +
+                "<tr style='background-color: #f8fafc;'><td><strong>Application Number (ID):</strong></td><td style='font-size: 16px; color: #2563eb;'><strong>ITI/2026/" + student.getId() + "</strong></td></tr>" +
                 "<tr><td><strong>Receipt Number:</strong></td><td>SUNSHINE/2026/" + student.getId() + "</td></tr>" +
-                "<tr><td><strong>Trade:</strong></td><td>" + student.getTrade() + "</td></tr>" +
+                "<tr style='background-color: #f8fafc;'><td><strong>Trade:</strong></td><td>" + student.getTrade() + "</td></tr>" +
                 "<tr><td><strong>Total Course Fee:</strong></td><td>₹ " + student.getCourseFee() + "</td></tr>" +
-                "<tr><td><strong>Amount Paid:</strong></td><td>₹ " + student.getAmountPaid() + "</td></tr>" +
-                "<tr><td><strong>Remaining Pay:</strong></td><td>₹ " + student.getOutstandingBalance() + "</td></tr>" +
-                "<tr><td><strong>Payment Status:</strong></td><td>COMPLETED</td></tr>" +
+                "<tr style='background-color: #f8fafc;'><td><strong>Amount Paid:</strong></td><td style='color: #16a34a; font-weight: bold;'>₹ " + student.getAmountPaid() + "</td></tr>" +
+                "<tr><td><strong>Remaining Pay:</strong></td><td style='color: #dc2626; font-weight: bold;'>₹ " + student.getOutstandingBalance() + "</td></tr>" +
+                "<tr style='background-color: #dcfce7;'><td><strong>Payment Status:</strong></td><td style='color: #16a34a; font-weight: bold;'>COMPLETED</td></tr>" +
                 "</table>" +
                 "<h3>Access Your Student Portal:</h3>" +
                 "<p>You can now log in to the Student Portal to check your fees, attendance, and exam results.</p>" +
-                "<ul>" +
-                "<li><strong>Portal Link:</strong> <a href='https://sunshineiti.com/student-login'>Click here to Login</a></li>" +
-                "<li><strong>Application Number:</strong> ITI/2026/" + student.getId() + " <em>(or just " + student.getId() + ")</em></li>" +
-                "<li><strong>Password:</strong> " + student.getDob() + " <em>(Your Date of Birth)</em></li>" +
+                "<ul style='background-color: #f1f5f9; padding: 15px 30px; border: 1px solid #cbd5e1; border-radius: 6px;'>" +
+                "<li><strong>Portal Link:</strong> <a href='https://sunshineiti.com/student-login' style='color: #2563eb;'>Click here to Login</a></li>" +
+                "<li><strong>Mobile Number:</strong> " + student.getMobile() + "</li>" +
+                "<li><strong>Password:</strong> " + student.getDob() + " <em>(Your Date of Birth in YYYY-MM-DD format)</em></li>" +
                 "</ul>" +
                 "<p>We look forward to welcoming you to our campus. Please keep the attached receipt for future reference.</p>" +
                 "<br><p>Best Regards,</p>" +

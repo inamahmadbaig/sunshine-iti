@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { GraduationCap, Lock, User, ArrowLeft } from 'lucide-react';
+import { GraduationCap, Lock, Phone, ArrowLeft } from 'lucide-react';
 
 const StudentLogin = ({ darkMode }) => {
-  const [appId, setAppId] = useState('');
+  const [mobile, setMobile] = useState('');
   const [dob, setDob] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -15,27 +15,23 @@ const StudentLogin = ({ darkMode }) => {
     setLoading(true);
     setError('');
 
-    // Extract the actual ID (the last numeric part of the input)
-    // Supports formats like "APP-2026-12", "ITI/2026/12", or just "12"
-    let rawId = appId.trim();
-    const parts = rawId.split(/[-/]/);
-    rawId = parts[parts.length - 1].trim();
+    let rawMobile = mobile.trim();
 
-    if (!/^\d+$/.test(rawId)) {
-      setError(`Invalid Application Number format. Please enter a valid number (e.g. ITI${new Date().getFullYear()}/01).`);
+    if (!/^\d{10}$/.test(rawMobile)) {
+      setError('Invalid Mobile Number format. Please enter a valid 10-digit mobile number.');
       setLoading(false);
       return;
     }
 
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/search?id=${rawId}&dob=${dob}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/search?mobile=${rawMobile}&dob=${dob}`);
       
       if (response.data && response.data.id) {
         // Login successful
         localStorage.setItem("studentAuth", JSON.stringify(response.data));
         navigate('/student/dashboard');
       } else {
-        setError('Invalid Application Number or Date of Birth.');
+        setError('Invalid Mobile Number or Date of Birth.');
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Invalid Credentials or Student not found.');
@@ -104,14 +100,14 @@ const StudentLogin = ({ darkMode }) => {
 
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: darkMode ? '#cbd5e1' : '#475569', fontSize: '0.9rem' }}>Application Number</label>
+            <label style={{ display: 'block', marginBottom: '0.5rem', color: darkMode ? '#cbd5e1' : '#475569', fontSize: '0.9rem' }}>Mobile Number</label>
             <div style={{ position: 'relative' }}>
-              <User size={18} style={{ position: 'absolute', left: '12px', top: '12px', color: 'gray' }} />
+              <Phone size={18} style={{ position: 'absolute', left: '12px', top: '12px', color: 'gray' }} />
               <input 
                 type="text" 
-                value={appId}
-                onChange={(e) => setAppId(e.target.value)}
-                placeholder="e.g. APP-2026-1"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                placeholder="e.g. 9876543210"
                 style={{
                   width: '100%', padding: '0.75rem 1rem 0.75rem 2.5rem',
                   borderRadius: '8px', border: '1px solid #cbd5e1',

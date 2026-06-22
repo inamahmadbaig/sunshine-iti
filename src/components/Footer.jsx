@@ -37,6 +37,11 @@ export default function Footer({ t }) {
               <li><Link to="/admissions"><span className="footer-arrow">›</span> {t.admissions}</Link></li>
               <li><Link to="/placements"><span className="footer-arrow">›</span> {t.placement}</Link></li>
               <li><Link to="/contact"><span className="footer-arrow">›</span> {t.contact}</Link></li>
+              <li>
+                <Link to={localStorage.getItem("adminUser") ? "/admin/dashboard" : "/admin/login"}>
+                  <span className="footer-arrow">›</span> {t.admin}
+                </Link>
+              </li>
             </ul>
           </div>
 

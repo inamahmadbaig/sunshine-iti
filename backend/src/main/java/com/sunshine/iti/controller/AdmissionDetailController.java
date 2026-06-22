@@ -66,6 +66,11 @@ public class AdmissionDetailController {
             if (studentOpt.isPresent()) {
                 return ResponseEntity.ok(studentOpt.get());
             }
+        } else if (mobile != null && (fullName == null || fullName.trim().isEmpty())) {
+            Optional<AdmissionDetail> studentOpt = admissionDetailRepository.findByMobileAndDob(mobile.trim(), dob);
+            if (studentOpt.isPresent()) {
+                return ResponseEntity.ok(studentOpt.get());
+            }
         } else if (fullName != null && mobile != null) {
             Optional<AdmissionDetail> studentOpt = admissionDetailRepository.findByFullNameIgnoreCaseAndMobileAndDob(
                 fullName.trim(), mobile.trim(), dob

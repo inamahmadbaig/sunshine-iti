@@ -3,6 +3,7 @@ package com.sunshine.iti.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "admission_details")
@@ -54,54 +55,63 @@ public class AdmissionDetail {
     // File binary storage (using MEDIUMBLOB in MySQL for files up to 16MB)
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] photoData;
     private String photoName;
     private String photoType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] signatureData;
     private String signatureName;
     private String signatureType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] tenthDocData;
     private String tenthDocName;
     private String tenthDocType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] twelfthDocData;
     private String twelfthDocName;
     private String twelfthDocType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] aadharDocData;
     private String aadharDocName;
     private String aadharDocType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] samagraDocData;
     private String samagraDocName;
     private String samagraDocType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] casteDocData;
     private String casteDocName;
     private String casteDocType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] incomeDocData;
     private String incomeDocName;
     private String incomeDocType;
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] domicileDocData;
     private String domicileDocName;
     private String domicileDocType;
@@ -116,6 +126,7 @@ public class AdmissionDetail {
 
     @Lob
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private byte[] paymentReceiptData;
     private String paymentReceiptName;
     private String paymentReceiptType;
