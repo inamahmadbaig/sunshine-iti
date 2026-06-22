@@ -267,7 +267,65 @@ public class EmailHelper {
         }
         return baos.toByteArray();
     }
-    
+
+    public void sendFeeUpdateEmail(AdmissionDetail student, com.sunshine.iti.model.FeePayment currentPayment, java.util.List<com.sunshine.iti.model.FeePayment> history) throws Exception {
+        StringBuilder historyHtml = new StringBuilder();
+        historyHtml.append("<table border='1' cellpadding='8' style='border-collapse: collapse; width: 100%; margin-top: 10px;'>");
+        historyHtml.append("<tr style='background-color: #f1f5f9;'>");
+        historyHtml.append("<th>Payment Date</th>");
+        historyHtml.append("<th>Amount</th>");
+        historyHtml.append("<th>Method</th>");
+        historyHtml.append("<th>Transaction ID / UTR</th>");
+        historyHtml.append("<th>Status</th>");
+        historyHtml.append("</tr>");
+        
+        for (com.sunshine.iti.model.FeePayment payment : history) {
+            String dateStr = payment.getPaymentDate() != null ? payment.getPaymentDate().toLocalDate().toString() : "N/A";
+            String statusColor = "APPROVED".equalsIgnoreCase(payment.getStatus()) ? "#16a34a" : ("PENDING".equalsIgnoreCase(payment.getStatus()) ? "#ca8a04" : "#dc2626");
+            historyHtml.append("<tr>");
+            historyHtml.append("<td>").append(dateStr).append("</td>");
+            historyHtml.append("<td>₹ ").append(payment.getAmount()).append("</td>");
+            historyHtml.append("<td>").append(payment.getPaymentMethod()).append("</td>");
+            historyHtml.append("<td>").append(payment.getTransactionId() != null ? payment.getTransactionId() : "").append("</td>");
+            historyHtml.append("<td style='color: ").append(statusColor).append("; font-weight: bold;'>").append(payment.getStatus()).append("</td>");
+            historyHtml.append("</tr>");
+        }
+        historyHtml.append("</table>");
+
+        String htmlContent = "<html><body>" +
+                "<h2>Dear " + student.getFullName() + ",</h2>" +
+                "<p>Your fee payment status has been updated by the administration at <strong>Sunshine Pvt. ITI College, Seoni</strong>.</p>" +
+                "<h3>Latest Payment Update:</h3>" +
+                "<table border='1' cellpadding='8' style='border-collapse: collapse;'>" +
+                "<tr><td><strong>Payment Date:</strong></td><td>" + (currentPayment.getPaymentDate() != null ? currentPayment.getPaymentDate().toLocalDate().toString() : "N/A") + "</td></tr>" +
+                "<tr><td><strong>Amount:</strong></td><td style='font-size: 16px; color: #16a34a;'><strong>₹ " + currentPayment.getAmount() + "</strong></td></tr>" +
+                "<tr><td><strong>Method:</strong></td><td>" + currentPayment.getPaymentMethod() + "</td></tr>" +
+                "<tr><td><strong>Transaction ID / UTR:</strong></td><td>" + currentPayment.getTransactionId() + "</td></tr>" +
+                "<tr><td><strong>Status:</strong></td><td style='font-weight: bold; color: " + ("APPROVED".equalsIgnoreCase(currentPayment.getStatus()) ? "#16a34a" : "#dc2626") + ";'>" + currentPayment.getStatus() + "</td></tr>" +
+                "</table>" +
+                "<h3>Overall Fee Account Balance:</h3>" +
+                "<table border='1' cellpadding='8' style='border-collapse: collapse;'>" +
+                "<tr><td><strong>Total Course Fee:</strong></td><td>₹ " + student.getCourseFee() + "</td></tr>" +
+                "<tr><td><strong>Total Amount Paid:</strong></td><td style='color: #16a34a; font-weight: bold;'>₹ " + student.getAmountPaid() + "</td></tr>" +
+                "<tr><td><strong>Remaining Outstanding Balance:</strong></td><td style='color: #dc2626; font-weight: bold;'>₹ " + student.getOutstandingBalance() + "</td></tr>" +
+                "</table>" +
+                "<h3>Complete Payment History:</h3>" +
+                historyHtml.toString() +
+                "<br><p>You can check the updated details anytime on your Student Dashboard.</p>" +
+                "<br><p>Best Regards,</p>" +
+                "<p><strong>Sunshine Pvt. ITI</strong><br>Seoni, Madhya Pradesh<br>Contact: +91-7415491034</p>" +
+                "</body></html>";
+
+        sendBrevoEmail(
+            student.getEmail(),
+            student.getFullName(),
+            "Sunshine ITI - Fee Payment Update Alert",
+            htmlContent,
+            null,
+            null
+        );
+    }
+
     public void sendBrevoBroadcast(java.util.List<String> bccEmails, String subject, String htmlContent, String attachmentName, byte[] attachmentBytes) throws Exception {
         java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
         

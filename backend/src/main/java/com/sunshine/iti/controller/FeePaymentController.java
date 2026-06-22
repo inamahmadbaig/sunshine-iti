@@ -30,6 +30,9 @@ public class FeePaymentController {
     @Autowired
     private AdmissionDetailRepository admissionDetailRepository;
 
+    @Autowired
+    private com.sunshine.iti.util.EmailHelper emailHelper;
+
     // Get all fee payments for a specific student
     @GetMapping("/student/{admissionId}")
     public ResponseEntity<?> getStudentFees(@PathVariable Long admissionId) {
@@ -147,6 +150,13 @@ public class FeePaymentController {
             
             admissionDetailRepository.save(student);
 
+            try {
+                List<FeePayment> history = feePaymentRepository.findByAdmissionDetailIdOrderByPaymentDateDesc(student.getId());
+                emailHelper.sendFeeUpdateEmail(student, savedFee, history);
+            } catch (Exception e) {
+                System.err.println("Failed to send manual payment fee update email: " + e.getMessage());
+            }
+
             return ResponseEntity.ok(savedFee);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
@@ -182,7 +192,7 @@ public class FeePaymentController {
             fee.setRemarks("Certificate Fee");
             fee.setStatus("APPROVED");
 
-            feePaymentRepository.save(fee);
+            FeePayment savedFee = feePaymentRepository.save(fee);
 
             // Update student's balance
             double currentPaid = student.getAmountPaid() != null ? student.getAmountPaid() : 0.0;
@@ -190,6 +200,13 @@ public class FeePaymentController {
             student.setOutstandingBalance(student.getCourseFee() - student.getAmountPaid());
             
             admissionDetailRepository.save(student);
+
+            try {
+                List<FeePayment> history = feePaymentRepository.findByAdmissionDetailIdOrderByPaymentDateDesc(student.getId());
+                emailHelper.sendFeeUpdateEmail(student, savedFee, history);
+            } catch (Exception e) {
+                System.err.println("Failed to send certificate fee update email: " + e.getMessage());
+            }
 
             return ResponseEntity.ok(Map.of("message", "Certificate fee recorded successfully"));
         } catch (Exception e) {
@@ -246,7 +263,17 @@ public class FeePaymentController {
             fee.setRemarks(remarks);
         }
         
-        return ResponseEntity.ok(feePaymentRepository.save(fee));
+        FeePayment savedFee = feePaymentRepository.save(fee);
+
+        try {
+            AdmissionDetail student = savedFee.getAdmissionDetail();
+            List<FeePayment> history = feePaymentRepository.findByAdmissionDetailIdOrderByPaymentDateDesc(student.getId());
+            emailHelper.sendFeeUpdateEmail(student, savedFee, history);
+        } catch (Exception e) {
+            System.err.println("Failed to send fee status update email: " + e.getMessage());
+        }
+        
+        return ResponseEntity.ok(savedFee);
     }
 
     private LocalDate parseDate(String dateStr) {
