@@ -16,12 +16,10 @@ import AdmissionForm from './components/AdmissionForm';
 
 // Authentication Pages
 import Login from './components/Login';
-import Signup from './components/Signup';
 import ForgotPassword from './components/ForgotPassword';
 import ForgotUsername from './components/ForgotUsername';
 import ResetPassword from './components/ResetPassword';
 import AdminDashboard from './components/AdminDashboard';
-import TradesAndFees from './components/TradesAndFees';
 import TradesPage from './components/TradesPage';
 import AboutPage from './components/AboutPage';
 import AdmissionsPage from './components/AdmissionsPage';
@@ -29,7 +27,6 @@ import PlacementsPage from './components/PlacementsPage';
 import ContactPage from './components/ContactPage';
 import PolicyPage from './components/PolicyPage';
 import StudentCornerPage from './components/StudentCornerPage';
-import ContactUs from './components/ContactUs';
 import PayFee from './components/PayFee';
 import Gallery from './components/Gallery';
 import StudentLogin from './components/StudentLogin';
@@ -80,7 +77,7 @@ function PortalHome({
         }
       }, 100);
     }
-  }, []);
+  }, [location.hash]);
 
   const handleAdminClick = () => {
     const isLogged = localStorage.getItem("adminUser");
@@ -155,7 +152,7 @@ export default function App() {
         const sorted = mappedData.sort((a, b) => new Date(b.date) - new Date(a.date));
         setNotices(sorted);
       })
-      .catch(err => {
+      .catch(() => {
         console.log("Using fallback notices.");
         setNotices(fallbackNotices);
       });

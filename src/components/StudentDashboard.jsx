@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { User, LogOut, BookOpen, CreditCard, Award, FileText, ArrowLeft, Home, Download } from 'lucide-react';
+import { User, LogOut, BookOpen, CreditCard, Award, FileText, ArrowLeft, Download } from 'lucide-react';
 
 const StudentDashboard = ({ darkMode }) => {
   const [student, setStudent] = useState(null);
@@ -13,7 +13,7 @@ const StudentDashboard = ({ darkMode }) => {
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
 
-  const fetchStudentData = () => {
+  const fetchStudentData = React.useCallback(() => {
     const authData = localStorage.getItem("studentAuth");
     if (!authData) {
       navigate('/student-login');
@@ -29,11 +29,11 @@ const StudentDashboard = ({ darkMode }) => {
     axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/results/student/${parsed.id}`)
       .then(res => setResults(res.data))
       .catch(err => console.error(err));
-  };
+  }, [navigate]);
 
   useEffect(() => {
     fetchStudentData();
-  }, [navigate]);
+  }, [fetchStudentData]);
 
 
 
