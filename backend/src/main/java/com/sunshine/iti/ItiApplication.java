@@ -537,6 +537,7 @@ public class ItiApplication {
 				System.out.println("Initialized dummy study materials and documents successfully.");
 			}
 
+			galleryImageRepository.deleteAll();
 			if (galleryImageRepository.count() == 0) {
 				GalleryImage img1 = new GalleryImage();
 				img1.setTitle("Electrician Practical Workshop");
@@ -561,6 +562,30 @@ public class ItiApplication {
 				img4.setCategory("Events");
 				img4.setImageUrl("/images/events_hall.png");
 				galleryImageRepository.save(img4);
+
+				GalleryImage img5 = new GalleryImage();
+				img5.setTitle("Mechanical Fitter Trade Workshop");
+				img5.setCategory("Labs");
+				img5.setImageUrl("/images/fitter_workshop.png");
+				galleryImageRepository.save(img5);
+
+				GalleryImage img6 = new GalleryImage();
+				img6.setTitle("Well-equipped Student Library & Study Hall");
+				img6.setCategory("Campus");
+				img6.setImageUrl("/images/library.png");
+				galleryImageRepository.save(img6);
+
+				GalleryImage img7 = new GalleryImage();
+				img7.setTitle("Annual Campus Placement & Interview Drive");
+				img7.setCategory("Events");
+				img7.setImageUrl("/images/placement_drive.png");
+				galleryImageRepository.save(img7);
+
+				GalleryImage img8 = new GalleryImage();
+				img8.setTitle("Sunshine ITI Sports Field & Recreation Area");
+				img8.setCategory("Campus");
+				img8.setImageUrl("/images/sports_ground.png");
+				galleryImageRepository.save(img8);
 
 				System.out.println("Initialized dummy gallery images successfully.");
 			}
