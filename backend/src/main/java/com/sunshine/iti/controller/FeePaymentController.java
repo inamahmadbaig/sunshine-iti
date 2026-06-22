@@ -220,6 +220,23 @@ public class FeePaymentController {
             
             if (student.getOutstandingBalance() <= 0) {
                 student.setPaymentStatus("COMPLETED");
+            } else {
+                student.setPaymentStatus("PENDING");
+            }
+            admissionDetailRepository.save(student);
+        } else if (!"APPROVED".equals(newStatus) && "APPROVED".equals(fee.getStatus())) {
+            // Revert payment from student balance
+            AdmissionDetail student = fee.getAdmissionDetail();
+            double currentPaid = student.getAmountPaid() != null ? student.getAmountPaid() : 0.0;
+            double courseFee = student.getCourseFee() != null ? student.getCourseFee() : 0.0;
+            
+            student.setAmountPaid(Math.max(0.0, currentPaid - fee.getAmount()));
+            student.setOutstandingBalance(courseFee - student.getAmountPaid());
+            
+            if (student.getOutstandingBalance() <= 0) {
+                student.setPaymentStatus("COMPLETED");
+            } else {
+                student.setPaymentStatus("PENDING");
             }
             admissionDetailRepository.save(student);
         }
@@ -249,8 +266,8 @@ public class FeePaymentController {
                     java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[MM][M]/[dd][d]/yyyy");
                     return LocalDate.parse(dateStr, formatter);
                 } catch (Exception ex2) {
-                    System.err.println("Failed to parse date: " + dateStr + ", using current date instead.");
-                    return LocalDate.now();
+                    System.err.println("Failed to parse date: " + dateStr);
+                    return null;
                 }
             }
         }

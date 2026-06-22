@@ -56,10 +56,8 @@ public class AdmissionDetailController {
             @RequestParam(value = "fullName", required = false) String fullName,
             @RequestParam(value = "mobile", required = false) String mobile) {
         
-        LocalDate dob;
-        try {
-            dob = parseDate(dobStr);
-        } catch (Exception e) {
+        LocalDate dob = parseDate(dobStr);
+        if (dob == null) {
             return ResponseEntity.badRequest().body(Map.of("error", "Invalid date format. Use YYYY-MM-DD"));
         }
 
@@ -569,8 +567,8 @@ public class AdmissionDetailController {
                     java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[MM][M]/[dd][d]/yyyy");
                     return LocalDate.parse(dateStr, formatter);
                 } catch (Exception ex2) {
-                    System.err.println("Failed to parse date: " + dateStr + ", using current date instead.");
-                    return LocalDate.now();
+                    System.err.println("Failed to parse date: " + dateStr);
+                    return null;
                 }
             }
         }
