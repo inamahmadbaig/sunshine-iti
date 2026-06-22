@@ -442,11 +442,15 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
       loadStudentFees(selectedStudent.id);
       
       // Update selected student local state so UI updates
-      setSelectedStudent(prev => ({
-        ...prev,
-        amountPaid: (prev.amountPaid || 0) + Number(feeAmount),
-        outstandingBalance: (prev.courseFee || 0) - ((prev.amountPaid || 0) + Number(feeAmount))
-      }));
+      const updatedStudent = {
+        ...selectedStudent,
+        amountPaid: (selectedStudent.amountPaid || 0) + Number(feeAmount),
+        outstandingBalance: (selectedStudent.courseFee || 0) - ((selectedStudent.amountPaid || 0) + Number(feeAmount))
+      };
+      setSelectedStudent(updatedStudent);
+
+      // Automatically generate PDF receipt
+      handlePrintReceipt(updatedStudent);
     })
     .catch(err => alert("Error recording fee: " + err.message));
   };
