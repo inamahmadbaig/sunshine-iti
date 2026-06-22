@@ -22,7 +22,8 @@ export default function Login() {
 
     axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admin/login`, formData)
       .then(res => {
-        localStorage.setItem("adminUser", JSON.stringify(res.data));
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("adminUser", JSON.stringify(res.data.user));
         navigate("/admin/dashboard");
       })
       .catch(err => {

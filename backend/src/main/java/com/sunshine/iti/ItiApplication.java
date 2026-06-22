@@ -27,7 +27,7 @@ public class ItiApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(NoticeRepository noticeRepository, AdminUserRepository adminUserRepository, StudyMaterialRepository studyMaterialRepository) {
+	public CommandLineRunner demo(NoticeRepository noticeRepository, AdminUserRepository adminUserRepository, StudyMaterialRepository studyMaterialRepository, org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
 		return (args) -> {
 			if (noticeRepository.count() == 0) {
 				noticeRepository.save(new Notice("NCVT Main Examination Schedule August 2026 Released", LocalDate.now().minusDays(1), true, "#"));
@@ -37,7 +37,7 @@ public class ItiApplication {
 				noticeRepository.save(new Notice("List of Shortlisted Candidates for Apprenticeship Program", LocalDate.now().minusDays(7), false, "#"));
 			}
 			if (adminUserRepository.count() == 0) {
-				AdminUser defaultAdmin = new AdminUser("admin", "admin123", "sunshineiti8@gmail.com");
+				AdminUser defaultAdmin = new AdminUser("admin", passwordEncoder.encode("admin123"), "sunshineiti8@gmail.com");
 				adminUserRepository.save(defaultAdmin);
 				System.out.println("Default admin user initialized successfully: username=admin, password=admin123");
 			} else {

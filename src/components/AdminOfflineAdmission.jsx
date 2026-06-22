@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../axiosInstance';
 import { Shield, UploadCloud } from 'lucide-react';
 
 const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api`;

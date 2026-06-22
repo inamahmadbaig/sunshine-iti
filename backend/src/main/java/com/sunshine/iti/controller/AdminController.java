@@ -13,6 +13,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.sunshine.iti.security.JwtUtil;
 import com.sunshine.iti.model.AdmissionDetail;
 import com.sunshine.iti.repository.AdmissionDetailRepository;
 
@@ -43,6 +45,12 @@ public class AdminController {
     @Autowired
     private com.sunshine.iti.util.EmailHelper emailHelper;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody AdminUser user) {
         if (adminUserRepository.findFirstByUsername(user.getUsername()).isPresent()) {
@@ -51,6 +59,8 @@ public class AdminController {
         if (adminUserRepository.findFirstByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Email already exists"));
         }
+        
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         AdminUser saved = adminUserRepository.save(user);
         return ResponseEntity.ok(saved);
     }
@@ -61,8 +71,12 @@ public class AdminController {
         String password = credentials.get("password");
 
         Optional<AdminUser> userOpt = adminUserRepository.findFirstByUsername(username);
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
-            return ResponseEntity.ok(userOpt.get());
+        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPassword())) {
+            String token = jwtUtil.generateToken(username);
+            Map<String, Object> response = new java.util.HashMap<>();
+            response.put("token", token);
+            response.put("user", userOpt.get());
+            return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid username or password"));
     }
@@ -144,7 +158,7 @@ public class AdminController {
         Optional<AdminUser> userOpt = adminUserRepository.findFirstByEmail(email);
         if (userOpt.isPresent()) {
             AdminUser user = userOpt.get();
-            user.setPassword(newPassword);
+            user.setPassword(passwordEncoder.encode(newPassword));
             adminUserRepository.save(user);
             
             // Delete OTP history
@@ -208,11 +222,11 @@ public class AdminController {
         }
 
         AdminUser user = userOpt.get();
-        if (!user.getPassword().equals(currentPassword)) {
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             return ResponseEntity.badRequest().body(Map.of("error", "Incorrect current password"));
         }
 
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         adminUserRepository.save(user);
 
         // Send Email Notification

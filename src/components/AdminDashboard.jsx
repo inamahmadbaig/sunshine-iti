@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axiosInstance';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   Shield, 
