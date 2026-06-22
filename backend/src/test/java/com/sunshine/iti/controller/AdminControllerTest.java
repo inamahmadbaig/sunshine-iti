@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import com.sunshine.iti.repository.NoticeRepository;
 import com.sunshine.iti.repository.StudyMaterialRepository;
+import com.sunshine.iti.repository.GalleryImageRepository;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -52,6 +53,9 @@ public class AdminControllerTest {
 
     @MockBean
     private StudyMaterialRepository studyMaterialRepository;
+
+    @MockBean
+    private GalleryImageRepository galleryImageRepository;
 
     @MockBean
     private JavaMailSender mailSender;

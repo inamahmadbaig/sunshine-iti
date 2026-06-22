@@ -3,9 +3,11 @@ package com.sunshine.iti;
 import com.sunshine.iti.model.Notice;
 import com.sunshine.iti.model.AdminUser;
 import com.sunshine.iti.model.StudyMaterial;
+import com.sunshine.iti.model.GalleryImage;
 import com.sunshine.iti.repository.NoticeRepository;
 import com.sunshine.iti.repository.AdminUserRepository;
 import com.sunshine.iti.repository.StudyMaterialRepository;
+import com.sunshine.iti.repository.GalleryImageRepository;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
@@ -27,7 +29,7 @@ public class ItiApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(NoticeRepository noticeRepository, AdminUserRepository adminUserRepository, StudyMaterialRepository studyMaterialRepository, org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+	public CommandLineRunner demo(NoticeRepository noticeRepository, AdminUserRepository adminUserRepository, StudyMaterialRepository studyMaterialRepository, GalleryImageRepository galleryImageRepository, org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
 		return (args) -> {
 			if (noticeRepository.count() == 0) {
 				noticeRepository.save(new Notice("NCVT Main Examination Schedule August 2026 Released", LocalDate.now().minusDays(1), true, "#"));
@@ -533,6 +535,34 @@ public class ItiApplication {
 				});
 				
 				System.out.println("Initialized dummy study materials and documents successfully.");
+			}
+
+			if (galleryImageRepository.count() == 0) {
+				GalleryImage img1 = new GalleryImage();
+				img1.setTitle("Electrician Practical Workshop");
+				img1.setCategory("Labs");
+				img1.setImageUrl("/images/electrician_workshop.png");
+				galleryImageRepository.save(img1);
+
+				GalleryImage img2 = new GalleryImage();
+				img2.setTitle("Advanced Computer & IT Center");
+				img2.setCategory("Labs");
+				img2.setImageUrl("/images/computer_lab.png");
+				galleryImageRepository.save(img2);
+
+				GalleryImage img3 = new GalleryImage();
+				img3.setTitle("Sunshine ITI Main Campus Entrance");
+				img3.setCategory("Campus");
+				img3.setImageUrl("/images/campus_building.png");
+				galleryImageRepository.save(img3);
+
+				GalleryImage img4 = new GalleryImage();
+				img4.setTitle("Modern Smart Classroom & Seminar Hall");
+				img4.setCategory("Events");
+				img4.setImageUrl("/images/events_hall.png");
+				galleryImageRepository.save(img4);
+
+				System.out.println("Initialized dummy gallery images successfully.");
 			}
 		};
 	}
