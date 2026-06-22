@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/admissions").permitAll() // Students submit admission form
                 .requestMatchers(HttpMethod.GET, "/api/admissions/search").permitAll() // Check admission status
                 .requestMatchers(HttpMethod.POST, "/api/inquiries").permitAll() // Contact Us
+                .requestMatchers(HttpMethod.GET, "/api/admissions/*/files/**").permitAll() // Allow serving admission photos/docs without auth token
                 .requestMatchers(HttpMethod.GET, "/api/fees/student/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/fees").permitAll() // Pay fee
                 .requestMatchers(HttpMethod.GET, "/api/results/student/**").permitAll()
