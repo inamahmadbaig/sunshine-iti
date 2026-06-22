@@ -153,7 +153,7 @@ public class EmailHelper {
                 "<h3>Access Your Student Portal:</h3>" +
                 "<p>You can now log in to the Student Portal to check your fees, attendance, and exam results.</p>" +
                 "<ul>" +
-                "<li><strong>Portal Link:</strong> <a href='http://localhost:5174/student-login'>Click here to Login</a></li>" +
+                "<li><strong>Portal Link:</strong> <a href='https://sunshineiti.com/student-login'>Click here to Login</a></li>" +
                 "<li><strong>Application Number:</strong> ITI/2026/" + student.getId() + " <em>(or just " + student.getId() + ")</em></li>" +
                 "<li><strong>Password:</strong> " + student.getDob() + " <em>(Your Date of Birth)</em></li>" +
                 "</ul>" +
