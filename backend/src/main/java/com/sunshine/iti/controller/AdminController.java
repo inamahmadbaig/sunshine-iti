@@ -169,7 +169,7 @@ public class AdminController {
             msg.setFrom("sunshineiti8@gmail.com");
             msg.setTo(user.getEmail());
             msg.setSubject("Sunshine ITI Portal - Security Alert: Password Reset Successful");
-            msg.setText("Dear " + user.getUsername() + ",\n\nYour admin password has been successfully reset.\n\nIf you did not request this change, please contact the system administrator immediately.\n\nRegards,\nSunshine ITI College");
+            msg.setText("Dear " + user.getUsername() + ",\n\nYour admin password has been successfully reset.\n\nHere are your current login credentials:\nUsername: " + user.getUsername() + "\nPassword: " + newPassword + "\n\n[SECURITY NOTICE] Please delete this email from your inbox and trash immediately after noting your credentials to ensure complete security.\n\nRegards,\nSunshine ITI College");
             try {
                 mailSender.send(msg);
             } catch (Exception e) {
@@ -234,7 +234,7 @@ public class AdminController {
         msg.setFrom("sunshineiti8@gmail.com");
         msg.setTo(user.getEmail());
         msg.setSubject("Sunshine ITI Portal - Security Alert: Password Changed");
-        msg.setText("Dear " + user.getUsername() + ",\n\nYour admin password was just changed from the Profile dashboard.\n\nIf you did not make this change, please contact the system administrator immediately.\n\nRegards,\nSunshine ITI College");
+        msg.setText("Dear " + user.getUsername() + ",\n\nYour admin password was just changed from the Profile dashboard.\n\nHere are your updated login credentials:\nUsername: " + user.getUsername() + "\nPassword: " + newPassword + "\n\n[SECURITY NOTICE] Please delete this email from your inbox and trash immediately after noting your credentials to ensure complete security.\n\nRegards,\nSunshine ITI College");
         try {
             mailSender.send(msg);
         } catch (Exception e) {
