@@ -13,10 +13,6 @@ const StudentDashboard = ({ darkMode }) => {
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchStudentData();
-  }, [navigate]);
-
   const fetchStudentData = () => {
     const authData = localStorage.getItem("studentAuth");
     if (!authData) {
@@ -26,10 +22,6 @@ const StudentDashboard = ({ darkMode }) => {
     const parsed = JSON.parse(authData);
     setStudent(parsed);
 
-    axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/notices?target=ALL`)
-      .then(res => setNotices(res.data))
-      .catch(err => console.error(err));
-
     axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/fees/student/${parsed.id}`)
       .then(res => setFees(res.data))
       .catch(err => console.error(err));
@@ -38,6 +30,12 @@ const StudentDashboard = ({ darkMode }) => {
       .then(res => setResults(res.data))
       .catch(err => console.error(err));
   };
+
+  useEffect(() => {
+    fetchStudentData();
+  }, [navigate]);
+
+
 
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
