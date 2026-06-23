@@ -137,6 +137,18 @@ public class AdmissionDetail {
     @Column(columnDefinition="TEXT")
     private String adminRemarks;
 
+    // Cloudinary URL fields
+    private String photoUrl;
+    private String signatureUrl;
+    private String tenthDocUrl;
+    private String twelfthDocUrl;
+    private String aadharDocUrl;
+    private String samagraDocUrl;
+    private String casteDocUrl;
+    private String incomeDocUrl;
+    private String domicileDocUrl;
+    private String paymentReceiptUrl;
+
     public AdmissionDetail() {}
 
     public Long getId() {
@@ -541,4 +553,35 @@ public class AdmissionDetail {
     public void setDomicileDocName(String domicileDocName) { this.domicileDocName = domicileDocName; }
     public String getDomicileDocType() { return domicileDocType; }
     public void setDomicileDocType(String domicileDocType) { this.domicileDocType = domicileDocType; }
+
+    // Cloudinary URL getters and setters
+    public String getPhotoUrl() { return photoUrl; }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+    
+    public String getSignatureUrl() { return signatureUrl; }
+    public void setSignatureUrl(String signatureUrl) { this.signatureUrl = signatureUrl; }
+    
+    public String getTenthDocUrl() { return tenthDocUrl; }
+    public void setTenthDocUrl(String tenthDocUrl) { this.tenthDocUrl = tenthDocUrl; }
+    
+    public String getTwelfthDocUrl() { return twelfthDocUrl; }
+    public void setTwelfthDocUrl(String twelfthDocUrl) { this.twelfthDocUrl = twelfthDocUrl; }
+    
+    public String getAadharDocUrl() { return aadharDocUrl; }
+    public void setAadharDocUrl(String aadharDocUrl) { this.aadharDocUrl = aadharDocUrl; }
+    
+    public String getSamagraDocUrl() { return samagraDocUrl; }
+    public void setSamagraDocUrl(String samagraDocUrl) { this.samagraDocUrl = samagraDocUrl; }
+    
+    public String getCasteDocUrl() { return casteDocUrl; }
+    public void setCasteDocUrl(String casteDocUrl) { this.casteDocUrl = casteDocUrl; }
+    
+    public String getIncomeDocUrl() { return incomeDocUrl; }
+    public void setIncomeDocUrl(String incomeDocUrl) { this.incomeDocUrl = incomeDocUrl; }
+    
+    public String getDomicileDocUrl() { return domicileDocUrl; }
+    public void setDomicileDocUrl(String domicileDocUrl) { this.domicileDocUrl = domicileDocUrl; }
+    
+    public String getPaymentReceiptUrl() { return paymentReceiptUrl; }
+    public void setPaymentReceiptUrl(String paymentReceiptUrl) { this.paymentReceiptUrl = paymentReceiptUrl; }
 }

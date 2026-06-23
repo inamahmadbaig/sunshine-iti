@@ -1507,44 +1507,44 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                         <div>
                           <span style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--admin-text-muted)', marginBottom: '0.5rem' }}>Applicant Photo</span>
                           <div style={{ width: '120px', height: '140px', borderRadius: '8px', border: '1px solid var(--admin-border)', overflow: 'hidden', backgroundColor: 'rgba(0,0,0,0.02)' }}>
-                            <img src={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/photo`} alt="Photo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.style.display = 'none'} />
+                            <img src={selectedStudent.photoUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/photo`} alt="Photo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.style.display = 'none'} />
                           </div>
                         </div>
                         <div>
                           <span style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--admin-text-muted)', marginBottom: '0.5rem' }}>Applicant Signature</span>
                           <div style={{ width: '220px', height: '100px', borderRadius: '8px', border: '1px solid var(--admin-border)', overflow: 'hidden', backgroundColor: 'rgba(0,0,0,0.02)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem' }}>
-                            <img src={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/signature`} alt="Signature" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => e.target.style.display = 'none'} />
+                            <img src={selectedStudent.signatureUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/signature`} alt="Signature" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => e.target.style.display = 'none'} />
                           </div>
                         </div>
                       </div>
 
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
-                        <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/aadharDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                        <a href={selectedStudent.aadharDocUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/aadharDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                           <Download size={14} /> Aadhar Document
                         </a>
-                        <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/samagraDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                        <a href={selectedStudent.samagraDocUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/samagraDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                           <Download size={14} /> Samagra Document
                         </a>
-                        <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/tenthDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                        <a href={selectedStudent.tenthDocUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/tenthDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                           <Download size={14} /> 10th Marksheet
                         </a>
                         {selectedStudent.twelfthBoard && (
-                          <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/twelfthDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                          <a href={selectedStudent.twelfthDocUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/twelfthDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                             <Download size={14} /> 12th Marksheet
                           </a>
                         )}
                         {/* New Optional Certificates */}
-                        <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/casteDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                        <a href={selectedStudent.casteDocUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/casteDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                           <Download size={14} /> Caste Cert (Jaati)
                         </a>
-                        <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/incomeDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                        <a href={selectedStudent.incomeDocUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/incomeDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                           <Download size={14} /> Income Cert (Aay)
                         </a>
-                        <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/domicileDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                        <a href={selectedStudent.domicileDocUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/domicileDocument`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                           <Download size={14} /> Domicile Cert (Nivas)
                         </a>
                         {selectedStudent.paymentReceiptName && (
-                          <a href={`${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/paymentReceipt`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
+                          <a href={selectedStudent.paymentReceiptUrl || `${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${selectedStudent.id}/files/paymentReceipt`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ color: 'var(--admin-text-main)', borderColor: 'var(--admin-border)', fontSize: '0.75rem', justifyContent: 'center', gap: '0.25rem' }}>
                             <Download size={14} /> Payment Receipt
                           </a>
                         )}
