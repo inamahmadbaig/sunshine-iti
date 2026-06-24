@@ -35,6 +35,7 @@ export default function Footer({ t }) {
               <li><Link to="/about"><span className="footer-arrow">›</span> {t.about}</Link></li>
               <li><Link to="/trades"><span className="footer-arrow">›</span> {t.trades}</Link></li>
               <li><Link to="/admissions"><span className="footer-arrow">›</span> {t.admissions}</Link></li>
+              <li><Link to="/student-corner/syllabus"><span className="footer-arrow">›</span> Student Corner</Link></li>
               <li><Link to="/placements"><span className="footer-arrow">›</span> {t.placement}</Link></li>
               <li><Link to="/contact"><span className="footer-arrow">›</span> {t.contact}</Link></li>
               <li>

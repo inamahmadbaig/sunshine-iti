@@ -16,6 +16,7 @@ export default function NavigationBar({ t, setShowApplyModal }) {
     if (sectionId === 'contact') return '/contact';
     if (sectionId === 'gallery') return '/gallery';
     if (sectionId === 'student-portal') return '/student-login';
+    if (sectionId === 'student-corner') return '/student-corner/syllabus';
     return '/';
   };
 
@@ -28,6 +29,7 @@ export default function NavigationBar({ t, setShowApplyModal }) {
     { label: t.home, sectionId: 'home' },
     { label: t.trades, sectionId: 'trades' },
     { label: t.admissions, sectionId: 'admissions' },
+    { label: 'Student Corner', sectionId: 'student-corner' },
     { label: t.placement, sectionId: 'placements' },
     { label: 'Gallery', sectionId: 'gallery' },
     { label: t.about, sectionId: 'about' },
