@@ -68,6 +68,7 @@ const translateFileName = (fileName, isHindi) => {
 
 const SECTIONS = [
   { id: 'syllabus',      type: 'SYLLABUS',        icon: BookOpen,    titleEn: 'Syllabus & Course Scheme',     titleHn: 'पाठ्यक्रम एवं कोर्स स्कीम',           color: '#2563eb', bg: 'rgba(37,99,235,0.08)' },
+  { id: 'study-material',type: 'STUDY_MATERIAL',  icon: BookOpen,    titleEn: 'Study Material & Notes',       titleHn: 'अध्ययन सामग्री और नोट्स',              color: '#0ea5e9', bg: 'rgba(14,165,233,0.08)' },
   { id: 'papers',        type: 'PREVIOUS_PAPER',  icon: FileText,    titleEn: 'Previous Year Papers',          titleHn: 'पिछले वर्षों के प्रश्न पत्र',          color: '#d97706', bg: 'rgba(245,158,11,0.08)' },
   { id: 'scholarships',  type: 'SCHOLARSHIP',     icon: Landmark,    titleEn: 'Scholarship Forms',             titleHn: 'छात्रवृत्ति फॉर्म',                    color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
   { id: 'calendar',      type: 'CALENDAR',        icon: Calendar,    titleEn: 'Academic Calendar',             titleHn: 'शैक्षणिक कैलेंडर',                    color: '#7c3aed', bg: 'rgba(139,92,246,0.08)' },

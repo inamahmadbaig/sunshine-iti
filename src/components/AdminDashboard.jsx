@@ -2208,11 +2208,12 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                   <div className="admin-form-group">
                     <label>Document Type *</label>
                     <select className="admin-form-control" value={newMaterial.type} onChange={e => setNewMaterial({ ...newMaterial, type: e.target.value })}>
-                      <option value="SYLLABUS">📚 Syllabus & Course Scheme</option>
+                      <option value="SYLLABUS">📖 Syllabus & Course Scheme</option>
+                      <option value="STUDY_MATERIAL">📚 Study Material / Notes</option>
                       <option value="PREVIOUS_PAPER">📝 Previous Year Papers</option>
-                      <option value="SCHOLARSHIP">🎓 Scholarship Forms</option>
+                      <option value="SCHOLARSHIP">🏛 Scholarship Forms</option>
                       <option value="CALENDAR">📅 Academic Calendar</option>
-                      <option value="RULES">📋 Rules & Regulations</option>
+                      <option value="RULES">🚨 Rules & Regulations</option>
                     </select>
                   </div>
                   <div className="admin-form-group">
@@ -2283,10 +2284,10 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                           <tr key={m.id}>
                             <td>
                               <span style={{ fontSize: '0.78rem', padding: '3px 8px', borderRadius: '20px', fontWeight: 600,
-                                backgroundColor: m.type === 'SYLLABUS' ? 'rgba(37,99,235,0.1)' : m.type === 'PREVIOUS_PAPER' ? 'rgba(245,158,11,0.1)' : m.type === 'SCHOLARSHIP' ? 'rgba(16,185,129,0.1)' : m.type === 'CALENDAR' ? 'rgba(139,92,246,0.1)' : 'rgba(239,68,68,0.1)',
-                                color: m.type === 'SYLLABUS' ? '#2563eb' : m.type === 'PREVIOUS_PAPER' ? '#d97706' : m.type === 'SCHOLARSHIP' ? '#10b981' : m.type === 'CALENDAR' ? '#7c3aed' : '#ef4444'
+                                backgroundColor: m.type === 'SYLLABUS' ? 'rgba(37,99,235,0.1)' : m.type === 'STUDY_MATERIAL' ? 'rgba(14,165,233,0.1)' : m.type === 'PREVIOUS_PAPER' ? 'rgba(245,158,11,0.1)' : m.type === 'SCHOLARSHIP' ? 'rgba(16,185,129,0.1)' : m.type === 'CALENDAR' ? 'rgba(139,92,246,0.1)' : 'rgba(239,68,68,0.1)',
+                                color: m.type === 'SYLLABUS' ? '#2563eb' : m.type === 'STUDY_MATERIAL' ? '#0ea5e9' : m.type === 'PREVIOUS_PAPER' ? '#d97706' : m.type === 'SCHOLARSHIP' ? '#10b981' : m.type === 'CALENDAR' ? '#7c3aed' : '#ef4444'
                               }}>
-                                {m.type === 'SYLLABUS' ? '📚 Syllabus' : m.type === 'PREVIOUS_PAPER' ? '📝 Papers' : m.type === 'SCHOLARSHIP' ? '🎓 Scholar' : m.type === 'CALENDAR' ? '📅 Calendar' : '📋 Rules'}
+                                {m.type === 'SYLLABUS' ? '📖 Syllabus' : m.type === 'STUDY_MATERIAL' ? '📚 Notes' : m.type === 'PREVIOUS_PAPER' ? '📝 Papers' : m.type === 'SCHOLARSHIP' ? '🏛 Scholar' : m.type === 'CALENDAR' ? '📅 Calendar' : '🚨 Rules'}
                               </span>
                             </td>
                             <td style={{ fontWeight: 600, maxWidth: '200px' }}>
