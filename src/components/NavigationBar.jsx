@@ -78,6 +78,14 @@ export default function NavigationBar({ t, setShowApplyModal }) {
                 Pay Fee
               </NavLink>
               <NavLink
+                to="/student-corner/syllabus"
+                className="btn w-100"
+                style={{ backgroundColor: '#2563eb', color: 'white', display: 'flex', justifyContent: 'center' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Student Corner
+              </NavLink>
+              <NavLink
                 to="/student-login"
                 className="btn w-100"
                 style={{ backgroundColor: '#3b82f6', color: 'white', display: 'flex', justifyContent: 'center' }}
