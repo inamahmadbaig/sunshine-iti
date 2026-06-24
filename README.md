@@ -1,16 +1,71 @@
-# React + Vite
+# Sunshine ITI College Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack web application designed for managing admissions and administration for Sunshine ITI College. The application features a robust backend built with Spring Boot and a dynamic, responsive frontend using React and Vite.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Admin Dashboard**: Comprehensive dashboard with data visualization.
+- **Admission Management**: Handle student admissions with detailed form tracking.
+- **Secure Authentication**: JWT-based security for protecting admin routes.
+- **Document Generation**: Automated PDF generation for admission receipts/forms using OpenPDF.
+- **Cloud Storage**: Integration with Cloudinary for managing uploaded media/documents.
+- **Form Validation**: Robust client-side validation using Formik and Yup.
 
-## React Compiler
+## 💻 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
+- **Framework**: React 19 + Vite
+- **Routing**: React Router DOM
+- **State Management & Forms**: Formik + Yup
+- **Styling & UI**: Recharts (Data Visualization), Lucide React (Icons)
+- **HTTP Client**: Axios
 
-## Expanding the ESLint configuration
+### Backend
+- **Framework**: Spring Boot 3.3.0 (Java 21)
+- **Database**: MySQL with Spring Data JPA
+- **Security**: Spring Security + JWT
+- **Media Storage**: Cloudinary integration
+- **Utilities**: OpenPDF (PDF Generation), JavaMailSender (Emails)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Local Setup
+
+### Prerequisites
+- Node.js (v18+)
+- Java 21 JDK
+- MySQL Server
+- Maven
+
+### 1. Clone the repository
+```bash
+git clone <your-repository-url>
+cd collage-iti
+```
+
+### 2. Frontend Setup
+Navigate to the root directory and install dependencies:
+```bash
+npm install
+```
+Start the frontend development server:
+```bash
+npm run dev
+```
+
+### 3. Backend Setup
+Navigate to the `backend` directory:
+```bash
+cd backend
+```
+Update your `application.properties` or `.env` files with your MySQL credentials, Cloudinary API keys, and JWT secrets.
+
+Run the Spring Boot application using Maven:
+```bash
+./mvnw spring-boot:run
+```
+*(On Windows, use `mvnw.cmd spring-boot:run`)*
+
+## 📜 Scripts (Frontend)
+- `npm run dev`: Starts the Vite development server.
+- `npm run build`: Builds the app for production.
+- `npm run lint`: Runs ESLint for code formatting.
+- `npm run test`: Runs the Vitest test suite.
