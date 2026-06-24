@@ -1,7 +1,9 @@
 import React from 'react';
-import { Phone, Mail, Award } from 'lucide-react';
+import { Phone, Mail, Award, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function TopBar({ t, setBaseFontSize, setShowAdminModal, setLang, lang }) {
+  const navigate = useNavigate();
   return (
     <div className="top-bar">
       <div className="container top-bar-content">
@@ -18,6 +20,10 @@ export default function TopBar({ t, setBaseFontSize, setShowAdminModal, setLang,
             <button className="resizer-btn" onClick={() => setBaseFontSize(16)}>A</button>
             <button className="resizer-btn" onClick={() => setBaseFontSize(18)}>A+</button>
           </div>
+          <button className="btn-admin" onClick={() => navigate('/student-corner/syllabus')} style={{ backgroundColor: '#2563eb' }}>
+            <BookOpen size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+            Student Corner
+          </button>
           <button className="btn-admin" onClick={() => setShowAdminModal(true)}>{t.admin}</button>
           <button className="lang-btn active" onClick={() => setLang(lang === 'EN' ? 'HN' : 'EN')}>{t.lang}</button>
         </div>

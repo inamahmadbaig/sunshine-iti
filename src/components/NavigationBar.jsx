@@ -29,7 +29,6 @@ export default function NavigationBar({ t, setShowApplyModal }) {
     { label: t.home, sectionId: 'home' },
     { label: t.trades, sectionId: 'trades' },
     { label: t.admissions, sectionId: 'admissions' },
-    { label: 'Student Corner', sectionId: 'student-corner' },
     { label: t.placement, sectionId: 'placements' },
     { label: 'Gallery', sectionId: 'gallery' },
     { label: t.about, sectionId: 'about' },
