@@ -22,7 +22,7 @@ const PayFee = () => {
     };
   }, []);
 
-  const [searchMode, setSearchMode] = useState('appNo'); // 'appNo' or 'personal'
+  const [searchMode, setSearchMode] = useState('mobileSearch'); // 'mobileSearch' or 'personal'
   const [admissionId, setAdmissionId] = useState('');
   const [fullName, setFullName] = useState('');
   const [mobile, setMobile] = useState('');
@@ -47,9 +47,8 @@ const PayFee = () => {
 
     try {
       let url = `${API_BASE}/admissions/search?dob=${dob}`;
-      if (searchMode === 'appNo') {
-        const numericId = admissionId.replace(/\D/g, '');
-        url += `&id=${numericId}`;
+      if (searchMode === 'mobileSearch') {
+        url += `&mobile=${encodeURIComponent(mobile)}`;
       } else {
         url += `&fullName=${encodeURIComponent(fullName)}&mobile=${encodeURIComponent(mobile)}`;
       }
@@ -58,8 +57,8 @@ const PayFee = () => {
       if (res.data) {
         setStudent(res.data);
       } else {
-        setError(searchMode === 'appNo' 
-          ? 'No student found with this Application No and DOB.'
+        setError(searchMode === 'mobileSearch' 
+          ? 'No student found with this Mobile Number and DOB.'
           : 'No student found with these personal details and DOB.'
         );
       }
@@ -166,11 +165,11 @@ const PayFee = () => {
                       <div className="btn-group p-1 bg-secondary bg-opacity-10 rounded-pill" role="group" style={{ maxWidth: '400px', width: '100%' }}>
                         <button
                           type="button"
-                          className={`btn rounded-pill border-0 py-2 px-3 w-50 fw-semibold text-nowrap ${searchMode === 'appNo' ? 'bg-primary text-white shadow-sm' : 'text-secondary bg-transparent'}`}
-                          onClick={() => { setSearchMode('appNo'); setError(''); }}
+                          className={`btn rounded-pill border-0 py-2 px-3 w-50 fw-semibold text-nowrap ${searchMode === 'mobileSearch' ? 'bg-primary text-white shadow-sm' : 'text-secondary bg-transparent'}`}
+                          onClick={() => { setSearchMode('mobileSearch'); setError(''); }}
                           style={{ transition: 'all 0.3s ease', fontSize: '0.9rem' }}
                         >
-                          <FileText size={16} className="me-2" /> Application No.
+                          <Smartphone size={16} className="me-2" /> Mobile Number
                         </button>
                         <button
                           type="button"
@@ -185,22 +184,22 @@ const PayFee = () => {
 
                     <form onSubmit={handleSearch}>
                       <div className="row g-4">
-                        {searchMode === 'appNo' ? (
+                        {searchMode === 'mobileSearch' ? (
                           <div className="col-md-6">
-                            <label className="form-label fw-semibold text-secondary">Application No.</label>
+                            <label className="form-label fw-semibold text-secondary">Mobile Number</label>
                             <div className="position-relative">
                               <span 
                                 className="position-absolute top-50 start-0 translate-middle-y ps-3 text-secondary"
                                 style={{ pointerEvents: 'none' }}
                               >
-                                <FileText size={18} />
+                                <Smartphone size={18} />
                               </span>
                               <input 
-                                type="text" 
+                                type="tel" 
                                 className="form-control form-control-lg fee-input ps-5" 
-                                value={admissionId} 
-                                onChange={e => setAdmissionId(e.target.value)} 
-                                placeholder="e.g. 15" 
+                                value={mobile} 
+                                onChange={e => setMobile(e.target.value)} 
+                                placeholder="e.g. 9876543210" 
                                 required 
                               />
                             </div>
@@ -247,7 +246,7 @@ const PayFee = () => {
                             </div>
                           </>
                         )}
-                        <div className={searchMode === 'appNo' ? "col-md-6" : "col-md-12"}>
+                        <div className={searchMode === 'mobileSearch' ? "col-md-6" : "col-md-12"}>
                           <label className="form-label fw-semibold text-secondary">Date of Birth</label>
                           <div className="position-relative">
                             <span 

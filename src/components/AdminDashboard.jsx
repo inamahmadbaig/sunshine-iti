@@ -140,6 +140,11 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
   const [certPaymentMethod, setCertPaymentMethod] = useState('Cash');
   const [certTxnId, setCertTxnId] = useState('');
 
+  // Bulk Upload State
+  const [showBulkUploadModal, setShowBulkUploadModal] = useState(false);
+  const [bulkFile, setBulkFile] = useState(null);
+  const [uploadingBulk, setUploadingBulk] = useState(false);
+
   // Sync theme to local storage
   useEffect(() => {
     localStorage.setItem("adminDarkMode", JSON.stringify(darkMode));
@@ -600,6 +605,37 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleDownloadBulkTemplate = () => {
+    window.location.href = `${API_BASE}/admissions/bulk-upload/template`;
+  };
+
+  const handleBulkUpload = (e) => {
+    e.preventDefault();
+    if (!bulkFile) {
+      alert("Please select a CSV file first.");
+      return;
+    }
+    setUploadingBulk(true);
+    const formData = new FormData();
+    formData.append('file', bulkFile);
+    
+    axios.post(`${API_BASE}/admissions/bulk-upload`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    .then(res => {
+      alert(res.data.message || "Bulk upload completed successfully");
+      setShowBulkUploadModal(false);
+      setBulkFile(null);
+      loadAdmissions();
+    })
+    .catch(err => {
+      alert("Bulk upload failed: " + (err.response?.data?.error || err.message));
+    })
+    .finally(() => {
+      setUploadingBulk(false);
+    });
   };
 
   const handleStatusUpdate = (id, newStatus) => {
@@ -1119,6 +1155,9 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                 <button onClick={handleExportCSV} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', padding: '0.5rem 1rem' }}>
                   <Download size={16} /> Export CSV
                 </button>
+                <button onClick={() => setShowBulkUploadModal(true)} className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', padding: '0.5rem 1rem' }}>
+                  <Database size={16} /> Bulk Upload CSV
+                </button>
               </div>
             </div>
 
@@ -1629,6 +1668,38 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                 )}
               </div>
             </div>
+            </div>
+
+            {/* Bulk Upload Modal */}
+            {showBulkUploadModal && (
+              <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+                <div className="admin-card" style={{ width: '400px', padding: '2rem' }}>
+                  <h3 style={{ marginTop: 0 }}>Bulk Upload Admissions (CSV)</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--admin-text-muted)' }}>
+                    Upload a CSV file to add multiple students at once. 
+                    <button type="button" onClick={handleDownloadBulkTemplate} style={{ background: 'none', border: 'none', color: '#2563eb', padding: 0, cursor: 'pointer', textDecoration: 'underline', marginLeft: '5px' }}>Download Template</button>
+                  </p>
+                  
+                  <form onSubmit={handleBulkUpload}>
+                    <div className="admin-form-group">
+                      <label>Select CSV File</label>
+                      <input 
+                        type="file" 
+                        accept=".csv"
+                        className="admin-form-control"
+                        onChange={(e) => setBulkFile(e.target.files[0])}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                      <button type="submit" className="btn btn-primary" disabled={uploadingBulk}>
+                        {uploadingBulk ? 'Uploading...' : 'Upload Data'}
+                      </button>
+                      <button type="button" className="btn btn-outline" onClick={() => setShowBulkUploadModal(false)}>Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         );
 

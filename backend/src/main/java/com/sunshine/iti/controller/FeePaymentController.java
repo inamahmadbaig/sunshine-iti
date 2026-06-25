@@ -33,10 +33,47 @@ public class FeePaymentController {
     @Autowired
     private com.sunshine.iti.util.EmailHelper emailHelper;
 
-    // Get all fee payments for a specific student
     @GetMapping("/student/{admissionId}")
     public ResponseEntity<?> getStudentFees(@PathVariable Long admissionId) {
-        return ResponseEntity.ok(feePaymentRepository.findByAdmissionDetailIdOrderByPaymentDateDesc(admissionId));
+        Optional<AdmissionDetail> studentOpt = admissionDetailRepository.findById(admissionId);
+        if (!studentOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        AdmissionDetail student = studentOpt.get();
+        List<FeePayment> dbFees = feePaymentRepository.findByAdmissionDetailIdOrderByPaymentDateDesc(admissionId);
+        List<FeePayment> fees = new java.util.ArrayList<>(dbFees);
+        
+        double sumOfFees = 0.0;
+        for (FeePayment fee : fees) {
+            if ("APPROVED".equals(fee.getStatus())) {
+                sumOfFees += fee.getAmount();
+            }
+        }
+        
+        double studentAmountPaid = student.getAmountPaid() != null ? student.getAmountPaid() : 0.0;
+        
+        if (studentAmountPaid > sumOfFees) {
+            double initialFee = studentAmountPaid - sumOfFees;
+            FeePayment initialPayment = new FeePayment();
+            initialPayment.setId(-1L);
+            initialPayment.setAdmissionDetail(student);
+            initialPayment.setAmount(initialFee);
+            initialPayment.setPaymentMethod(student.getPaymentMethod() != null ? student.getPaymentMethod() : "N/A");
+            initialPayment.setTransactionId(student.getTransactionId() != null ? student.getTransactionId() : "");
+            
+            LocalDateTime dateToUse = student.getPaymentDate() != null ? student.getPaymentDate().atStartOfDay() : 
+                                      (student.getAppliedDate() != null ? student.getAppliedDate() : LocalDateTime.now());
+            
+            initialPayment.setPaymentDate(dateToUse);
+            initialPayment.setStatus("APPROVED");
+            initialPayment.setRemarks("Admission Time Fee");
+            
+            fees.add(initialPayment);
+            fees.sort((f1, f2) -> f2.getPaymentDate().compareTo(f1.getPaymentDate()));
+        }
+        
+        return ResponseEntity.ok(fees);
     }
 
     // Get all pending fee payments (for Admin Dashboard)

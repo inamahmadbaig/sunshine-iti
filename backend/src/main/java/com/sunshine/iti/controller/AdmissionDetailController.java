@@ -534,6 +534,88 @@ public class AdmissionDetailController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Application not found"));
     }
 
+    @GetMapping("/bulk-upload/template")
+    public ResponseEntity<byte[]> getBulkUploadTemplate() {
+        String csvContent = "FullName,FatherName,DOB(YYYY-MM-DD),Mobile,Trade,CourseFee,AmountPaid,PaymentMethod,TransactionId,AppliedDate(YYYY-MM-DD)\n"
+                + "John Doe,Richard Doe,2005-01-15,9876543210,ELECTRICIAN,30000,10000,Cash,TXN123,2026-06-01\n";
+        byte[] data = csvContent.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"Bulk_Upload_Template.csv\"")
+                .body(data);
+    }
+
+    @PostMapping(value = "/bulk-upload", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> bulkUploadAdmissions(@RequestParam("file") MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Please upload a valid CSV file"));
+        }
+        
+        List<AdmissionDetail> toSave = new java.util.ArrayList<>();
+        int successCount = 0;
+        int errorCount = 0;
+        
+        try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(file.getInputStream(), java.nio.charset.StandardCharsets.UTF_8))) {
+            String line;
+            boolean firstLine = true;
+            while ((line = reader.readLine()) != null) {
+                if (firstLine) {
+                    firstLine = false;
+                    continue; // skip header
+                }
+                
+                String[] columns = line.split(",", -1);
+                if (columns.length < 5) {
+                    errorCount++;
+                    continue; // Skip invalid lines
+                }
+                
+                try {
+                    AdmissionDetail detail = new AdmissionDetail();
+                    detail.setFullName(columns[0].trim());
+                    detail.setFatherName(columns[1].trim());
+                    detail.setDob(parseDate(columns[2].trim()));
+                    detail.setMobile(columns[3].trim());
+                    detail.setTrade(columns[4].trim());
+                    
+                    double courseFee = columns.length > 5 && !columns[5].trim().isEmpty() ? Double.parseDouble(columns[5].trim()) : getCourseFeeForTrade(detail.getTrade());
+                    double amountPaid = columns.length > 6 && !columns[6].trim().isEmpty() ? Double.parseDouble(columns[6].trim()) : 0.0;
+                    
+                    detail.setCourseFee(courseFee);
+                    detail.setAmountPaid(amountPaid);
+                    detail.setOutstandingBalance(courseFee - amountPaid);
+                    detail.setPaymentStatus(amountPaid >= courseFee ? "COMPLETED" : "PENDING");
+                    
+                    if (columns.length > 7 && !columns[7].trim().isEmpty()) detail.setPaymentMethod(columns[7].trim());
+                    else detail.setPaymentMethod("Cash");
+                    
+                    if (columns.length > 8 && !columns[8].trim().isEmpty()) detail.setTransactionId(columns[8].trim());
+                    
+                    LocalDateTime appliedDate = LocalDateTime.now();
+                    if (columns.length > 9 && !columns[9].trim().isEmpty()) {
+                        LocalDate d = parseDate(columns[9].trim());
+                        if (d != null) appliedDate = d.atStartOfDay();
+                    }
+                    detail.setAppliedDate(appliedDate);
+                    detail.setPaymentDate(appliedDate.toLocalDate());
+                    
+                    detail.setStatus("APPROVED"); // Auto approve bulk uploads usually
+                    detail.setAdminRemarks("Bulk Uploaded");
+                    
+                    toSave.add(detail);
+                    successCount++;
+                } catch (Exception e) {
+                    errorCount++;
+                }
+            }
+            
+            admissionDetailRepository.saveAll(toSave);
+            return ResponseEntity.ok(Map.of("message", "Bulk upload completed. Success: " + successCount + ", Errors: " + errorCount));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to process CSV file: " + e.getMessage()));
+        }
+    }
+
     private LocalDate parseDate(String dateStr) {
         if (dateStr == null || dateStr.trim().isEmpty()) {
             return null;
