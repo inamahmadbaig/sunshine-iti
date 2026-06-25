@@ -1668,7 +1668,6 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                 )}
               </div>
             </div>
-            </div>
 
             {/* Bulk Upload Modal */}
             {showBulkUploadModal && (
