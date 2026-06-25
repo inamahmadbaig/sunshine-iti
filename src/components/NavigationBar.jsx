@@ -152,8 +152,8 @@ export default function NavigationBar({ t, setShowApplyModal }) {
         <button onClick={handleApply} className="mobile-highlight-btn" style={{backgroundColor: '#f97316', border: 'none', cursor: 'pointer', fontFamily: 'inherit'}}>
           Apply
         </button>
-        <NavLink to="/student-corner/syllabus" className="mobile-highlight-btn" style={{backgroundColor: '#8b5cf6'}}>
-          Corner
+        <NavLink to={localStorage.getItem("adminUser") ? "/admin/dashboard" : "/admin/login"} className="mobile-highlight-btn" style={{backgroundColor: '#4f46e5'}}>
+          Admin
         </NavLink>
       </div>
     </nav>
