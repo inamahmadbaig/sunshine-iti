@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/fees/student/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/fees").permitAll() // Pay fee
                 .requestMatchers(HttpMethod.GET, "/api/results/student/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/admissions/bulk-upload/template").permitAll()
                 
                 // Protected endpoints
                 .requestMatchers("/api/admin/**").authenticated()

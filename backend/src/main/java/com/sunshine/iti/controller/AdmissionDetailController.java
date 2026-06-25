@@ -616,6 +616,20 @@ public class AdmissionDetailController {
         }
     }
 
+    @GetMapping("/bulk-upload/template")
+    public ResponseEntity<byte[]> downloadBulkTemplate() {
+        String header = "FullName,FatherName,Dob,Mobile,Trade,CourseFee,AmountPaid,PaymentMethod,TransactionId,AppliedDate\n";
+        String sample1 = "Rahul Kumar,Ramesh Kumar,2005-08-15,9876543210,Electrician,40000,5000,UPI,TXN12345,2026-06-01\n";
+        String sample2 = "Priya Sharma,Suresh Sharma,2004-05-20,9876543211,Fitter,,,,,\n";
+        String csvContent = header + sample1 + sample2;
+        
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "Admission_Bulk_Upload_Template.csv");
+        
+        return new ResponseEntity<>(csvContent.getBytes(java.nio.charset.StandardCharsets.UTF_8), headers, HttpStatus.OK);
+    }
+
     private LocalDate parseDate(String dateStr) {
         if (dateStr == null || dateStr.trim().isEmpty()) {
             return null;
