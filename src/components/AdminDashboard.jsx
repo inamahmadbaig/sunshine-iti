@@ -38,7 +38,8 @@ import {
   Home,
   Database,
   MessageCircle,
-  BookOpen
+  BookOpen,
+  Printer
 } from 'lucide-react';
 import AdminOfflineAdmission from './AdminOfflineAdmission';
 import AnalyticsDashboard from './AnalyticsDashboard';
@@ -541,6 +542,126 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
     `;
     receiptWindow.document.write(html);
     receiptWindow.document.close();
+  };
+
+  const handlePrintAdmissionForm = (student) => {
+    const printWindow = window.open('', '_blank');
+    const html = `
+      <html>
+        <head>
+          <title>Admission Form - ${student.fullName}</title>
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+          <style>
+            body { font-family: 'Times New Roman', serif; padding: 2rem; color: #000; }
+            .header-text { text-align: center; margin-bottom: 1rem; }
+            .header-text h2 { color: #dc3545; font-weight: bold; margin-bottom: 0.2rem; font-size: 28px; }
+            .header-text h5 { color: #0d6efd; font-weight: bold; font-size: 18px; }
+            .section-title { background-color: #f8f9fa; padding: 0.5rem; border: 1px solid #dee2e6; font-weight: bold; text-transform: uppercase; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 14px; }
+            .info-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+            .info-table th, .info-table td { border: 1px solid #dee2e6; padding: 0.4rem; font-size: 0.95rem; }
+            .info-table th { width: 25%; background-color: #f8f9fa; font-weight: 600; }
+            .photo-box { width: 130px; height: 160px; border: 1px solid #000; text-align: center; float: right; margin-left: auto; }
+            .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+            @media print {
+              body { padding: 0; }
+              .btn-print { display: none; }
+            }
+          </style>
+        </head>
+        <body onload="window.print()">
+          <div class="container-fluid" style="max-width: 900px; margin: 0 auto;">
+            <div class="row align-items-center mb-3">
+              <div class="col-2 text-center">
+                <img src="/logo.png" alt="Logo" style="max-height: 80px;" onerror="this.style.display='none'" />
+              </div>
+              <div class="col-8 header-text">
+                <h2>SUNSHINE ITI COLLEGE</h2>
+                <h5>SEONI (M.P.)</h5>
+                <p class="mb-0 small">AFFILIATION - DGT-12/1/18-TC | MIS CODE - PU23001071</p>
+                <h4 class="mt-2 text-decoration-underline" style="font-weight:bold;font-size:20px;">ADMISSION APPLICATION FORM</h4>
+              </div>
+              <div class="col-2">
+                <div class="photo-box">
+                  <img src="${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${student.id}/files/photo" alt="Photo" onerror="this.src=''; this.alt='Paste Photo Here';" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <div class="col-6"><strong>Application No:</strong> ITI${new Date().getFullYear()}/${String(student.id).padStart(2, '0')}</div>
+              <div class="col-6 text-end"><strong>Applied Trade:</strong> <span style="border-bottom: 1px dashed #000; font-weight: bold; color: #dc3545;">${student.trade}</span></div>
+            </div>
+
+            <div class="section-title">Personal Details</div>
+            <table class="info-table">
+              <tr><th>Full Name</th><td colspan="3" class="fw-bold text-uppercase">${student.fullName}</td></tr>
+              <tr><th>Father's Name</th><td class="text-uppercase">${student.fatherName}</td><th>Mother's Name</th><td class="text-uppercase">${student.motherName}</td></tr>
+              <tr><th>Date of Birth</th><td>${student.dob}</td><th>Gender</th><td>${student.gender}</td></tr>
+              <tr><th>Category</th><td>${student.category}</td><th>Religion</th><td>${student.religion}</td></tr>
+              <tr><th>Aadhar No.</th><td>${student.aadharNo}</td><th>Samagra ID</th><td>${student.samagraId}</td></tr>
+              <tr><th>Blood Group</th><td>${student.bloodGroup || 'N/A'}</td><th>Is PH (Handicapped)</th><td>${student.isPH || 'No'}</td></tr>
+              <tr><th>Annual Income</th><td colspan="3">₹ ${student.annualIncome || 'N/A'}</td></tr>
+            </table>
+
+            <div class="section-title">Contact Information</div>
+            <table class="info-table">
+              <tr><th>Mobile Number</th><td>${student.mobile}</td><th>WhatsApp Number</th><td>${student.whatsapp || 'N/A'}</td></tr>
+              <tr><th>Parent's Mobile</th><td>${student.parentMobile || 'N/A'}</td><th>Email Address</th><td>${student.email || 'N/A'}</td></tr>
+              <tr><th>Permanent Address</th><td colspan="3">${student.address}, ${student.post || ''}, ${student.tehsil}, ${student.distt}, ${student.state} - ${student.pin}</td></tr>
+            </table>
+
+            <div class="section-title">Educational Qualification</div>
+            <table class="info-table text-center">
+              <tr><th>Examination</th><th>Board/University</th><th>School/College Name</th><th>Passing Year</th><th>Marks Obt / Total</th></tr>
+              <tr>
+                <td>10th / High School</td>
+                <td>${student.tenthBoard || 'N/A'}</td>
+                <td>${student.tenthSchool || 'N/A'}</td>
+                <td>${student.tenthYear || 'N/A'}</td>
+                <td>${student.tenthMarksObt || 0} / ${student.tenthTotalMarks || 0}</td>
+              </tr>
+              ${student.twelfthBoard ? `
+              <tr>
+                <td>12th / Higher Secondary</td>
+                <td>${student.twelfthBoard}</td>
+                <td>${student.twelfthSchool || 'N/A'}</td>
+                <td>${student.twelfthYear || 'N/A'}</td>
+                <td>${student.twelfthMarksObt || 0} / ${student.twelfthTotalMarks || 0}</td>
+              </tr>
+              ` : ''}
+            </table>
+
+            <div class="section-title">Declaration</div>
+            <p class="small text-justify" style="line-height: 1.4; margin-top: 0.5rem; margin-bottom: 0;">
+              I hereby declare that all the information provided by me in this application form is true and correct to the best of my knowledge. I understand that if any information is found to be false or incorrect, my admission may be cancelled at any stage. I agree to abide by the rules and regulations of Sunshine ITI College.
+            </p>
+
+            <div class="row pt-4" style="margin-top: 3rem;">
+              <div class="col-4 text-center">
+                <div style="width: 150px; height: 50px; border-bottom: 1px dashed #000; margin: 0 auto; display: flex; align-items: end; justify-content: center;">
+                  <img src="${import.meta.env.VITE_API_URL || "http://localhost:8081"}/api/admissions/${student.id}/files/signature" alt="Signature" style="max-height: 100%; max-width: 100%;" onerror="this.style.display='none'" />
+                </div>
+                <p class="mt-2 mb-0 fw-bold">Signature of Student</p>
+              </div>
+              <div class="col-4 text-center">
+                <div style="width: 150px; height: 50px; border-bottom: 1px dashed #000; margin: 0 auto;"></div>
+                <p class="mt-2 mb-0 fw-bold">Signature of Parent/Guardian</p>
+              </div>
+              <div class="col-4 text-center">
+                <div style="width: 150px; height: 50px; border-bottom: 1px dashed #000; margin: 0 auto;"></div>
+                <p class="mt-2 mb-0 fw-bold">Authorized Signatory</p>
+              </div>
+            </div>
+            
+            <div class="text-center mt-4 small text-muted">
+              * This document is a computer-generated copy of the student's admission record.
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+    printWindow.document.write(html);
+    printWindow.document.close();
   };
 
   const handleExportCSV = () => {
@@ -1369,6 +1490,9 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                         </button>
                         <button onClick={handleGenerateCertificate} className="btn btn-primary" style={{ backgroundColor: '#8b5cf6', border: 'none', fontSize: '0.75rem', padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
                           <Award size={14} /> Generate Certificate
+                        </button>
+                        <button onClick={() => handlePrintAdmissionForm(selectedStudent)} className="btn btn-primary" style={{ backgroundColor: '#0d9488', border: 'none', fontSize: '0.75rem', padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                          <Printer size={14} /> Print Form
                         </button>
                         <button onClick={() => handlePrintReceipt(selectedStudent)} className="btn btn-primary" style={{ backgroundColor: '#2563eb', border: 'none', fontSize: '0.75rem', padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
                           <FileText size={14} /> Print Receipt
