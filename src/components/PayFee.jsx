@@ -28,6 +28,7 @@ const PayFee = () => {
   const [mobile, setMobile] = useState('');
   const [dob, setDob] = useState('');
   const [student, setStudent] = useState(null);
+  const [feeHistory, setFeeHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -56,6 +57,12 @@ const PayFee = () => {
       const res = await axios.get(url);
       if (res.data) {
         setStudent(res.data);
+        try {
+          const feesRes = await axios.get(`${API_BASE}/fees/student/${res.data.id}`);
+          setFeeHistory(feesRes.data);
+        } catch (e) {
+          console.error("Failed to fetch fee history");
+        }
       } else {
         setError(searchMode === 'mobileSearch' 
           ? 'No student found with this Mobile Number and DOB.'
@@ -110,6 +117,12 @@ const PayFee = () => {
       const refreshRes = await axios.get(`${API_BASE}/admissions/search?id=${student.id}&dob=${student.dob}`);
       if (refreshRes.data) {
         setStudent(refreshRes.data);
+        try {
+          const feesRes = await axios.get(`${API_BASE}/fees/student/${refreshRes.data.id}`);
+          setFeeHistory(feesRes.data);
+        } catch (e) {
+          console.error("Failed to fetch fee history");
+        }
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to submit payment details.');
@@ -467,6 +480,43 @@ const PayFee = () => {
                             </button>
                           </div>
                         </form>
+                      </div>
+                    )}
+
+                    {/* Fee History Section */}
+                    {feeHistory && feeHistory.length > 0 && (
+                      <div className="fee-payment-box p-4 rounded-4 mt-4 fade-in">
+                        <h5 className="fw-bold mb-4 text-dark d-flex align-items-center">
+                          <FileText size={20} className="me-2 text-primary" /> My Payment History
+                        </h5>
+                        <div className="table-responsive">
+                          <table className="table table-hover table-borderless align-middle shadow-sm rounded-3 overflow-hidden mb-0">
+                            <thead className="table-light">
+                              <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Txn ID</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody className="bg-white">
+                              {feeHistory.map(fee => (
+                                <tr key={fee.id} className="border-bottom">
+                                  <td className="text-secondary small">{new Date(fee.paymentDate).toLocaleDateString('en-IN')}</td>
+                                  <td className="fw-bold text-dark">₹ {(fee.amount || 0).toLocaleString('en-IN')}</td>
+                                  <td className="text-secondary small">{fee.paymentMethod}</td>
+                                  <td className="text-secondary small">{fee.transactionId || '-'}</td>
+                                  <td>
+                                    <span className={`badge rounded-pill ${fee.status === 'APPROVED' ? 'bg-success' : fee.status === 'REJECTED' ? 'bg-danger' : 'bg-warning text-dark'}`}>
+                                      {fee.status}
+                                    </span>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     )}
 

@@ -132,7 +132,17 @@ public class FeePaymentController {
                 fee.setReceiptType(receipt.getContentType());
             }
 
-            return ResponseEntity.ok(feePaymentRepository.save(fee));
+            FeePayment savedFee = feePaymentRepository.save(fee);
+
+            try {
+                AdmissionDetail student = admissionOpt.get();
+                List<FeePayment> history = feePaymentRepository.findByAdmissionDetailIdOrderByPaymentDateDesc(student.getId());
+                emailHelper.sendFeeUpdateEmail(student, savedFee, history);
+            } catch (Exception e) {
+                System.err.println("Failed to send fee submission email: " + e.getMessage());
+            }
+
+            return ResponseEntity.ok(savedFee);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
         }

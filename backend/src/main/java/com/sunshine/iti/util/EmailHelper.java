@@ -294,7 +294,7 @@ public class EmailHelper {
 
         String htmlContent = "<html><body>" +
                 "<h2>Dear " + student.getFullName() + ",</h2>" +
-                "<p>Your fee payment status has been updated by the administration at <strong>Sunshine Pvt. ITI College, Seoni</strong>.</p>" +
+                "<p>There is an update regarding your fee payment at <strong>Sunshine Pvt. ITI College, Seoni</strong>.</p>" +
                 "<h3>Latest Payment Update:</h3>" +
                 "<table border='1' cellpadding='8' style='border-collapse: collapse;'>" +
                 "<tr><td><strong>Payment Date:</strong></td><td>" + (currentPayment.getPaymentDate() != null ? currentPayment.getPaymentDate().toLocalDate().toString() : "N/A") + "</td></tr>" +
