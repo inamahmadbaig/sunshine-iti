@@ -66,6 +66,8 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
 
   // Search & Filter
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterTrade, setFilterTrade] = useState('ALL');
+  const [filterYear, setFilterYear] = useState('ALL');
 
   // Offline Payment states
   const [isEditingPayment, setIsEditingPayment] = useState(false);
@@ -1031,6 +1033,19 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
     if (activeTab === 'pending-payments') {
       list = list.filter(a => a.paymentStatus !== 'COMPLETED' || a.outstandingBalance > 0);
     }
+    
+    if (filterTrade !== 'ALL') {
+      list = list.filter(a => (a.trade || '').toUpperCase().includes(filterTrade));
+    }
+
+    if (filterYear !== 'ALL') {
+      list = list.filter(a => {
+        if (!a.appliedDate) return false;
+        const year = new Date(a.appliedDate).getFullYear().toString();
+        return year === filterYear;
+      });
+    }
+
     if (searchQuery.trim() !== '') {
       const query = searchQuery.toLowerCase();
       list = list.filter(a => 
@@ -1262,16 +1277,44 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
       case 'all-students':
         return (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
               <h2 className="admin-page-title" style={{ margin: 0 }}>Student Admissions Management</h2>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                <select 
+                  className="admin-form-control" 
+                  value={filterTrade} 
+                  onChange={(e) => setFilterTrade(e.target.value)}
+                  style={{ width: '150px', padding: '0.5rem' }}
+                >
+                  <option value="ALL">All Courses</option>
+                  <option value="ELECTRICIAN">Electrician</option>
+                  <option value="FITTER">Fitter</option>
+                  <option value="COPA">COPA</option>
+                  <option value="WELDER">Welder</option>
+                  <option value="HEALTH">Health</option>
+                  <option value="DCA">DCA</option>
+                  <option value="PGDCA">PGDCA</option>
+                </select>
+                <select 
+                  className="admin-form-control" 
+                  value={filterYear} 
+                  onChange={(e) => setFilterYear(e.target.value)}
+                  style={{ width: '120px', padding: '0.5rem' }}
+                >
+                  <option value="ALL">All Years</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                </select>
                 <input 
                   type="text" 
                   className="admin-form-control" 
                   placeholder="Search applicants..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{ width: '240px', padding: '0.5rem 0.8rem' }}
+                  style={{ width: '200px', padding: '0.5rem 0.8rem' }}
                 />
                 <button onClick={handleExportCSV} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', padding: '0.5rem 1rem' }}>
                   <Download size={16} /> Export CSV
