@@ -20,6 +20,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ForgotUsername from './components/ForgotUsername';
 import ResetPassword from './components/ResetPassword';
 import AdminDashboard from './components/AdminDashboard';
+import AdminStudentProfile from './components/AdminStudentProfile';
 import TradesPage from './components/TradesPage';
 import AboutPage from './components/AboutPage';
 import AdmissionsPage from './components/AdmissionsPage';
@@ -247,6 +248,7 @@ export default function App() {
         <Route path="/admin/pending-payments" element={<AdminDashboard activeTab="pending-payments" />} />
         <Route path="/admin/pending-installments" element={<AdminDashboard activeTab="pending-installments" />} />
         <Route path="/admin/all-students" element={<AdminDashboard activeTab="all-students" />} />
+        <Route path="/admin/student/:id" element={<AdminStudentProfile />} />
         <Route path="/admin/offline-admission" element={<AdminDashboard activeTab="offline-admission" />} />
         <Route path="/admin/notifications" element={<AdminDashboard activeTab="notifications" />} />
         <Route path="/admin/manage-notices" element={<AdminDashboard activeTab="manage-notices" />} />
