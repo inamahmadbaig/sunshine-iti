@@ -1351,36 +1351,51 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                 ) : filteredAdmissions.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--admin-text-muted)' }}>No student records found.</div>
                 ) : (
-                  filteredAdmissions.map(student => {
-                    const isSel = selectedStudent?.id === student.id;
-                    const stBadge = student.status === 'APPROVED' ? 'admin-badge-success' : student.status === 'REJECTED' ? 'admin-badge-danger' : 'admin-badge-warning';
-                    return (
-                      <div 
-                        key={student.id} 
-                        onClick={() => handleSelectStudent(student)}
-                        style={{
-                          padding: '1rem',
-                          borderBottom: '1px solid var(--admin-border)',
-                          cursor: 'pointer',
-                          backgroundColor: isSel ? 'rgba(37, 99, 235, 0.08)' : 'transparent',
-                          borderLeft: isSel ? '4px solid #2563eb' : '4px solid transparent'
-                        }}
-                      >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, color: 'var(--admin-text-main)' }}>{student.fullName}</h4>
-                          <span className={`admin-badge ${stBadge}`}>{student.status}</span>
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--admin-text-muted)' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--admin-text-main)', fontWeight: 500 }}><Briefcase size={13} /> {student.trade}</span>
-                          {student.fatherName && <span><strong>Father:</strong> {student.fatherName}</span>}
-                          {student.motherName && <span><strong>Mother:</strong> {student.motherName}</span>}
-                          {student.mobile && <span><strong>Mobile:</strong> {student.mobile}</span>}
-                          {student.address && <span><strong>Address:</strong> {student.address}{student.distt ? `, ${student.distt}` : ''}</span>}
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.2rem' }}><Calendar size={13} /> {new Date(student.appliedDate).toLocaleDateString()}</span>
-                        </div>
-                      </div>
-                    );
-                  })
+                  <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+                      <thead style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
+                        <tr>
+                          <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--admin-border)' }}>Name</th>
+                          <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--admin-border)' }}>Trade</th>
+                          <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--admin-border)' }}>Mobile</th>
+                          <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--admin-border)' }}>Father Name</th>
+                          <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--admin-border)' }}>Status</th>
+                          <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--admin-border)' }}>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredAdmissions.map(student => {
+                          const isSel = selectedStudent?.id === student.id;
+                          const stBadge = student.status === 'APPROVED' ? 'admin-badge-success' : student.status === 'REJECTED' ? 'admin-badge-danger' : 'admin-badge-warning';
+                          return (
+                            <tr 
+                              key={student.id} 
+                              onClick={() => handleSelectStudent(student)}
+                              style={{
+                                cursor: 'pointer',
+                                backgroundColor: isSel ? 'rgba(37, 99, 235, 0.08)' : 'transparent',
+                                borderBottom: '1px solid var(--admin-border)',
+                                transition: 'background-color 0.2s'
+                              }}
+                            >
+                              <td style={{ padding: '0.75rem', fontWeight: 600, color: 'var(--admin-text-main)', borderLeft: isSel ? '4px solid #2563eb' : '4px solid transparent' }}>
+                                {student.fullName}
+                              </td>
+                              <td style={{ padding: '0.75rem', color: 'var(--admin-text-muted)' }}>{student.trade}</td>
+                              <td style={{ padding: '0.75rem', color: 'var(--admin-text-muted)' }}>{student.mobile || '-'}</td>
+                              <td style={{ padding: '0.75rem', color: 'var(--admin-text-muted)' }}>{student.fatherName || '-'}</td>
+                              <td style={{ padding: '0.75rem' }}>
+                                <span className={`admin-badge ${stBadge}`}>{student.status}</span>
+                              </td>
+                              <td style={{ padding: '0.75rem', color: 'var(--admin-text-muted)' }}>
+                                {new Date(student.appliedDate).toLocaleDateString()}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
               </div>
 
