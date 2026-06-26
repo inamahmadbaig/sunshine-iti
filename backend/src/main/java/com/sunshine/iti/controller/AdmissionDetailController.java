@@ -182,33 +182,63 @@ public class AdmissionDetailController {
         // Upload files to Cloudinary and store URLs
         if (dto.getPhoto() != null && !dto.getPhoto().isEmpty()) {
             detail.setPhotoUrl(uploadToCloudinary(dto.getPhoto()));
+            detail.setPhotoData(dto.getPhoto().getBytes());
+            detail.setPhotoName(dto.getPhoto().getOriginalFilename());
+            detail.setPhotoType(dto.getPhoto().getContentType());
         }
         if (dto.getSignature() != null && !dto.getSignature().isEmpty()) {
             detail.setSignatureUrl(uploadToCloudinary(dto.getSignature()));
+            detail.setSignatureData(dto.getSignature().getBytes());
+            detail.setSignatureName(dto.getSignature().getOriginalFilename());
+            detail.setSignatureType(dto.getSignature().getContentType());
         }
         if (dto.getTenthDocument() != null && !dto.getTenthDocument().isEmpty()) {
             detail.setTenthDocUrl(uploadToCloudinary(dto.getTenthDocument()));
+            detail.setTenthDocData(dto.getTenthDocument().getBytes());
+            detail.setTenthDocName(dto.getTenthDocument().getOriginalFilename());
+            detail.setTenthDocType(dto.getTenthDocument().getContentType());
         }
         if (dto.getTwelfthDocument() != null && !dto.getTwelfthDocument().isEmpty()) {
             detail.setTwelfthDocUrl(uploadToCloudinary(dto.getTwelfthDocument()));
+            detail.setTwelfthDocData(dto.getTwelfthDocument().getBytes());
+            detail.setTwelfthDocName(dto.getTwelfthDocument().getOriginalFilename());
+            detail.setTwelfthDocType(dto.getTwelfthDocument().getContentType());
         }
         if (dto.getAadharDocument() != null && !dto.getAadharDocument().isEmpty()) {
             detail.setAadharDocUrl(uploadToCloudinary(dto.getAadharDocument()));
+            detail.setAadharDocData(dto.getAadharDocument().getBytes());
+            detail.setAadharDocName(dto.getAadharDocument().getOriginalFilename());
+            detail.setAadharDocType(dto.getAadharDocument().getContentType());
         }
         if (dto.getSamagraDocument() != null && !dto.getSamagraDocument().isEmpty()) {
             detail.setSamagraDocUrl(uploadToCloudinary(dto.getSamagraDocument()));
+            detail.setSamagraDocData(dto.getSamagraDocument().getBytes());
+            detail.setSamagraDocName(dto.getSamagraDocument().getOriginalFilename());
+            detail.setSamagraDocType(dto.getSamagraDocument().getContentType());
         }
         if (dto.getCasteDocument() != null && !dto.getCasteDocument().isEmpty()) {
             detail.setCasteDocUrl(uploadToCloudinary(dto.getCasteDocument()));
+            detail.setCasteDocData(dto.getCasteDocument().getBytes());
+            detail.setCasteDocName(dto.getCasteDocument().getOriginalFilename());
+            detail.setCasteDocType(dto.getCasteDocument().getContentType());
         }
         if (dto.getIncomeDocument() != null && !dto.getIncomeDocument().isEmpty()) {
             detail.setIncomeDocUrl(uploadToCloudinary(dto.getIncomeDocument()));
+            detail.setIncomeDocData(dto.getIncomeDocument().getBytes());
+            detail.setIncomeDocName(dto.getIncomeDocument().getOriginalFilename());
+            detail.setIncomeDocType(dto.getIncomeDocument().getContentType());
         }
         if (dto.getDomicileDocument() != null && !dto.getDomicileDocument().isEmpty()) {
             detail.setDomicileDocUrl(uploadToCloudinary(dto.getDomicileDocument()));
+            detail.setDomicileDocData(dto.getDomicileDocument().getBytes());
+            detail.setDomicileDocName(dto.getDomicileDocument().getOriginalFilename());
+            detail.setDomicileDocType(dto.getDomicileDocument().getContentType());
         }
         if (dto.getPaymentReceipt() != null && !dto.getPaymentReceipt().isEmpty()) {
             detail.setPaymentReceiptUrl(uploadToCloudinary(dto.getPaymentReceipt()));
+            detail.setPaymentReceiptData(dto.getPaymentReceipt().getBytes());
+            detail.setPaymentReceiptName(dto.getPaymentReceipt().getOriginalFilename());
+            detail.setPaymentReceiptType(dto.getPaymentReceipt().getContentType());
         }
 
         AdmissionDetail saved = admissionDetailRepository.save(detail);
@@ -447,33 +477,63 @@ public class AdmissionDetailController {
             // Files (upload to Cloudinary if provided)
             if (dto.getPhoto() != null && !dto.getPhoto().isEmpty()) {
                 existing.setPhotoUrl(uploadToCloudinary(dto.getPhoto()));
+                existing.setPhotoData(dto.getPhoto().getBytes());
+                existing.setPhotoName(dto.getPhoto().getOriginalFilename());
+                existing.setPhotoType(dto.getPhoto().getContentType());
             }
             if (dto.getSignature() != null && !dto.getSignature().isEmpty()) {
                 existing.setSignatureUrl(uploadToCloudinary(dto.getSignature()));
+                existing.setSignatureData(dto.getSignature().getBytes());
+                existing.setSignatureName(dto.getSignature().getOriginalFilename());
+                existing.setSignatureType(dto.getSignature().getContentType());
             }
             if (dto.getTenthDocument() != null && !dto.getTenthDocument().isEmpty()) {
                 existing.setTenthDocUrl(uploadToCloudinary(dto.getTenthDocument()));
+                existing.setTenthDocData(dto.getTenthDocument().getBytes());
+                existing.setTenthDocName(dto.getTenthDocument().getOriginalFilename());
+                existing.setTenthDocType(dto.getTenthDocument().getContentType());
             }
             if (dto.getTwelfthDocument() != null && !dto.getTwelfthDocument().isEmpty()) {
                 existing.setTwelfthDocUrl(uploadToCloudinary(dto.getTwelfthDocument()));
+                existing.setTwelfthDocData(dto.getTwelfthDocument().getBytes());
+                existing.setTwelfthDocName(dto.getTwelfthDocument().getOriginalFilename());
+                existing.setTwelfthDocType(dto.getTwelfthDocument().getContentType());
             }
             if (dto.getAadharDocument() != null && !dto.getAadharDocument().isEmpty()) {
                 existing.setAadharDocUrl(uploadToCloudinary(dto.getAadharDocument()));
+                existing.setAadharDocData(dto.getAadharDocument().getBytes());
+                existing.setAadharDocName(dto.getAadharDocument().getOriginalFilename());
+                existing.setAadharDocType(dto.getAadharDocument().getContentType());
             }
             if (dto.getSamagraDocument() != null && !dto.getSamagraDocument().isEmpty()) {
                 existing.setSamagraDocUrl(uploadToCloudinary(dto.getSamagraDocument()));
+                existing.setSamagraDocData(dto.getSamagraDocument().getBytes());
+                existing.setSamagraDocName(dto.getSamagraDocument().getOriginalFilename());
+                existing.setSamagraDocType(dto.getSamagraDocument().getContentType());
             }
             if (dto.getCasteDocument() != null && !dto.getCasteDocument().isEmpty()) {
                 existing.setCasteDocUrl(uploadToCloudinary(dto.getCasteDocument()));
+                existing.setCasteDocData(dto.getCasteDocument().getBytes());
+                existing.setCasteDocName(dto.getCasteDocument().getOriginalFilename());
+                existing.setCasteDocType(dto.getCasteDocument().getContentType());
             }
             if (dto.getIncomeDocument() != null && !dto.getIncomeDocument().isEmpty()) {
                 existing.setIncomeDocUrl(uploadToCloudinary(dto.getIncomeDocument()));
+                existing.setIncomeDocData(dto.getIncomeDocument().getBytes());
+                existing.setIncomeDocName(dto.getIncomeDocument().getOriginalFilename());
+                existing.setIncomeDocType(dto.getIncomeDocument().getContentType());
             }
             if (dto.getDomicileDocument() != null && !dto.getDomicileDocument().isEmpty()) {
                 existing.setDomicileDocUrl(uploadToCloudinary(dto.getDomicileDocument()));
+                existing.setDomicileDocData(dto.getDomicileDocument().getBytes());
+                existing.setDomicileDocName(dto.getDomicileDocument().getOriginalFilename());
+                existing.setDomicileDocType(dto.getDomicileDocument().getContentType());
             }
             if (dto.getPaymentReceipt() != null && !dto.getPaymentReceipt().isEmpty()) {
                 existing.setPaymentReceiptUrl(uploadToCloudinary(dto.getPaymentReceipt()));
+                existing.setPaymentReceiptData(dto.getPaymentReceipt().getBytes());
+                existing.setPaymentReceiptName(dto.getPaymentReceipt().getOriginalFilename());
+                existing.setPaymentReceiptType(dto.getPaymentReceipt().getContentType());
             }
 
             return admissionDetailRepository.save(existing);
