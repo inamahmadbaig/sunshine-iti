@@ -1352,12 +1352,16 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                         }}
                       >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                          <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: 0, color: 'var(--admin-text-main)' }}>{student.fullName}</h4>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, color: 'var(--admin-text-main)' }}>{student.fullName}</h4>
                           <span className={`admin-badge ${stBadge}`}>{student.status}</span>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem', marginTop: '0.4rem', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><Briefcase size={12} /> {student.trade}</span>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><Calendar size={12} /> {new Date(student.appliedDate).toLocaleDateString()}</span>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--admin-text-muted)' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--admin-text-main)', fontWeight: 500 }}><Briefcase size={13} /> {student.trade}</span>
+                          {student.fatherName && <span><strong>Father:</strong> {student.fatherName}</span>}
+                          {student.motherName && <span><strong>Mother:</strong> {student.motherName}</span>}
+                          {student.mobile && <span><strong>Mobile:</strong> {student.mobile}</span>}
+                          {student.address && <span><strong>Address:</strong> {student.address}{student.distt ? `, ${student.distt}` : ''}</span>}
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.2rem' }}><Calendar size={13} /> {new Date(student.appliedDate).toLocaleDateString()}</span>
                         </div>
                       </div>
                     );
