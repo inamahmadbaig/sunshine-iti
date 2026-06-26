@@ -481,9 +481,51 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
       .catch(err => alert("Error updating status: " + err.message));
   };
 
-  const handlePrintReceipt = (student) => {
+  const handlePrintReceipt = async (student) => {
+    let feeHistory = [];
+    try {
+      const res = await axios.get(`${API_BASE}/fees/student/${student.id}`);
+      if (res.data) {
+        feeHistory = res.data;
+      }
+    } catch (err) {
+      console.error("Failed to fetch fee history for receipt", err);
+    }
+
     const receiptWindow = window.open("", "_blank");
     const dateStr = new Date().toLocaleDateString("en-IN");
+    
+    let historyRowsHtml = '';
+    if (feeHistory && feeHistory.length > 0) {
+      historyRowsHtml = `
+        <h5 class="mt-4" style="color: #1e3a5f; border-bottom: 2px solid #dee2e6; padding-bottom: 5px;">Fee Payment History</h5>
+        <table class="table table-sm table-bordered mt-2" style="font-size: 0.9rem;">
+          <thead style="background-color: #f8f9fa;">
+            <tr>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Status</th>
+              <th>Txn ID / Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${feeHistory.map(fee => `
+              <tr>
+                <td>${new Date(fee.paymentDate).toLocaleDateString('en-IN')}</td>
+                <td class="fw-bold">₹ ${(fee.amount || 0).toLocaleString('en-IN')}</td>
+                <td>${fee.paymentMethod || 'N/A'}</td>
+                <td>
+                  <span style="font-weight: bold; color: ${fee.status === 'APPROVED' ? '#10b981' : fee.status === 'REJECTED' ? '#ef4444' : '#f59e0b'}">${fee.status}</span>
+                </td>
+                <td>${fee.transactionId || fee.remarks || '-'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
     const html = `
       <html>
         <head>
@@ -522,13 +564,13 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                 <tr><th>Total Course Fee (Annual)</th><td class="fw-bold">₹ ${(student.courseFee || 0).toLocaleString('en-IN')}</td></tr>
                 <tr><th>Amount Paid so far</th><td class="fw-bold text-success">₹ ${(student.amountPaid || 0).toLocaleString('en-IN')}</td></tr>
                 <tr><th>Remaining Pay</th><td class="fw-bold text-danger">₹ ${(student.outstandingBalance || 0).toLocaleString('en-IN')}</td></tr>
-                <tr><th>Payment Method</th><td>${student.paymentMethod || 'N/A'}</td></tr>
-                <tr><th>Transaction ID / UTR</th><td>${student.transactionId || 'N/A'}</td></tr>
                 <tr><th>Application Status</th><td class="fw-bold" style="color: ${student.status === 'APPROVED' ? '#10b981' : student.status === 'REJECTED' ? '#ef4444' : '#f59e0b'}">${student.status === 'PENDING' ? 'UNDER PROCESS' : student.status}</td></tr>
                 <tr><th>Payment Status</th><td class="fw-bold" style="color: ${student.paymentStatus === 'COMPLETED' ? '#10b981' : '#f59e0b'}">${student.paymentStatus || 'PENDING'}</td></tr>
                 ${student.adminRemarks ? `<tr><th>Admin Remarks</th><td style="white-space: pre-wrap;">${student.adminRemarks}</td></tr>` : ''}
               </tbody>
             </table>
+            
+            ${historyRowsHtml}
             
             <div class="row mt-5 pt-3">
               <div class="col-6 text-center"><br><p class="small text-muted" style="border-top: 1px solid #000; display: inline-block; padding-top: 5px; width: 150px;">Student Signature</p></div>
