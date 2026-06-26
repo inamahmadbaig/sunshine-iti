@@ -1291,7 +1291,7 @@ export default function AdminDashboard({ activeTab = 'dashboard' }) {
                   <option value="FITTER">Fitter</option>
                   <option value="COPA">COPA</option>
                   <option value="WELDER">Welder</option>
-                  <option value="HEALTH">Health</option>
+                  <option value="HEALTH">Health Sanitary Inspector</option>
                   <option value="DCA">DCA</option>
                   <option value="PGDCA">PGDCA</option>
                 </select>
