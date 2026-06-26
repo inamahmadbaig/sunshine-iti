@@ -33,12 +33,12 @@ public class AdmissionDetailController {
     private Cloudinary cloudinary;
 
     private String uploadToCloudinary(MultipartFile file) {
-        if (file == null || file.isEmpty()) return null;
+        if (file == null || file.isEmpty())
+            return null;
         try {
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
                     "folder", "iti-college",
-                    "resource_type", "auto"
-            ));
+                    "resource_type", "auto"));
             return uploadResult.get("secure_url").toString();
         } catch (IOException e) {
             System.err.println("Cloudinary upload failed: " + e.getMessage());
@@ -47,21 +47,30 @@ public class AdmissionDetailController {
     }
 
     private double getCourseFeeForTrade(String trade) {
-        if (trade == null) return 0.0;
+        if (trade == null)
+            return 0.0;
         switch (trade.toUpperCase()) {
-            case "ELECTRICIAN": return 30000.0;
-            case "FITTER": return 30000.0;
-            case "COPA": return 15000.0;
-            case "WELDER": return 18000.0;
-            case "DIESEL MECHANIC": return 20000.0;
-            case "DCA": return 11000.0;
-            case "PGDCA": return 12000.0;
+            case "ELECTRICIAN":
+                return 30000.0;
+            case "FITTER":
+                return 30000.0;
+            case "COPA":
+                return 15000.0;
+            case "WELDER":
+                return 18000.0;
+            case "DIESEL MECHANIC":
+                return 20000.0;
+            case "DCA":
+                return 11000.0;
+            case "PGDCA":
+                return 12000.0;
             case "HSI":
-            case "HEALTH SANITARY INSPECTOR": return 28000.0;
-            default: return 0.0;
+            case "HEALTH SANITARY INSPECTOR":
+                return 28000.0;
+            default:
+                return 0.0;
         }
     }
-
 
     @GetMapping
     public List<AdmissionDetail> getAllAdmissions() {
@@ -74,7 +83,7 @@ public class AdmissionDetailController {
             @RequestParam(value = "dob") String dobStr,
             @RequestParam(value = "fullName", required = false) String fullName,
             @RequestParam(value = "mobile", required = false) String mobile) {
-        
+
         LocalDate dob = parseDate(dobStr);
         if (dob == null) {
             return ResponseEntity.badRequest().body(Map.of("error", "Invalid date format. Use YYYY-MM-DD"));
@@ -92,8 +101,7 @@ public class AdmissionDetailController {
             }
         } else if (fullName != null && mobile != null) {
             Optional<AdmissionDetail> studentOpt = admissionDetailRepository.findByFullNameIgnoreCaseAndMobileAndDob(
-                fullName.trim(), mobile.trim(), dob
-            );
+                    fullName.trim(), mobile.trim(), dob);
             if (studentOpt.isPresent()) {
                 return ResponseEntity.ok(studentOpt.get());
             }
@@ -103,21 +111,21 @@ public class AdmissionDetailController {
                 .body(Map.of("error", "No record found with the provided details."));
     }
 
-    @PostMapping(consumes = {"multipart/form-data"})
+    @PostMapping(consumes = { "multipart/form-data" })
     public AdmissionDetail submitAdmission(@ModelAttribute AdmissionFormDto dto) throws IOException {
         AdmissionDetail detail = new AdmissionDetail();
-        
+
         detail.setTrade(dto.getTrade());
         detail.setFullName(dto.getFullName());
         detail.setFatherName(dto.getFatherName());
         detail.setMotherName(dto.getMotherName());
         detail.setAadharNo(dto.getAadharNo());
         detail.setSamagraId(dto.getSamagraId());
-        
+
         if (dto.getDob() != null && !dto.getDob().isEmpty()) {
             detail.setDob(parseDate(dto.getDob()));
         }
-        
+
         detail.setCategory(dto.getCategory());
         detail.setGender(dto.getGender());
         detail.setReligion(dto.getReligion());
@@ -171,7 +179,6 @@ public class AdmissionDetailController {
         detail.setOutstandingBalance(courseFee - detail.getAmountPaid());
         detail.setPaymentStatus(detail.getAmountPaid() >= courseFee ? "COMPLETED" : "PENDING");
 
-
         // Upload files to Cloudinary and store URLs
         if (dto.getPhoto() != null && !dto.getPhoto().isEmpty()) {
             detail.setPhotoUrl(uploadToCloudinary(dto.getPhoto()));
@@ -220,7 +227,7 @@ public class AdmissionDetailController {
         if (!detailOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         AdmissionDetail detail = detailOpt.get();
         byte[] data = null;
         String contentType = "application/octet-stream";
@@ -329,7 +336,7 @@ public class AdmissionDetailController {
             existing.setTwelfthYear(detail.getTwelfthYear());
             existing.setTwelfthTotalMarks(detail.getTwelfthTotalMarks());
             existing.setTwelfthMarksObt(detail.getTwelfthMarksObt());
-            
+
             existing.setPaymentMethod(detail.getPaymentMethod());
             existing.setTransactionId(detail.getTransactionId());
             double updatePaidVal = detail.getAmountPaid() != null ? detail.getAmountPaid() : 0.0;
@@ -354,51 +361,88 @@ public class AdmissionDetailController {
         }
         return null;
     }
-    @PostMapping(value = "/{id}/update", consumes = {"multipart/form-data"})
-    public AdmissionDetail fullUpdateAdmission(@PathVariable Long id, @ModelAttribute AdmissionFormDto dto) throws IOException {
+
+    @PostMapping(value = "/{id}/update", consumes = { "multipart/form-data" })
+    public AdmissionDetail fullUpdateAdmission(@PathVariable Long id, @ModelAttribute AdmissionFormDto dto)
+            throws IOException {
         Optional<AdmissionDetail> existingOpt = admissionDetailRepository.findById(id);
         if (existingOpt.isPresent()) {
             AdmissionDetail existing = existingOpt.get();
 
             // Text Fields
-            if (dto.getTrade() != null) existing.setTrade(dto.getTrade());
-            if (dto.getFullName() != null) existing.setFullName(dto.getFullName());
-            if (dto.getFatherName() != null) existing.setFatherName(dto.getFatherName());
-            if (dto.getMotherName() != null) existing.setMotherName(dto.getMotherName());
-            if (dto.getAadharNo() != null) existing.setAadharNo(dto.getAadharNo());
-            if (dto.getSamagraId() != null) existing.setSamagraId(dto.getSamagraId());
-            if (dto.getDob() != null && !dto.getDob().isEmpty()) existing.setDob(parseDate(dto.getDob()));
-            if (dto.getCategory() != null) existing.setCategory(dto.getCategory());
-            if (dto.getGender() != null) existing.setGender(dto.getGender());
-            if (dto.getReligion() != null) existing.setReligion(dto.getReligion());
-            if (dto.getBloodGroup() != null) existing.setBloodGroup(dto.getBloodGroup());
-            if (dto.getAnnualIncome() != null) existing.setAnnualIncome(dto.getAnnualIncome());
-            if (dto.getIsPH() != null) existing.setIsPH(dto.getIsPH());
+            if (dto.getTrade() != null)
+                existing.setTrade(dto.getTrade());
+            if (dto.getFullName() != null)
+                existing.setFullName(dto.getFullName());
+            if (dto.getFatherName() != null)
+                existing.setFatherName(dto.getFatherName());
+            if (dto.getMotherName() != null)
+                existing.setMotherName(dto.getMotherName());
+            if (dto.getAadharNo() != null)
+                existing.setAadharNo(dto.getAadharNo());
+            if (dto.getSamagraId() != null)
+                existing.setSamagraId(dto.getSamagraId());
+            if (dto.getDob() != null && !dto.getDob().isEmpty())
+                existing.setDob(parseDate(dto.getDob()));
+            if (dto.getCategory() != null)
+                existing.setCategory(dto.getCategory());
+            if (dto.getGender() != null)
+                existing.setGender(dto.getGender());
+            if (dto.getReligion() != null)
+                existing.setReligion(dto.getReligion());
+            if (dto.getBloodGroup() != null)
+                existing.setBloodGroup(dto.getBloodGroup());
+            if (dto.getAnnualIncome() != null)
+                existing.setAnnualIncome(dto.getAnnualIncome());
+            if (dto.getIsPH() != null)
+                existing.setIsPH(dto.getIsPH());
 
-            if (dto.getAddress() != null) existing.setAddress(dto.getAddress());
-            if (dto.getPost() != null) existing.setPost(dto.getPost());
-            if (dto.getTehsil() != null) existing.setTehsil(dto.getTehsil());
-            if (dto.getDistt() != null) existing.setDistt(dto.getDistt());
-            if (dto.getState() != null) existing.setState(dto.getState());
-            if (dto.getPin() != null) existing.setPin(dto.getPin());
-            if (dto.getMobile() != null) existing.setMobile(dto.getMobile());
-            if (dto.getParentMobile() != null) existing.setParentMobile(dto.getParentMobile());
-            if (dto.getWhatsapp() != null) existing.setWhatsapp(dto.getWhatsapp());
-            if (dto.getEmail() != null) existing.setEmail(dto.getEmail());
+            if (dto.getAddress() != null)
+                existing.setAddress(dto.getAddress());
+            if (dto.getPost() != null)
+                existing.setPost(dto.getPost());
+            if (dto.getTehsil() != null)
+                existing.setTehsil(dto.getTehsil());
+            if (dto.getDistt() != null)
+                existing.setDistt(dto.getDistt());
+            if (dto.getState() != null)
+                existing.setState(dto.getState());
+            if (dto.getPin() != null)
+                existing.setPin(dto.getPin());
+            if (dto.getMobile() != null)
+                existing.setMobile(dto.getMobile());
+            if (dto.getParentMobile() != null)
+                existing.setParentMobile(dto.getParentMobile());
+            if (dto.getWhatsapp() != null)
+                existing.setWhatsapp(dto.getWhatsapp());
+            if (dto.getEmail() != null)
+                existing.setEmail(dto.getEmail());
 
-            if (dto.getTenthBoard() != null) existing.setTenthBoard(dto.getTenthBoard());
-            if (dto.getTenthSchool() != null) existing.setTenthSchool(dto.getTenthSchool());
-            if (dto.getTenthRollNo() != null) existing.setTenthRollNo(dto.getTenthRollNo());
-            if (dto.getTenthYear() != null) existing.setTenthYear(dto.getTenthYear());
-            if (dto.getTenthTotalMarks() != null) existing.setTenthTotalMarks(dto.getTenthTotalMarks());
-            if (dto.getTenthMarksObt() != null) existing.setTenthMarksObt(dto.getTenthMarksObt());
+            if (dto.getTenthBoard() != null)
+                existing.setTenthBoard(dto.getTenthBoard());
+            if (dto.getTenthSchool() != null)
+                existing.setTenthSchool(dto.getTenthSchool());
+            if (dto.getTenthRollNo() != null)
+                existing.setTenthRollNo(dto.getTenthRollNo());
+            if (dto.getTenthYear() != null)
+                existing.setTenthYear(dto.getTenthYear());
+            if (dto.getTenthTotalMarks() != null)
+                existing.setTenthTotalMarks(dto.getTenthTotalMarks());
+            if (dto.getTenthMarksObt() != null)
+                existing.setTenthMarksObt(dto.getTenthMarksObt());
 
-            if (dto.getTwelfthBoard() != null) existing.setTwelfthBoard(dto.getTwelfthBoard());
-            if (dto.getTwelfthSchool() != null) existing.setTwelfthSchool(dto.getTwelfthSchool());
-            if (dto.getTwelfthRollNo() != null) existing.setTwelfthRollNo(dto.getTwelfthRollNo());
-            if (dto.getTwelfthYear() != null) existing.setTwelfthYear(dto.getTwelfthYear());
-            if (dto.getTwelfthTotalMarks() != null) existing.setTwelfthTotalMarks(dto.getTwelfthTotalMarks());
-            if (dto.getTwelfthMarksObt() != null) existing.setTwelfthMarksObt(dto.getTwelfthMarksObt());
+            if (dto.getTwelfthBoard() != null)
+                existing.setTwelfthBoard(dto.getTwelfthBoard());
+            if (dto.getTwelfthSchool() != null)
+                existing.setTwelfthSchool(dto.getTwelfthSchool());
+            if (dto.getTwelfthRollNo() != null)
+                existing.setTwelfthRollNo(dto.getTwelfthRollNo());
+            if (dto.getTwelfthYear() != null)
+                existing.setTwelfthYear(dto.getTwelfthYear());
+            if (dto.getTwelfthTotalMarks() != null)
+                existing.setTwelfthTotalMarks(dto.getTwelfthTotalMarks());
+            if (dto.getTwelfthMarksObt() != null)
+                existing.setTwelfthMarksObt(dto.getTwelfthMarksObt());
 
             // Files (upload to Cloudinary if provided)
             if (dto.getPhoto() != null && !dto.getPhoto().isEmpty()) {
@@ -445,14 +489,14 @@ public class AdmissionDetailController {
             String oldStatus = existing.getStatus();
             String newStatus = body.get("status");
             existing.setStatus(newStatus);
-            
+
             if ("APPROVED".equals(newStatus)) {
                 double fee = existing.getCourseFee() != null ? existing.getCourseFee() : 0.0;
                 double paid = existing.getAmountPaid() != null ? existing.getAmountPaid() : 0.0;
                 existing.setOutstandingBalance(fee - paid);
                 existing.setPaymentStatus(paid >= fee ? "COMPLETED" : "PENDING");
             }
-            
+
             AdmissionDetail saved = admissionDetailRepository.save(existing);
 
             if ("APPROVED".equals(newStatus) && !"APPROVED".equals(oldStatus)) {
@@ -519,7 +563,8 @@ public class AdmissionDetailController {
                 emailHelper.sendApprovalEmail(existing);
                 return ResponseEntity.ok(Map.of("message", "Receipt emailed successfully"));
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to send email"));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of("error", "Failed to send email"));
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Application not found"));
@@ -545,17 +590,18 @@ public class AdmissionDetailController {
                 .body(data);
     }
 
-    @PostMapping(value = "/bulk-upload", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/bulk-upload", consumes = { "multipart/form-data" })
     public ResponseEntity<?> bulkUploadAdmissions(@RequestParam("file") MultipartFile file) {
         if (file == null || file.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Please upload a valid CSV file"));
         }
-        
+
         List<AdmissionDetail> toSave = new java.util.ArrayList<>();
         int successCount = 0;
         int errorCount = 0;
-        
-        try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(file.getInputStream(), java.nio.charset.StandardCharsets.UTF_8))) {
+
+        try (java.io.BufferedReader reader = new java.io.BufferedReader(
+                new java.io.InputStreamReader(file.getInputStream(), java.nio.charset.StandardCharsets.UTF_8))) {
             String line;
             boolean firstLine = true;
             while ((line = reader.readLine()) != null) {
@@ -563,13 +609,13 @@ public class AdmissionDetailController {
                     firstLine = false;
                     continue; // skip header
                 }
-                
+
                 String[] columns = line.split(",", -1);
                 if (columns.length < 5) {
                     errorCount++;
                     continue; // Skip invalid lines
                 }
-                
+
                 try {
                     AdmissionDetail detail = new AdmissionDetail();
                     detail.setFullName(columns[0].trim());
@@ -577,42 +623,52 @@ public class AdmissionDetailController {
                     detail.setDob(parseDate(columns[2].trim()));
                     detail.setMobile(columns[3].trim());
                     detail.setTrade(columns[4].trim());
-                    
-                    double courseFee = columns.length > 5 && !columns[5].trim().isEmpty() ? Double.parseDouble(columns[5].trim()) : getCourseFeeForTrade(detail.getTrade());
-                    double amountPaid = columns.length > 6 && !columns[6].trim().isEmpty() ? Double.parseDouble(columns[6].trim()) : 0.0;
-                    
+
+                    double courseFee = columns.length > 5 && !columns[5].trim().isEmpty()
+                            ? Double.parseDouble(columns[5].trim())
+                            : getCourseFeeForTrade(detail.getTrade());
+                    double amountPaid = columns.length > 6 && !columns[6].trim().isEmpty()
+                            ? Double.parseDouble(columns[6].trim())
+                            : 0.0;
+
                     detail.setCourseFee(courseFee);
                     detail.setAmountPaid(amountPaid);
                     detail.setOutstandingBalance(courseFee - amountPaid);
                     detail.setPaymentStatus(amountPaid >= courseFee ? "COMPLETED" : "PENDING");
-                    
-                    if (columns.length > 7 && !columns[7].trim().isEmpty()) detail.setPaymentMethod(columns[7].trim());
-                    else detail.setPaymentMethod("Cash");
-                    
-                    if (columns.length > 8 && !columns[8].trim().isEmpty()) detail.setTransactionId(columns[8].trim());
-                    
+
+                    if (columns.length > 7 && !columns[7].trim().isEmpty())
+                        detail.setPaymentMethod(columns[7].trim());
+                    else
+                        detail.setPaymentMethod("Cash");
+
+                    if (columns.length > 8 && !columns[8].trim().isEmpty())
+                        detail.setTransactionId(columns[8].trim());
+
                     LocalDateTime appliedDate = LocalDateTime.now();
                     if (columns.length > 9 && !columns[9].trim().isEmpty()) {
                         LocalDate d = parseDate(columns[9].trim());
-                        if (d != null) appliedDate = d.atStartOfDay();
+                        if (d != null)
+                            appliedDate = d.atStartOfDay();
                     }
                     detail.setAppliedDate(appliedDate);
                     detail.setPaymentDate(appliedDate.toLocalDate());
-                    
+
                     detail.setStatus("APPROVED"); // Auto approve bulk uploads usually
                     detail.setAdminRemarks("Bulk Uploaded");
-                    
+
                     toSave.add(detail);
                     successCount++;
                 } catch (Exception e) {
                     errorCount++;
                 }
             }
-            
+
             admissionDetailRepository.saveAll(toSave);
-            return ResponseEntity.ok(Map.of("message", "Bulk upload completed. Success: " + successCount + ", Errors: " + errorCount));
+            return ResponseEntity.ok(
+                    Map.of("message", "Bulk upload completed. Success: " + successCount + ", Errors: " + errorCount));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to process CSV file: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to process CSV file: " + e.getMessage()));
         }
     }
 
@@ -625,12 +681,14 @@ public class AdmissionDetailController {
         } catch (Exception e) {
             try {
                 // Try dd/MM/yyyy or d/M/yyyy
-                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[dd][d]/[MM][M]/yyyy");
+                java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter
+                        .ofPattern("[dd][d]/[MM][M]/yyyy");
                 return LocalDate.parse(dateStr, formatter);
             } catch (Exception ex) {
                 try {
                     // Try MM/dd/yyyy
-                    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("[MM][M]/[dd][d]/yyyy");
+                    java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter
+                            .ofPattern("[MM][M]/[dd][d]/yyyy");
                     return LocalDate.parse(dateStr, formatter);
                 } catch (Exception ex2) {
                     System.err.println("Failed to parse date: " + dateStr);
@@ -698,158 +756,409 @@ class AdmissionFormDto {
     private Double amountPaid;
     private String paymentDate;
 
-
-    public AdmissionFormDto() {}
+    public AdmissionFormDto() {
+    }
 
     // Getters and Setters
-    public String getTrade() { return trade; }
-    public void setTrade(String trade) { this.trade = trade; }
+    public String getTrade() {
+        return trade;
+    }
 
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setTrade(String trade) {
+        this.trade = trade;
+    }
 
-    public String getFatherName() { return fatherName; }
-    public void setFatherName(String fatherName) { this.fatherName = fatherName; }
+    public String getFullName() {
+        return fullName;
+    }
 
-    public String getMotherName() { return motherName; }
-    public void setMotherName(String motherName) { this.motherName = motherName; }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-    public String getAadharNo() { return aadharNo; }
-    public void setAadharNo(String aadharNo) { this.aadharNo = aadharNo; }
+    public String getFatherName() {
+        return fatherName;
+    }
 
-    public String getSamagraId() { return samagraId; }
-    public void setSamagraId(String samagraId) { this.samagraId = samagraId; }
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
 
-    public String getDob() { return dob; }
-    public void setDob(String dob) { this.dob = dob; }
+    public String getMotherName() {
+        return motherName;
+    }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public void setMotherName(String motherName) {
+        this.motherName = motherName;
+    }
 
-    public String getGender() { return gender; }
-    public void setGender(String gender) { this.gender = gender; }
+    public String getAadharNo() {
+        return aadharNo;
+    }
 
-    public String getReligion() { return religion; }
-    public void setReligion(String religion) { this.religion = religion; }
+    public void setAadharNo(String aadharNo) {
+        this.aadharNo = aadharNo;
+    }
 
-    public String getBloodGroup() { return bloodGroup; }
-    public void setBloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; }
+    public String getSamagraId() {
+        return samagraId;
+    }
 
-    public Double getAnnualIncome() { return annualIncome; }
-    public void setAnnualIncome(Double annualIncome) { this.annualIncome = annualIncome; }
+    public void setSamagraId(String samagraId) {
+        this.samagraId = samagraId;
+    }
 
-    public String getIsPH() { return isPH; }
-    public void setIsPH(String isPH) { this.isPH = isPH; }
+    public String getDob() {
+        return dob;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
-    public String getPost() { return post; }
-    public void setPost(String post) { this.post = post; }
+    public String getCategory() {
+        return category;
+    }
 
-    public String getTehsil() { return tehsil; }
-    public void setTehsil(String tehsil) { this.tehsil = tehsil; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-    public String getDistt() { return distt; }
-    public void setDistt(String distt) { this.distt = distt; }
+    public String getGender() {
+        return gender;
+    }
 
-    public String getState() { return state; }
-    public void setState(String state) { this.state = state; }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-    public String getPin() { return pin; }
-    public void setPin(String pin) { this.pin = pin; }
+    public String getReligion() {
+        return religion;
+    }
 
-    public String getMobile() { return mobile; }
-    public void setMobile(String mobile) { this.mobile = mobile; }
+    public void setReligion(String religion) {
+        this.religion = religion;
+    }
 
-    public String getParentMobile() { return parentMobile; }
-    public void setParentMobile(String parentMobile) { this.parentMobile = parentMobile; }
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
 
-    public String getWhatsapp() { return whatsapp; }
-    public void setWhatsapp(String whatsapp) { this.whatsapp = whatsapp; }
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public Double getAnnualIncome() {
+        return annualIncome;
+    }
 
-    public String getTenthBoard() { return tenthBoard; }
-    public void setTenthBoard(String tenthBoard) { this.tenthBoard = tenthBoard; }
+    public void setAnnualIncome(Double annualIncome) {
+        this.annualIncome = annualIncome;
+    }
 
-    public String getTenthSchool() { return tenthSchool; }
-    public void setTenthSchool(String tenthSchool) { this.tenthSchool = tenthSchool; }
+    public String getIsPH() {
+        return isPH;
+    }
 
-    public String getTenthRollNo() { return tenthRollNo; }
-    public void setTenthRollNo(String tenthRollNo) { this.tenthRollNo = tenthRollNo; }
+    public void setIsPH(String isPH) {
+        this.isPH = isPH;
+    }
 
-    public String getTenthYear() { return tenthYear; }
-    public void setTenthYear(String tenthYear) { this.tenthYear = tenthYear; }
+    public String getAddress() {
+        return address;
+    }
 
-    public Integer getTenthTotalMarks() { return tenthTotalMarks; }
-    public void setTenthTotalMarks(Integer tenthTotalMarks) { this.tenthTotalMarks = tenthTotalMarks; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public Integer getTenthMarksObt() { return tenthMarksObt; }
-    public void setTenthMarksObt(Integer tenthMarksObt) { this.tenthMarksObt = tenthMarksObt; }
+    public String getPost() {
+        return post;
+    }
 
-    public String getTwelfthBoard() { return twelfthBoard; }
-    public void setTwelfthBoard(String twelfthBoard) { this.twelfthBoard = twelfthBoard; }
+    public void setPost(String post) {
+        this.post = post;
+    }
 
-    public String getTwelfthSchool() { return twelfthSchool; }
-    public void setTwelfthSchool(String twelfthSchool) { this.twelfthSchool = twelfthSchool; }
+    public String getTehsil() {
+        return tehsil;
+    }
 
-    public String getTwelfthRollNo() { return twelfthRollNo; }
-    public void setTwelfthRollNo(String twelfthRollNo) { this.twelfthRollNo = twelfthRollNo; }
+    public void setTehsil(String tehsil) {
+        this.tehsil = tehsil;
+    }
 
-    public String getTwelfthYear() { return twelfthYear; }
-    public void setTwelfthYear(String twelfthYear) { this.twelfthYear = twelfthYear; }
+    public String getDistt() {
+        return distt;
+    }
 
-    public Integer getTwelfthTotalMarks() { return twelfthTotalMarks; }
-    public void setTwelfthTotalMarks(Integer twelfthTotalMarks) { this.twelfthTotalMarks = twelfthTotalMarks; }
+    public void setDistt(String distt) {
+        this.distt = distt;
+    }
 
-    public Integer getTwelfthMarksObt() { return twelfthMarksObt; }
-    public void setTwelfthMarksObt(Integer twelfthMarksObt) { this.twelfthMarksObt = twelfthMarksObt; }
+    public String getState() {
+        return state;
+    }
 
-    public MultipartFile getPhoto() { return photo; }
-    public void setPhoto(MultipartFile photo) { this.photo = photo; }
+    public void setState(String state) {
+        this.state = state;
+    }
 
-    public MultipartFile getSignature() { return signature; }
-    public void setSignature(MultipartFile signature) { this.signature = signature; }
+    public String getPin() {
+        return pin;
+    }
 
-    public MultipartFile getTenthDocument() { return tenthDocument; }
-    public void setTenthDocument(MultipartFile tenthDocument) { this.tenthDocument = tenthDocument; }
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
 
-    public MultipartFile getTwelfthDocument() { return twelfthDocument; }
-    public void setTwelfthDocument(MultipartFile twelfthDocument) { this.twelfthDocument = twelfthDocument; }
+    public String getMobile() {
+        return mobile;
+    }
 
-    public MultipartFile getAadharDocument() { return aadharDocument; }
-    public void setAadharDocument(MultipartFile aadharDocument) { this.aadharDocument = aadharDocument; }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-    public MultipartFile getSamagraDocument() { return samagraDocument; }
-    public void setSamagraDocument(MultipartFile samagraDocument) { this.samagraDocument = samagraDocument; }
+    public String getParentMobile() {
+        return parentMobile;
+    }
 
-    public MultipartFile getCasteDocument() { return casteDocument; }
-    public void setCasteDocument(MultipartFile casteDocument) { this.casteDocument = casteDocument; }
+    public void setParentMobile(String parentMobile) {
+        this.parentMobile = parentMobile;
+    }
 
-    public MultipartFile getIncomeDocument() { return incomeDocument; }
-    public void setIncomeDocument(MultipartFile incomeDocument) { this.incomeDocument = incomeDocument; }
+    public String getWhatsapp() {
+        return whatsapp;
+    }
 
-    public MultipartFile getDomicileDocument() { return domicileDocument; }
-    public void setDomicileDocument(MultipartFile domicileDocument) { this.domicileDocument = domicileDocument; }
+    public void setWhatsapp(String whatsapp) {
+        this.whatsapp = whatsapp;
+    }
 
-    public MultipartFile getPaymentReceipt() { return paymentReceipt; }
-    public void setPaymentReceipt(MultipartFile paymentReceipt) { this.paymentReceipt = paymentReceipt; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getPaymentMethod() { return paymentMethod; }
-    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getTransactionId() { return transactionId; }
-    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
+    public String getTenthBoard() {
+        return tenthBoard;
+    }
 
-    public Double getAmountPaid() { return amountPaid; }
-    public void setAmountPaid(Double amountPaid) { this.amountPaid = amountPaid; }
+    public void setTenthBoard(String tenthBoard) {
+        this.tenthBoard = tenthBoard;
+    }
 
-    public String getPaymentDate() { return paymentDate; }
-    public void setPaymentDate(String paymentDate) { this.paymentDate = paymentDate; }
+    public String getTenthSchool() {
+        return tenthSchool;
+    }
+
+    public void setTenthSchool(String tenthSchool) {
+        this.tenthSchool = tenthSchool;
+    }
+
+    public String getTenthRollNo() {
+        return tenthRollNo;
+    }
+
+    public void setTenthRollNo(String tenthRollNo) {
+        this.tenthRollNo = tenthRollNo;
+    }
+
+    public String getTenthYear() {
+        return tenthYear;
+    }
+
+    public void setTenthYear(String tenthYear) {
+        this.tenthYear = tenthYear;
+    }
+
+    public Integer getTenthTotalMarks() {
+        return tenthTotalMarks;
+    }
+
+    public void setTenthTotalMarks(Integer tenthTotalMarks) {
+        this.tenthTotalMarks = tenthTotalMarks;
+    }
+
+    public Integer getTenthMarksObt() {
+        return tenthMarksObt;
+    }
+
+    public void setTenthMarksObt(Integer tenthMarksObt) {
+        this.tenthMarksObt = tenthMarksObt;
+    }
+
+    public String getTwelfthBoard() {
+        return twelfthBoard;
+    }
+
+    public void setTwelfthBoard(String twelfthBoard) {
+        this.twelfthBoard = twelfthBoard;
+    }
+
+    public String getTwelfthSchool() {
+        return twelfthSchool;
+    }
+
+    public void setTwelfthSchool(String twelfthSchool) {
+        this.twelfthSchool = twelfthSchool;
+    }
+
+    public String getTwelfthRollNo() {
+        return twelfthRollNo;
+    }
+
+    public void setTwelfthRollNo(String twelfthRollNo) {
+        this.twelfthRollNo = twelfthRollNo;
+    }
+
+    public String getTwelfthYear() {
+        return twelfthYear;
+    }
+
+    public void setTwelfthYear(String twelfthYear) {
+        this.twelfthYear = twelfthYear;
+    }
+
+    public Integer getTwelfthTotalMarks() {
+        return twelfthTotalMarks;
+    }
+
+    public void setTwelfthTotalMarks(Integer twelfthTotalMarks) {
+        this.twelfthTotalMarks = twelfthTotalMarks;
+    }
+
+    public Integer getTwelfthMarksObt() {
+        return twelfthMarksObt;
+    }
+
+    public void setTwelfthMarksObt(Integer twelfthMarksObt) {
+        this.twelfthMarksObt = twelfthMarksObt;
+    }
+
+    public MultipartFile getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(MultipartFile photo) {
+        this.photo = photo;
+    }
+
+    public MultipartFile getSignature() {
+        return signature;
+    }
+
+    public void setSignature(MultipartFile signature) {
+        this.signature = signature;
+    }
+
+    public MultipartFile getTenthDocument() {
+        return tenthDocument;
+    }
+
+    public void setTenthDocument(MultipartFile tenthDocument) {
+        this.tenthDocument = tenthDocument;
+    }
+
+    public MultipartFile getTwelfthDocument() {
+        return twelfthDocument;
+    }
+
+    public void setTwelfthDocument(MultipartFile twelfthDocument) {
+        this.twelfthDocument = twelfthDocument;
+    }
+
+    public MultipartFile getAadharDocument() {
+        return aadharDocument;
+    }
+
+    public void setAadharDocument(MultipartFile aadharDocument) {
+        this.aadharDocument = aadharDocument;
+    }
+
+    public MultipartFile getSamagraDocument() {
+        return samagraDocument;
+    }
+
+    public void setSamagraDocument(MultipartFile samagraDocument) {
+        this.samagraDocument = samagraDocument;
+    }
+
+    public MultipartFile getCasteDocument() {
+        return casteDocument;
+    }
+
+    public void setCasteDocument(MultipartFile casteDocument) {
+        this.casteDocument = casteDocument;
+    }
+
+    public MultipartFile getIncomeDocument() {
+        return incomeDocument;
+    }
+
+    public void setIncomeDocument(MultipartFile incomeDocument) {
+        this.incomeDocument = incomeDocument;
+    }
+
+    public MultipartFile getDomicileDocument() {
+        return domicileDocument;
+    }
+
+    public void setDomicileDocument(MultipartFile domicileDocument) {
+        this.domicileDocument = domicileDocument;
+    }
+
+    public MultipartFile getPaymentReceipt() {
+        return paymentReceipt;
+    }
+
+    public void setPaymentReceipt(MultipartFile paymentReceipt) {
+        this.paymentReceipt = paymentReceipt;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public Double getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(Double amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public String getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(String paymentDate) {
+        this.paymentDate = paymentDate;
+    }
 
     private Double courseFee;
-    public Double getCourseFee() { return courseFee; }
-    public void setCourseFee(Double courseFee) { this.courseFee = courseFee; }
+
+    public Double getCourseFee() {
+        return courseFee;
+    }
+
+    public void setCourseFee(Double courseFee) {
+        this.courseFee = courseFee;
+    }
 }
